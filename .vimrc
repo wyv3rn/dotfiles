@@ -1,5 +1,6 @@
 " automatically load plugins
 execute pathogen#infect()
+so ~/.vim/bundle/vimlatx.vim/plugin/imaps.vim
 
 " general stuff
 syntax enable
@@ -15,7 +16,6 @@ set ignorecase
 set incsearch
 set hlsearch
 set rnu
-set nu
 set grepprg=grep\ -nH\ $*
 set path+=**
 

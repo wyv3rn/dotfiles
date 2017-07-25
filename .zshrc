@@ -2,7 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-  export ZSH=/home/dschatz/.oh-my-zsh
+export ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
@@ -92,7 +92,10 @@ export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${GUROBI_HOME}/lib"
 
 alias grep='grep --color=auto'
 zstyle ':completion:*' special-dirs true
-eval `keychain --eval id_rsa`
+
+if type "keychain" > /dev/null; then
+    eval `keychain --eval id_rsa`
+fi
 
 function open () {
     xdg-open "$*" >/dev/null 2>&1 &
