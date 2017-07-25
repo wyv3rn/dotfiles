@@ -38,7 +38,7 @@ endif
 " trailing whitespaces
 highlight ExtraEhitespace ctermbg=red guibg=red
 match ExtraEhitespace /\s\+$/
-nnoremap mrt :%s/\s\+$//<CR>
+nnoremap <leader>rt :%s/\s\+$//<CR>
 
 " filetype stuff
 filetype plugin indent on
