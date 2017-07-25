@@ -26,7 +26,7 @@ if has('gui_running')
     inoremap <C-Space> <C-n>
     set guicursor=a:blinkon600-blinkoff400  " Slow down cursor blinking speed
     set guifont=Inconsolata\ 11
-    set novisualbell 
+    set novisualbell
     set guioptions-=T
     set guioptions-=r
     set guioptions-=L
@@ -34,6 +34,11 @@ else
     highlight LineNr ctermfg=darkgrey
     inoremap <Nul> <C-n>
 endif
+
+" trailing whitespaces
+highlight ExtraEhitespace ctermbg=red guibg=red
+match ExtraEhitespace /\s\+$/
+nnoremap mrt :%s/\s\+$//<CR>
 
 " filetype stuff
 filetype plugin indent on
