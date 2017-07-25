@@ -1,8 +1,10 @@
+" automatically load plugins
 execute pathogen#infect()
 
+" general stuff
+syntax enable
 set ruler
 set vb
-syntax enable
 set background=dark
 set autoindent
 set expandtab
@@ -10,18 +12,33 @@ set smarttab
 set shiftwidth=4
 set tabstop=4
 set ignorecase
-
-set grepprg=grep\ -nH\ $*
-
-set path+=**
-
-filetype plugin indent on
-
-au FileType ruby setl sw=2 sts=2
-au Filetype tex setl nofoldenable
-
 set incsearch
 set hlsearch
+set rnu
+set nu
+set grepprg=grep\ -nH\ $*
+set path+=**
+
+" gui stuff
+if has('gui_running')
+    colorscheme solarized
+    set background=dark
+    inoremap <C-Space> <C-n>
+    set guicursor=a:blinkon600-blinkoff400  " Slow down cursor blinking speed
+    set guifont=Inconsolata\ 11
+    set novisualbell 
+    set guioptions-=T
+    set guioptions-=r
+    set guioptions-=L
+else
+    highlight LineNr ctermfg=darkgrey
+    inoremap <Nul> <C-n>
+endif
+
+" filetype stuff
+filetype plugin indent on
+au FileType ruby setl sw=2 sts=2
+au Filetype tex setl nofoldenable
 
 " redefine the mapleader key
 let mapleader = "m"
@@ -41,25 +58,18 @@ vnoremap <C-S-Up> :m '<-2<CR>gv=gv
 nnoremap <C-s> :w<CR>
 inoremap <C-s> <ESC>:w<CR>
 
-if has('gui_running')
-    colorscheme solarized
-    set background=dark
-    inoremap <C-Space> <C-n>
-    set guicursor=a:blinkon600-blinkoff400  " Slow down cursor blinking speed
-    set guifont=Inconsolata\ 11
-    set novisualbell 
-    set guioptions-=T
-    set guioptions-=r
-    set guioptions-=L
-    set rnu
-else
-    inoremap <Nul> <C-n>
-endif
-
 " execute local vimrc files as well
 if filereadable(".vimrc.local")
     so .vimrc.local
 endif
+
+" moving around
+noremap <C-Down> }
+noremap <C-Up> {
+
+" tag jumping
+nnoremap ä g<C-]>
+nnoremap ö <C-t>
 
 " vimlatex
 let g:Tex_DefaultTargetFormat='pdf'
@@ -70,6 +80,3 @@ let g:NERDSpaceDelims = 1
 map <leader>cl <plug>NERDCommenterComment
 map <leader>cc <plug>NERDCommenterAlignLeft
 
-" tag jumping
-nnoremap ä g<C-]>
-nnoremap ö <C-t>
