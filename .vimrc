@@ -92,16 +92,20 @@ let g:Tex_DefaultTargetFormat='pdf'
 let g:Tex_MultipleCompileFormats='pdf'
 au FileType tex call IMAP("bib:", "\\cite{bib:<++>}<++>", "tex")
 au FileType tex call IMAP("fig:", "\\autoref{fig:<++>}<++>", "tex")
+au FileType tex call IMAP("ch:", "\\autoref{ch:<++>}<++>", "tex")
 au FileType tex call IMAP("sec:", "\\autoref{sec:<++>}<++>", "tex")
 au FileType tex call IMAP("sub:", "\\autoref{sub:<++>}<++>", "tex")
 au FileType tex call IMAP("tab:", "\\autoref{tab:<++>}<++>", "tex")
+au FileType tex call IMAP("ECH", "\\chapter{<++>}\<CR>\label{ch:<++>}\<CR>\<CR><++>\<CR>", "tex")
+au FileType tex call IMAP("ESE", "\\section{<++>}\<CR>\label{sec:<++>}\<CR>\<CR><++>\<CR>", "tex")
+au FileType tex call IMAP("ESU", "\\subsection{<++>}\<CR>\label{sub:<++>}\<CR>\<CR><++>\<CR>", "tex")
 
 " fancy surroundings whily typing :)
-call IMAP("(", "(<++>)<++>", "")
-call IMAP("[", "[<++>]<++>", "")
-call IMAP("{", "{<++>}<++>", "")
-call IMAP("<", "<<++>><++>", "")
-call IMAP("\"", "\"<++>\"<++>", "")
+" call IMAP("(", "(<++>)<++>", "")
+" call IMAP("[", "[<++>]<++>", "")
+" call IMAP("{", "{<++>}<++>", "")
+" call IMAP("<", "<<++>><++>", "")
+" call IMAP("\"", "\"<++>\"<++>", "")
 
 " nerdcommenter
 let g:NERDSpaceDelims = 1
