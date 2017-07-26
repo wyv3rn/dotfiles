@@ -103,5 +103,5 @@ function open () {
 
 alias feh='feh -Z.'
 alias fehsvg='feh --magick-timeout 1'
-
 alias dotfiles="/usr/bin/git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME"
+alias svndiff='svn diff | gview -'

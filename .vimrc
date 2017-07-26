@@ -2,7 +2,11 @@
 execute pathogen#infect()
 so ~/.vim/bundle/vimlatx.vim/plugin/imaps.vim
 
+" redefine the mapleader key
+let mapleader = "m"
+
 " general stuff
+set nocompatible
 syntax enable
 set ruler
 set vb
@@ -12,12 +16,13 @@ set expandtab
 set smarttab
 set shiftwidth=4
 set tabstop=4
-set ignorecase
-set incsearch
-set hlsearch
+set wildmenu
 set rnu
 set grepprg=grep\ -nH\ $*
 set path+=**
+set ttyfast
+set showcmd
+set scrolloff=5
 
 " gui stuff
 if has('gui_running')
@@ -35,21 +40,32 @@ else
     inoremap <Nul> <C-n>
 endif
 
+" window stuff
+nnoremap <leader>wn <C-w>v<C-w>l
+
+" search and sub stuff
+nnoremap / /\v
+nnoremap <leader>sa :%s/\v
+vnoremap <leader>sa :s/\v
+nnoremap <leader>sl :s/\v
+set gdefault
+set ignorecase
+set smartcase
+set incsearch
+set hlsearch
+
+" Press Space to turn off highlighting and clear any message already displayed.
+:nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
+
 " trailing whitespaces
 highlight ExtraEhitespace ctermbg=red guibg=red
 match ExtraEhitespace /\s\+$/
-nnoremap <leader>rt :%s/\s\+$//<CR>
+nnoremap <leader>rtw :%s/\s\+$//<CR>
 
 " filetype stuff
 filetype plugin indent on
 au FileType ruby setl sw=2 sts=2
 au Filetype tex setl nofoldenable
-
-" redefine the mapleader key
-let mapleader = "m"
-
-" Press Space to turn off highlighting and clear any message already displayed.
-:nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 
 " moving lines up and down
 nnoremap <C-S-Down> :m .+1<CR>==
@@ -63,11 +79,6 @@ vnoremap <C-S-Up> :m '<-2<CR>gv=gv
 nnoremap <C-s> :w<CR>
 inoremap <C-s> <ESC>:w<CR>
 
-" execute local vimrc files as well
-if filereadable(".vimrc.local")
-    so .vimrc.local
-endif
-
 " moving around
 noremap <C-Down> }
 noremap <C-Up> {
@@ -76,12 +87,28 @@ noremap <C-Up> {
 nnoremap ä g<C-]>
 nnoremap ö <C-t>
 
-" vimlatex
+" vimlatex and latex in general
 let g:Tex_DefaultTargetFormat='pdf'
 let g:Tex_MultipleCompileFormats='pdf'
+au FileType tex call IMAP("bib:", "\\cite{bib:<++>}<++>", "tex")
+au FileType tex call IMAP("fig:", "\\autoref{fig:<++>}<++>", "tex")
+au FileType tex call IMAP("sec:", "\\autoref{sec:<++>}<++>", "tex")
+au FileType tex call IMAP("sub:", "\\autoref{sub:<++>}<++>", "tex")
+au FileType tex call IMAP("tab:", "\\autoref{tab:<++>}<++>", "tex")
+
+" fancy surroundings whily typing :)
+call IMAP("(", "(<++>)<++>", "")
+call IMAP("[", "[<++>]<++>", "")
+call IMAP("{", "{<++>}<++>", "")
+call IMAP("<", "<<++>><++>", "")
+call IMAP("\"", "\"<++>\"<++>", "")
 
 " nerdcommenter
 let g:NERDSpaceDelims = 1
 map <leader>cl <plug>NERDCommenterComment
 map <leader>cc <plug>NERDCommenterAlignLeft
 
+" execute local vimrc files as well
+if filereadable(".vimrc.local")
+    so .vimrc.local
+endif
