@@ -42,6 +42,8 @@ endif
 
 " window stuff
 nnoremap <leader>wn <C-w>v<C-w>l
+nnoremap <leader>wf <C-w>v:e .<CR>:vertical resize 85<CR>
+let g:netrw_banner=0
 
 " search and sub stuff
 nnoremap / /\v
@@ -78,6 +80,10 @@ vnoremap <C-S-Up> :m '<-2<CR>gv=gv
 " convenient saving
 nnoremap <C-s> :w<CR>
 inoremap <C-s> <ESC>:w<CR>
+
+" convenient copy/paste
+vnoremap <C-c><C-c> "+y
+nnoremap <C-c><C-v> "+gP
 
 " moving around
 noremap <C-Down> }
