@@ -105,3 +105,6 @@ alias feh='feh -Z.'
 alias fehsvg='feh --magick-timeout 1'
 alias dotfiles="/usr/bin/git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME"
 alias svndiff='svn diff | gview -'
+if type "mvim" > /dev/null; then
+    alias vim="mvim -v"
+fi

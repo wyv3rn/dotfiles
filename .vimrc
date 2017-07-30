@@ -1,6 +1,5 @@
 " automatically load plugins
 execute pathogen#infect()
-so ~/.vim/bundle/vimlatx.vim/plugin/imaps.vim
 
 " redefine the mapleader key
 let mapleader = "m"
@@ -86,8 +85,8 @@ vnoremap <C-c><C-c> "+y
 nnoremap <C-c><C-v> "+gP
 
 " moving around
-noremap <C-Down> }
-noremap <C-Up> {
+noremap <S-j> }
+noremap <S-k> {
 
 " tag jumping
 nnoremap ä g<C-]>
@@ -96,6 +95,8 @@ nnoremap ö <C-t>
 " vimlatex and latex in general
 let g:Tex_DefaultTargetFormat='pdf'
 let g:Tex_MultipleCompileFormats='pdf'
+set iskeyword+=:
+so ~/.vim/bundle/vimlatx.vim/plugin/imaps.vim
 au FileType tex call IMAP("bib:", "\\cite{bib:<++>}<++>", "tex")
 au FileType tex call IMAP("fig:", "\\autoref{fig:<++>}<++>", "tex")
 au FileType tex call IMAP("ch:", "\\autoref{ch:<++>}<++>", "tex")
@@ -105,13 +106,6 @@ au FileType tex call IMAP("tab:", "\\autoref{tab:<++>}<++>", "tex")
 au FileType tex call IMAP("ECH", "\\chapter{<++>}\<CR>\label{ch:<++>}\<CR>\<CR><++>\<CR>", "tex")
 au FileType tex call IMAP("ESE", "\\section{<++>}\<CR>\label{sec:<++>}\<CR>\<CR><++>\<CR>", "tex")
 au FileType tex call IMAP("ESU", "\\subsection{<++>}\<CR>\label{sub:<++>}\<CR>\<CR><++>\<CR>", "tex")
-
-" fancy surroundings whily typing :)
-" call IMAP("(", "(<++>)<++>", "")
-" call IMAP("[", "[<++>]<++>", "")
-" call IMAP("{", "{<++>}<++>", "")
-" call IMAP("<", "<<++>><++>", "")
-" call IMAP("\"", "\"<++>\"<++>", "")
 
 " nerdcommenter
 let g:NERDSpaceDelims = 1
@@ -124,6 +118,18 @@ if executable('ag')
       let g:ackprg = 'ag --vimgrep'
 endif
 
+" hardcore mode
+let hardcore = 1
+if hardcore
+    map <Down> <Nop>
+    map! <Down> <Nop>
+    map <Up> <Nop>
+    map! <Up> <Nop>
+    map <Left> <Nop>
+    map! <Left> <Nop>
+    map <Right> <Nop>
+    map! <Right> <Nop>
+endif
 
 " execute local vimrc files as well
 if filereadable(".vimrc.local")
