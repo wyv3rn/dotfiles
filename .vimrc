@@ -118,6 +118,13 @@ let g:NERDSpaceDelims = 1
 map <leader>cl <plug>NERDCommenterComment
 map <leader>cc <plug>NERDCommenterAlignLeft
 
+" ack
+cnoreabbrev ack Ack!
+if executable('ag')
+      let g:ackprg = 'ag --vimgrep'
+endif
+
+
 " execute local vimrc files as well
 if filereadable(".vimrc.local")
     so .vimrc.local
