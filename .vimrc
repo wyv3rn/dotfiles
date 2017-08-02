@@ -22,6 +22,7 @@ set path+=**
 set ttyfast
 set showcmd
 set scrolloff=5
+set novisualbell
 
 " gui stuff
 if has('gui_running')
@@ -29,8 +30,10 @@ if has('gui_running')
     set background=dark
     inoremap <C-Space> <C-n>
     set guicursor=a:blinkon600-blinkoff400  " Slow down cursor blinking speed
-    set guifont=Inconsolata\ 11
-    set novisualbell
+    set guifont=DejaVu\ Sans\ Mono\ 9
+    set antialias
+    set guioptions-=m
+    set guioptions-=e
     set guioptions-=T
     set guioptions-=r
     set guioptions-=L
@@ -41,7 +44,7 @@ endif
 
 " window stuff
 nnoremap <leader>wn <C-w>v<C-w>l
-nnoremap <leader>wf <C-w>v:e .<CR>:vertical resize 85<CR>
+nnoremap <leader>wf <C-w>v:e .<CR>
 let g:netrw_banner=0
 
 " search and sub stuff
@@ -59,8 +62,8 @@ set hlsearch
 :nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 
 " trailing whitespaces
-highlight ExtraEhitespace ctermbg=red guibg=red
-match ExtraEhitespace /\s\+$/
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+$/
 nnoremap <leader>rtw :%s/\s\+$//<CR>
 
 " filetype stuff
@@ -85,8 +88,8 @@ vnoremap <C-c><C-c> "+y
 nnoremap <C-c><C-v> "+gP
 
 " moving around
-noremap <S-j> }
-noremap <S-k> {
+noremap <C-Down> }
+noremap <C-Up> {
 
 " tag jumping
 nnoremap ä g<C-]>
@@ -116,19 +119,6 @@ map <leader>cc <plug>NERDCommenterAlignLeft
 cnoreabbrev ack Ack!
 if executable('ag')
       let g:ackprg = 'ag --vimgrep'
-endif
-
-" hardcore mode
-let hardcore = 1
-if hardcore
-    map <Down> <Nop>
-    map! <Down> <Nop>
-    map <Up> <Nop>
-    map! <Up> <Nop>
-    map <Left> <Nop>
-    map! <Left> <Nop>
-    map <Right> <Nop>
-    map! <Right> <Nop>
 endif
 
 " execute local vimrc files as well
