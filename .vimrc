@@ -23,6 +23,9 @@ set ttyfast
 set showcmd
 set scrolloff=5
 set novisualbell
+set undofile
+set undodir=$HOME/.vim/undo
+set undolevels=1000
 
 " gui stuff
 if has('gui_running')
