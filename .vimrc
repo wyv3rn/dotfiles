@@ -27,6 +27,17 @@ set undofile
 set undodir=$HOME/.vim/undo
 set undolevels=1000
 
+" cursor shape TODO compatible with iterm2?
+let escPrefix = ""
+let escSuffix = ""
+if exists('$TMUX')
+    let escPrefix = "\<ESC>Ptmux;\<ESC>"
+    let escSuffix = "\<ESC>\\"
+endif
+let &t_SI = escPrefix . "\<Esc>[5 q" . escSuffix
+let &t_SR = escPrefix . "\<Esc>[3 q" . escSuffix
+let &t_EI = escPrefix . "\<Esc>[1 q" . escSuffix
+
 " gui stuff
 if has('gui_running')
     colorscheme solarized
@@ -75,12 +86,12 @@ au FileType ruby setl sw=2 sts=2
 au Filetype tex setl nofoldenable
 
 " moving lines up and down
-nnoremap <C-S-Down> :m .+1<CR>==
-nnoremap <C-S-Up> :m .-2<CR>==
-inoremap <C-S-Down> <Esc>:m .+1<CR>==gi
-inoremap <C-S-Up> <Esc>:m .-2<CR>==gi
-vnoremap <C-S-Down> :m '>+1<CR>gv=gv
-vnoremap <C-S-Up> :m '<-2<CR>gv=gv
+nnoremap <S-Down> :m .+1<CR>==
+nnoremap <S-Up> :m .-2<CR>==
+inoremap <S-Down> <Esc>:m .+1<CR>==gi
+inoremap <S-Up> <Esc>:m .-2<CR>==gi
+vnoremap <S-Down> :m '>+1<CR>gv=gv
+vnoremap <S-Up> :m '<-2<CR>gv=gv
 
 " convenient saving
 nnoremap <C-s> :w<CR>
@@ -94,9 +105,9 @@ nnoremap <C-c><C-v> "+gP
 noremap <C-Down> }
 noremap <C-Up> {
 
-" tag jumping
-nnoremap ä g<C-]>
-nnoremap ö <C-t>
+" tag jumping with rtags
+nmap ä <leader>rj
+nmap ö <C-o>
 
 " vimlatex and latex in general
 let g:Tex_DefaultTargetFormat='pdf'
@@ -123,6 +134,16 @@ cnoreabbrev ack Ack!
 if executable('ag')
       let g:ackprg = 'ag --vimgrep'
 endif
+
+" tmux navigation integration
+let g:tmux_navigator_no_mappings = 1
+nnoremap <silent> <C-S-Left> :TmuxNavigateLeft<cr>
+nnoremap <silent> <C-S-Down> :TmuxNavigateDown<cr>
+nnoremap <silent> <C-S-Up> :TmuxNavigateUp<cr>
+nnoremap <silent> <C-S-Right> :TmuxNavigateRight<cr>
+
+" vimux
+nnoremap <Leader>p :VimuxPromptCommand<CR>
 
 " execute local vimrc files as well
 if filereadable(".vimrc.local")

@@ -111,3 +111,5 @@ alias svndiff='svn diff | gview -'
 if type "mvim" > /dev/null; then
     alias vim="mvim -v"
 fi
+alias v="vim"
+alias t="tmux"
