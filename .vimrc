@@ -1,11 +1,28 @@
-" automatically load plugins
-execute pathogen#infect()
+" Vundle plugin manager
+set nocompatible
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+
+Plugin 'mileszs/ack.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'roman/golden-ratio'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'lyuts/vim-rtags'
+Plugin 'tpope/vim-surround'
+Plugin 'benmills/vimux'
+Plugin 'vim-latex/vim-latex'
+Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'Valloric/YouCompleteMe'
+call vundle#end()
 
 " redefine the mapleader key
 let mapleader = "m"
 
 " general stuff
-set nocompatible
 syntax enable
 set ruler
 set vb
@@ -113,7 +130,7 @@ nmap ö <C-o>
 let g:Tex_DefaultTargetFormat='pdf'
 let g:Tex_MultipleCompileFormats='pdf'
 set iskeyword+=:
-so ~/.vim/bundle/vimlatx.vim/plugin/imaps.vim
+so ~/.vim/bundle/vim-latex/plugin/imaps.vim
 au FileType tex call IMAP("bib:", "\\cite{bib:<++>}<++>", "tex")
 au FileType tex call IMAP("fig:", "\\autoref{fig:<++>}<++>", "tex")
 au FileType tex call IMAP("ch:", "\\autoref{ch:<++>}<++>", "tex")
