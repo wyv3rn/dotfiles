@@ -8,7 +8,7 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 Plugin 'mileszs/ack.vim'
-Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'wincent/command-t'
 Plugin 'roman/golden-ratio'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'lyuts/vim-rtags'
