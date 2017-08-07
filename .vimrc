@@ -132,6 +132,11 @@ nmap ö <C-o>
 " vimlatex and latex in general
 let g:Tex_DefaultTargetFormat='pdf'
 let g:Tex_MultipleCompileFormats='pdf'
+let g:Tex_IgnoredWarnings =
+    \'Underfull'."\n".
+    \'Overfull'."\n".
+    \'Draft mode on'."\n"
+let g:Tex_IgnoreLevel = 3
 set iskeyword+=:
 so ~/.vim/bundle/vim-latex/plugin/imaps.vim
 au FileType tex call IMAP("bib:", "\\cite{bib:<++>}<++>", "tex")
