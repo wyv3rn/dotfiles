@@ -44,7 +44,7 @@ set undofile
 set undodir=$HOME/.vim/undo
 set undolevels=1000
 
-" cursor shape TODO compatible with iterm2?
+" cursor shape
 let escPrefix = ""
 let escSuffix = ""
 if exists('$TMUX')
@@ -109,6 +109,9 @@ inoremap <S-Down> <Esc>:m .+1<CR>==gi
 inoremap <S-Up> <Esc>:m .-2<CR>==gi
 vnoremap <S-Down> :m '>+1<CR>gv=gv
 vnoremap <S-Up> :m '<-2<CR>gv=gv
+
+" insert empty line in normal mode
+nnoremap <Cr> o<Esc>d0
 
 " convenient saving
 nnoremap <C-s> :w<CR>
