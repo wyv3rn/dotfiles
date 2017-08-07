@@ -1,7 +1,7 @@
 # If you come from bash you might have to change your $PATH.
 if ! type "env" > /dev/null; then
     # heuristic: if the env command is not found, $PATH seems not to contain important dirs
-    export PATH=/usr/local/bin:/usr/bin/:/bin:$PATH
+    export PATH=/usr/local/bin:/usr/bin:/bin:$PATH
 fi
 
 # Path to your oh-my-zsh installation.
@@ -87,7 +87,8 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-export NO_AT_BRIDGE=1
+export TERM=xterm-256color # portable term info
+export NO_AT_BRIDGE=1 # silence some GTK warnings
 
 export GUROBI_HOME=~/.local/gurobi750/linux64
 export PATH=~/.local/bin:~/.local/bin/Telegram:${GUROBI_HOME}/bin:$PATH
