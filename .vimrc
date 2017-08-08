@@ -8,7 +8,7 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 Plugin 'mileszs/ack.vim'
-Plugin 'wincent/command-t'
+Plugin 'junegunn/fzf.vim'
 Plugin 'roman/golden-ratio'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'lyuts/vim-rtags'
@@ -55,11 +55,10 @@ let &t_SI = escPrefix . "\<Esc>[5 q" . escSuffix
 let &t_SR = escPrefix . "\<Esc>[3 q" . escSuffix
 let &t_EI = escPrefix . "\<Esc>[1 q" . escSuffix
 
-" gui stuff
+" GUI stuff
 if has('gui_running')
     colorscheme solarized
     set background=dark
-    inoremap <C-Space> <C-n>
     set guicursor=a:blinkon600-blinkoff400  " Slow down cursor blinking speed
     set guifont=DejaVu\ Sans\ Mono\ 9
     set antialias
@@ -70,13 +69,17 @@ if has('gui_running')
     set guioptions-=L
 else
     highlight LineNr ctermfg=darkgrey
-    inoremap <Nul> <C-n>
 endif
 
-" window stuff
+" correct last spelling error
+imap <F2> <c-g>u<Esc>[s1z=`]a<c-g>u
+nmap <F2> [s1z=<c-o>
+
+" window and buffer stuff
 nnoremap <leader>wn <C-w>v<C-w>l
 nnoremap <leader>wf <C-w>v:e .<CR>
 let g:netrw_banner=0
+nnoremap <Tab> :e #<CR>
 
 " search and sub stuff
 nnoremap / /\v
@@ -111,11 +114,7 @@ vnoremap <S-Down> :m '>+1<CR>gv=gv
 vnoremap <S-Up> :m '<-2<CR>gv=gv
 
 " insert empty line in normal mode
-nnoremap <Cr> o<Esc>d0
-
-" convenient saving
-nnoremap <C-s> :w<CR>
-inoremap <C-s> <ESC>:w<CR>
+nnoremap <leader>il o<Esc>d0
 
 " convenient copy/paste
 vnoremap <C-c><C-c> "+y
@@ -128,6 +127,9 @@ noremap <C-Up> {
 " tag jumping with rtags
 nmap ä <leader>rj
 nmap ö <C-o>
+
+" YCM
+set completeopt-=preview
 
 " vimlatex and latex in general
 let g:Tex_DefaultTargetFormat='pdf'
@@ -169,6 +171,10 @@ nnoremap <silent> <C-S-Right> :TmuxNavigateRight<cr>
 
 " vimux
 nnoremap <Leader>p :VimuxPromptCommand<CR>
+
+" fzf
+nnoremap <leader>f :Files<CR>
+nnoremap <leader>b :Buffers<CR>
 
 " execute local vimrc files as well
 if filereadable(".vimrc.local")
