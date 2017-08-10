@@ -177,6 +177,26 @@ nnoremap <Leader>p :VimuxPromptCommand<CR>
 nnoremap <leader>f :Files<CR>
 nnoremap <leader>b :Buffers<CR>
 
+" C/C++ stuff
+" TODO this could be a plugin as well
+nnoremap <leader>rh :e %:p:s,.hpp$,.X123X,:s,.cpp$,.hpp,:s,.X123X$,.cpp,<CR>
+
+" similar to deleting/changing inner and outer stuff: append to inner and outer stuff
+" TODO this could be a small plugin ;)
+" -> make register for the d commands configurable
+:nnoremap <leader>ai( F(%i
+:nnoremap <leader>aa( F(%a
+:nnoremap <leader>ai[ F[%i
+:nnoremap <leader>aa[ F[%a
+:nnoremap <leader>ai{ F{%i
+:nnoremap <leader>aa{ F{%a
+:nnoremap <leader>ai" di"hpa
+:nnoremap <leader>aa" di"hpla
+:nnoremap <leader>ai' di'hpa
+:nnoremap <leader>aa' di'hpla
+:nnoremap <leader>ai< di<hpa
+:nnoremap <leader>aa< di<hpla
+
 " execute local vimrc files as well
 if filereadable(".vimrc.local")
     so .vimrc.local
