@@ -178,12 +178,27 @@ nnoremap <leader>f :Files<CR>
 nnoremap <leader>b :Buffers<CR>
 
 " C/C++ stuff
-" TODO this could be a plugin as well
+au FileType cpp,c call IMAP("SASS", "soAssert(<++>, \"<++>\");", "cpp")
+au FileType cpp,c call IMAP("SLOGINC", "#define SOLOGDOMAIN logGeneral\<CR>#include \"SOLog.hpp\"", "cpp")
+au FileType cpp,c call IMAP("SLOGT", "SOLOG(logTRACE, <++>);", "cpp")
+au FileType cpp,c call IMAP("SLOGD", "SOLOG(logDEBUG, <++>);", "cpp")
+au FileType cpp,c call IMAP("SLOGW", "SOLOG(logWARNING, <++>);", "cpp")
+au FileType cpp,c call IMAP("SLOGE", "SOLOG(logERROR, <++>);", "cpp")
+
+" TODO the general C/C++ stuff could be a plugin as well
 nnoremap <leader>rh :e %:p:s,.hpp$,.X123X,:s,.cpp$,.hpp,:s,.X123X$,.cpp,<CR>
+inoremap {<CR> {<CR>}<ESC>O
+" TODO for c, a version of IMAP which takes multiple filetypes would be handy here ...
+au FileType cpp,c call IMAP("SIF", "if(<++>) {\<CR><++>\<CR>}<++>", "cpp")
+au FileType cpp,c call IMAP("SEIF", "else if(<++>) {\<CR><++>\<CR>}<++>", "cpp")
+au FileType cpp,c call IMAP("SELSE", "else {\<CR><++>\<CR>}<++>", "cpp")
+au FileType cpp,c call IMAP("SFOR", "for(<++>) {\<CR><++>\<CR>}<++>", "cpp")
+au FileType cpp,c call IMAP("SWITCH", "switch(<++>) {\<CR><++>\<CR>default:\<CR><++>;\<CR>}<++>", "cpp")
+au FileType cpp,c call IMAP("SSWITCH", "switch(<++>) {\<CR><++>\<CR>default:\<CR><++>;\<CR>}<++>", "cpp")
+au FileType cpp,c call IMAP("SCASE", "case <++>:\<CR><++>", "cpp")
 
 " similar to deleting/changing inner and outer stuff: append to inner and outer stuff
-" TODO this could be a small plugin ;)
-" -> make register for the d commands configurable
+" TODO this could be a small plugin ;) -> make register for the d commands configurable
 :nnoremap <leader>ai( F(%i
 :nnoremap <leader>aa( F(%a
 :nnoremap <leader>ai[ F[%i
