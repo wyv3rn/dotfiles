@@ -138,8 +138,9 @@ let g:Tex_MultipleCompileFormats='pdf'
 let g:Tex_IgnoredWarnings =
     \'Underfull'."\n".
     \'Overfull'."\n".
-    \'Draft mode on'."\n"
-let g:Tex_IgnoreLevel = 3
+    \'Draft mode on'."\n".
+    \'headheight is too small'
+let g:Tex_IgnoreLevel = 4
 set iskeyword+=:
 so ~/.vim/bundle/vim-latex/plugin/imaps.vim
 au FileType tex call IMAP("bib:", "\\cite{bib:<++>}<++>", "tex")

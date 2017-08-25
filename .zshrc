@@ -113,4 +113,8 @@ if type "mvim" > /dev/null; then
     alias vim="mvim -v"
 fi
 alias v="vim"
+alias vi="vim"
+alias vmf="vim -c \"normal mf<CR>\""
 alias t="tmux"
+alias l="ls -lh"
+alias la="ls -lAh"
