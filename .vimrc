@@ -44,6 +44,7 @@ set novisualbell
 set undofile
 set undodir=$HOME/.vim/undo
 set undolevels=1000
+au BufNewFile,BufRead SCons* set filetype=python
 
 " cursor shape
 let escPrefix = ""
