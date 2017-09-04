@@ -101,8 +101,12 @@ if type "keychain" > /dev/null; then
     eval `keychain --eval id_rsa`
 fi
 
-function open () {
+function o () {
     xdg-open "$*" >/dev/null 2>&1 &
+}
+
+function fzo () {
+    find $* -type f | fzf | { xargs -I % xdg-open % >/dev/null 2>&1 & }
 }
 
 alias feh='feh -Z.'
@@ -114,7 +118,8 @@ if type "mvim" > /dev/null; then
 fi
 alias v="vim"
 alias vi="vim"
-alias vmf="vim -c \"normal mf<CR>\""
+alias vmf="vim \$(fzf)"
 alias t="tmux"
 alias l="ls -lh"
 alias la="ls -lAh"
+
