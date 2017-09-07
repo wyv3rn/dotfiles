@@ -18,6 +18,10 @@ Plugin 'benmills/vimux'
 Plugin 'vim-latex/vim-latex'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'Valloric/YouCompleteMe'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
+Plugin 'vimwiki/vimwiki'
+
 call vundle#end()
 
 " redefine the mapleader key
@@ -177,7 +181,19 @@ nnoremap <Leader>p :VimuxPromptCommand<CR>
 nnoremap <leader>f :Files<CR>
 nnoremap <leader>b :Buffers<CR>
 
-" C/C++ stuff
+" ultisnips configuration
+let g:UltiSnipsExpandTrigger="<c-f>"
+let g:UltiSnipsJumpForwardTrigger="<c-d>"
+let g:UltiSnipsJumpBackwardTrigger="<c-g>"
+let g:UltiSnipsUsePythonVersion = 3
+
+" vimwiki
+let wiki_work = {}
+let wiki_work.path = '~/wiki/'
+let wiki_work.path_html = '~/wiki/html/'
+let g:vimwiki_list = [wiki_work]
+
+" C/C++ stuff TODO better use ultisnips for this?
 au FileType cpp,c call IMAP("SASS", "soAssert(<++>, \"<++>\");", "cpp")
 au FileType cpp,c call IMAP("SLOGINC", "#define SOLOGDOMAIN logGeneral\<CR>#include \"SOLog.hpp\"", "cpp")
 au FileType cpp,c call IMAP("SLOGT", "SOLOG(logTRACE, <++>);", "cpp")

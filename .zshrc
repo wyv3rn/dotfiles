@@ -119,6 +119,7 @@ fi
 alias v="vim"
 alias vi="vim"
 alias vmf="vim \$(fzf)"
+alias vrc="vim ~/.vimrc"
 alias t="tmux"
 alias l="ls -lh"
 alias la="ls -lAh"
