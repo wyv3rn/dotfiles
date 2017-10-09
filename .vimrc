@@ -142,8 +142,11 @@ let g:Tex_IgnoredWarnings =
     \'Underfull'."\n".
     \'Overfull'."\n".
     \'Draft mode on'."\n".
-    \'headheight is too small'
-let g:Tex_IgnoreLevel = 4
+    \'headheight is too small'."\n".
+    \'Incompatible color definition on input line'."\n".
+    \'Package amsmath Warning: Foreign command'."\n".
+    \'Font shape'
+let g:Tex_IgnoreLevel = 7
 set iskeyword+=:
 so ~/.vim/bundle/vim-latex/plugin/imaps.vim
 au FileType tex call IMAP("bib:", "\\cite{bib:<++>}<++>", "tex")
