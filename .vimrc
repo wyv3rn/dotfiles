@@ -102,7 +102,7 @@ set hlsearch
 " trailing whitespaces
 highlight ExtraWhitespace ctermbg=red guibg=red
 match ExtraWhitespace /\s\+$/
-nnoremap <leader>rtw :%s/\s\+$//<CR>
+nnoremap <leader>rtw ms:%s/\s\+$//<CR>`s
 
 " filetype stuff
 filetype plugin indent on
@@ -145,8 +145,9 @@ let g:Tex_IgnoredWarnings =
     \'headheight is too small'."\n".
     \'Incompatible color definition on input line'."\n".
     \'Package amsmath Warning: Foreign command'."\n".
+    \'You need to compile with XeLaTeX or Lua'."\n".
     \'Font shape'
-let g:Tex_IgnoreLevel = 7
+let g:Tex_IgnoreLevel = 8
 set iskeyword+=:
 so ~/.vim/bundle/vim-latex/plugin/imaps.vim
 au FileType tex call IMAP("bib:", "\\cite{bib:<++>}<++>", "tex")
