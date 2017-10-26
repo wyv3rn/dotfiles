@@ -136,6 +136,8 @@ nmap ö <C-o>
 set completeopt-=preview
 
 " vimlatex and latex in general
+nmap <F3> :w<CR><leader>ll
+imap <F3> <ESC>:w<CR><leader>ll
 let g:Tex_DefaultTargetFormat='pdf'
 let g:Tex_MultipleCompileFormats='pdf'
 let g:Tex_IgnoredWarnings =
@@ -186,9 +188,9 @@ nnoremap <leader>f :Files<CR>
 nnoremap <leader>b :Buffers<CR>
 
 " ultisnips configuration
-let g:UltiSnipsExpandTrigger="<c-f>"
-let g:UltiSnipsJumpForwardTrigger="<c-d>"
-let g:UltiSnipsJumpBackwardTrigger="<c-g>"
+let g:UltiSnipsExpandTrigger="<c-d>"
+let g:UltiSnipsJumpForwardTrigger="<Tab>"
+let g:UltiSnipsJumpBackwardTrigger="<c-f>"
 let g:UltiSnipsUsePythonVersion = 3
 
 " vimwiki

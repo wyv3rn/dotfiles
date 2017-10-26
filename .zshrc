@@ -90,6 +90,9 @@ source $ZSH/oh-my-zsh.sh
 export TERM=xterm-256color # portable term info
 export NO_AT_BRIDGE=1 # silence some GTK warnings
 
+export VISUAL=vim
+export EDITOR="$VISUAL"
+
 export GUROBI_HOME=~/.local/gurobi750/linux64
 export PATH=~/.local/bin:~/.local/bin/Telegram:${GUROBI_HOME}/bin:$PATH
 export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${GUROBI_HOME}/lib"
