@@ -104,17 +104,24 @@ if type "keychain" > /dev/null; then
     eval `keychain --eval id_rsa`
 fi
 
-function o () {
-    xdg-open "$*" >/dev/null 2>&1 &
-}
+if [ "$(uname 2> /dev/null)" = "Linux" ]; then
+    function o () {
+        xdg-open "$*" >/dev/null 2>&1 &
+    }
+else
+    function o () {
+        reattach-to-user-namespace open $@
+    }
+fi
 
 function fzo () {
-    find $* -type f | fzf | { xargs -I % xdg-open % >/dev/null 2>&1 & }
+    cmd=$'source ~/.zshrc; o '${@:2}' %'
+    find "${1}" -type f | fzf | xargs -I % zsh -c $cmd
 }
 
 alias feh='feh -Z.'
 alias fehsvg='feh --magick-timeout 1'
-alias dotfiles="/usr/bin/git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME"
+alias dotf="/usr/bin/git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME"
 alias svndiff='svn diff | vim -R -'
 if type "mvim" > /dev/null; then
     alias vim="mvim -v"
