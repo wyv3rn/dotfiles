@@ -108,16 +108,16 @@ if [ "$(uname 2> /dev/null)" = "Linux" ]; then
     function o () {
         xdg-open "$*" >/dev/null 2>&1 &
     }
+
+    function fzo () {
+        find $1 -type f | fzf | (xargs -I % xdg-open % >/dev/null 2>&1 &)
+    }
+
 else
     function o () {
         reattach-to-user-namespace open $@
     }
 fi
-
-function fzo () {
-    cmd=$'source ~/.zshrc; o '${@:2}' %'
-    find "${1}" -type f | fzf | xargs -I % zsh -c $cmd
-}
 
 alias feh='feh -Z.'
 alias fehsvg='feh --magick-timeout 1'
