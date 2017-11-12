@@ -106,7 +106,7 @@ fi
 
 if [ "$(uname 2> /dev/null)" = "Linux" ]; then
     function o () {
-        xdg-open "$*" >/dev/null 2>&1 &
+        (xdg-open "$*" >/dev/null 2>&1 &)
     }
 
     function fzo () {
