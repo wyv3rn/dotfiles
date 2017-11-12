@@ -193,12 +193,6 @@ let g:UltiSnipsJumpForwardTrigger="<Tab>"
 let g:UltiSnipsJumpBackwardTrigger="<c-f>"
 let g:UltiSnipsUsePythonVersion = 3
 
-" vimwiki
-let wiki_work = {}
-let wiki_work.path = '~/wiki/'
-let wiki_work.path_html = '~/wiki/html/'
-let g:vimwiki_list = [wiki_work]
-
 " C/C++ stuff TODO better use ultisnips for this?
 au FileType cpp,c call IMAP("SASS", "soAssert(<++>, \"<++>\");", "cpp")
 au FileType cpp,c call IMAP("SLOGINC", "#define SOLOGDOMAIN logGeneral\<CR>#include \"SOLog.hpp\"", "cpp")
