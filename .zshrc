@@ -87,7 +87,6 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-export TERM=xterm-256color # portable term info
 export NO_AT_BRIDGE=1 # silence some GTK warnings
 
 export VISUAL=vim
