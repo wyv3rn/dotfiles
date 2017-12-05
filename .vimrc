@@ -148,8 +148,9 @@ let g:Tex_IgnoredWarnings =
     \'Incompatible color definition on input line'."\n".
     \'Package amsmath Warning: Foreign command'."\n".
     \'You need to compile with XeLaTeX or Lua'."\n".
+    \'Package Babel Warning: The package option'."\n".
     \'Font shape'
-let g:Tex_IgnoreLevel = 8
+let g:Tex_IgnoreLevel = 9
 set iskeyword+=:
 so ~/.vim/bundle/vim-latex/plugin/imaps.vim
 au FileType tex call IMAP("bib:", "\\cite{bib:<++>}<++>", "tex")
@@ -182,6 +183,8 @@ nnoremap <silent> <C-S-Right> :TmuxNavigateRight<cr>
 
 " vimux
 nnoremap <Leader>p :VimuxPromptCommand<CR>
+nnoremap <F4> :w<CR>:VimuxRunLastCommand<CR>
+inoremap <F4> <ESC>:w<CR>:VimuxRunLastCommand<CR>
 
 " fzf
 nnoremap <leader>f :Files<CR>
