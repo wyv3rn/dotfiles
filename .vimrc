@@ -55,9 +55,15 @@ au BufNewFile,BufRead SCons* set filetype=python
 autocmd BufEnter,BufRead,BufNewFile *.py set iskeyword-=:
 
 " cursor shape
-let &t_SI = "\<Esc>[5 q"
-let &t_SR = "\<Esc>[3 q"
-let &t_EI = "\<Esc>[1 q"
+let escPrefix = ""
+let escSuffix = ""
+if exists('$TMUX')
+    let escPrefix = "\<ESC>Ptmux;\<ESC>"
+    let escSuffix = "\<ESC>\\"
+endif
+let &t_SI = escPrefix . "\<Esc>[5 q" . escSuffix
+let &t_SR = escPrefix . "\<Esc>[3 q" . escSuffix
+let &t_EI = escPrefix . "\<Esc>[1 q" . escSuffix
 
 " GUI stuff
 if has('gui_running')
