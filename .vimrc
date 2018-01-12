@@ -51,6 +51,10 @@ set undolevels=1000
 set backspace=indent,eol,start
 au BufNewFile,BufRead SCons* set filetype=python
 
+" highlight stuff
+hi MatchParen cterm=none ctermbg=none ctermfg=red
+hi SpellBad cterm=underline ctermbg=none ctermfg=red
+
 " python: "else:" is the same as "else"
 autocmd BufEnter,BufRead,BufNewFile *.py set iskeyword-=:
 
@@ -106,7 +110,7 @@ set hlsearch
 :nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 
 " trailing whitespaces
-highlight ExtraWhitespace ctermbg=red guibg=red
+hi ExtraWhitespace cterm=none ctermbg=red guibg=red
 match ExtraWhitespace /\s\+$/
 nnoremap <leader>rtw ms:%s/\s\+$//<CR>`s
 
