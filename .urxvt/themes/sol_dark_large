@@ -1,7 +1,6 @@
+#include "../font_large"
+
 !!Source http://github.com/altercation/solarized
-
-URxvt*font: xft:inconsolata:size=20
-
 URxvt.cursorColor: #657b83
 
 URxvt*background: [85]#002b36

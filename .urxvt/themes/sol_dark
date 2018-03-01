@@ -1,6 +1,6 @@
-!!Source http://github.com/altercation/solarized
+#include "../font_normal"
 
-URxvt*font: xft:inconsolata:size=10
+!!Source http://github.com/altercation/solarized
 
 URxvt.cursorColor: #657b83
 

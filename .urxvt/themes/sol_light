@@ -1,4 +1,4 @@
-URxvt*font:  		    xft:inconsolata:size=10
+#include "../font_normal"
 
 #define S_base03        #002b36
 #define S_base02        #073642
