@@ -132,4 +132,5 @@ alias vrc="vim ~/.vimrc"
 alias t="tmux"
 alias l="ls -lh"
 alias la="ls -lAh"
-
+alias x="startx-dpi"
+alias sync-root="sudo rsync -aAXHS --info=progress2 --stats --exclude={/dev/\*,/proc/\*,/sys/\*,/tmp/\*,/run/\*,/mnt/\*,/media/\*,/lost+found,/home/\*/.gvfs} /"
