@@ -51,9 +51,18 @@ set undolevels=1000
 set backspace=indent,eol,start
 au BufNewFile,BufRead SCons* set filetype=python
 
+" open files at last position
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
+    \| exe "normal! g`\"zz" | endif
+endif
+
 " highlight stuff
 hi MatchParen cterm=none ctermbg=none ctermfg=red
 hi SpellBad cterm=underline ctermbg=none ctermfg=red
+
+" switch between light and dark background setting
+map <F12> :let &background = ( &background == "dark"? "light" : "dark" )<CR>
 
 " python: "else:" is the same as "else"
 autocmd BufEnter,BufRead,BufNewFile *.py set iskeyword-=:
