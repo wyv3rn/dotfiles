@@ -168,8 +168,9 @@ let g:Tex_IgnoredWarnings =
     \'Package amsmath Warning: Foreign command'."\n".
     \'You need to compile with XeLaTeX or Lua'."\n".
     \'Package Babel Warning: The package option'."\n".
+    \'Marginpar'."\n".
     \'Font shape'
-let g:Tex_IgnoreLevel = 9
+let g:Tex_IgnoreLevel = 10
 set iskeyword+=:
 so ~/.vim/bundle/vim-latex/plugin/imaps.vim
 au FileType tex call IMAP("bib:", "\\cite{bib:<++>}<++>", "tex")
