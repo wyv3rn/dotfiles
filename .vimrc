@@ -21,6 +21,8 @@ Plugin 'Valloric/YouCompleteMe'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'vimwiki/vimwiki'
+Plugin 'easymotion/vim-easymotion'
+Plugin 'tpope/vim-repeat'
 
 call vundle#end()
 
@@ -116,7 +118,7 @@ set incsearch
 set hlsearch
 
 " Press Space to turn off highlighting and clear any message already displayed.
-:nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
+:nnoremap <silent> <Space>c :nohlsearch<Bar>:echo<CR>
 
 " trailing whitespaces
 hi ExtraWhitespace cterm=none ctermbg=red guibg=red
@@ -157,6 +159,7 @@ set completeopt-=preview
 " vimlatex and latex in general
 nmap <F3> :w<CR><leader>ll
 imap <F3> <ESC>:w<CR><leader>ll
+imap <C-Space> <Plug>IMAP_JumpForward
 let g:Tex_DefaultTargetFormat='pdf'
 let g:Tex_MultipleCompileFormats='pdf'
 let g:Tex_IgnoredWarnings =
@@ -215,6 +218,14 @@ let g:UltiSnipsExpandTrigger="<c-d>"
 let g:UltiSnipsJumpForwardTrigger="<Tab>"
 let g:UltiSnipsJumpBackwardTrigger="<c-f>"
 let g:UltiSnipsUsePythonVersion = 3
+
+" easy motion stuff
+let g:EasyMotion_smartcase = 1
+nmap <Space><Space> <Plug>(easymotion-sn)
+nmap <Space>t <Plug>(easymotion-bd-t2)
+nmap s <Plug>(easymotion-s2)
+map  n <Plug>(easymotion-next)
+map  N <Plug>(easymotion-prev)
 
 " C/C++ stuff TODO better use ultisnips for this?
 au FileType cpp,c call IMAP("SASS", "soAssert(<++>, \"<++>\");", "cpp")
