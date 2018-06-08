@@ -221,11 +221,14 @@ let g:UltiSnipsUsePythonVersion = 3
 
 " easy motion stuff
 let g:EasyMotion_smartcase = 1
+let g:EasyMotion_keys = 'osuditlgaren'
 nmap <Space><Space> <Plug>(easymotion-sn)
-nmap <Space>t <Plug>(easymotion-bd-t2)
-nmap s <Plug>(easymotion-s2)
+nmap <Space>e <Plug>(easymotion-bd-t2)
+nmap <Space>n <Plug>(easymotion-s2)
 map  n <Plug>(easymotion-next)
 map  N <Plug>(easymotion-prev)
+map <Space>r <Plug>(easymotion-j)
+map <Space>a <Plug>(easymotion-k)
 
 " C/C++ stuff TODO better use ultisnips for this?
 au FileType cpp,c call IMAP("SASS", "soAssert(<++>, \"<++>\");", "cpp")
