@@ -148,6 +148,8 @@ nnoremap <C-c><C-v> "+gP
 " moving around
 noremap <C-Down> }
 noremap <C-Up> {
+map <BS> k
+map <C-h> k
 
 " tag jumping with rtags
 nmap ä <leader>rj
@@ -159,7 +161,7 @@ set completeopt-=preview
 " vimlatex and latex in general
 nmap <F3> :w<CR><leader>ll
 imap <F3> <ESC>:w<CR><leader>ll
-imap <C-Space> <Plug>IMAP_JumpForward
+imap <C-b> <Plug>IMAP_JumpForward
 let g:Tex_DefaultTargetFormat='pdf'
 let g:Tex_MultipleCompileFormats='pdf'
 let g:Tex_IgnoredWarnings =
@@ -223,12 +225,14 @@ let g:UltiSnipsUsePythonVersion = 3
 let g:EasyMotion_smartcase = 1
 let g:EasyMotion_keys = 'osuditlgaren'
 nmap <Space><Space> <Plug>(easymotion-sn)
-nmap <Space>e <Plug>(easymotion-bd-t2)
+nmap <Space>d <Plug>(easymotion-bd-t2)
 nmap <Space>n <Plug>(easymotion-s2)
+nmap <Space>f <Plug>(easymotion-bd-fl)
+nmap <Space>t <Plug>(easymotion-bd-tl)
 map  n <Plug>(easymotion-next)
 map  N <Plug>(easymotion-prev)
-map <Space>r <Plug>(easymotion-j)
-map <Space>a <Plug>(easymotion-k)
+nmap <Space>e <Plug>(easymotion-bd-wl)
+nmap <Space>r <Plug>(easymotion-bd-jk)
 
 " C/C++ stuff TODO better use ultisnips for this?
 au FileType cpp,c call IMAP("SASS", "soAssert(<++>, \"<++>\");", "cpp")
