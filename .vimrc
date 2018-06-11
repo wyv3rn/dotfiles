@@ -223,15 +223,10 @@ let g:UltiSnipsUsePythonVersion = 3
 
 " easy motion stuff
 let g:EasyMotion_smartcase = 1
-let g:EasyMotion_keys = 'osuditlgaren'
+let g:EasyMotion_keys = 'ratidubpsolgen'
+map <Space> <Plug>(easymotion-prefix)
 nmap <Space><Space> <Plug>(easymotion-sn)
-nmap <Space>d <Plug>(easymotion-bd-t2)
 nmap <Space>n <Plug>(easymotion-s2)
-nmap <Space>f <Plug>(easymotion-bd-fl)
-nmap <Space>t <Plug>(easymotion-bd-tl)
-map  n <Plug>(easymotion-next)
-map  N <Plug>(easymotion-prev)
-nmap <Space>e <Plug>(easymotion-bd-wl)
 nmap <Space>r <Plug>(easymotion-bd-jk)
 
 " C/C++ stuff TODO better use ultisnips for this?
