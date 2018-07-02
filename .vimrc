@@ -187,6 +187,12 @@ au FileType tex call IMAP("tab:", "\\autoref{tab:<++>}<++>", "tex")
 au FileType tex call IMAP("ECH", "\\chapter{<++>}\<CR>\label{ch:<++>}\<CR>\<CR><++>\<CR>", "tex")
 au FileType tex call IMAP("ESE", "\\section{<++>}\<CR>\label{sec:<++>}\<CR>\<CR><++>\<CR>", "tex")
 au FileType tex call IMAP("ESU", "\\subsection{<++>}\<CR>\label{sub:<++>}\<CR>\<CR><++>\<CR>", "tex")
+au FileType tex call IMAP("z.b.", "z.\\,B{.}", "tex")
+au FileType tex call IMAP("bzw.", "bzw{.}", "tex")
+au FileType tex call IMAP(" eg ", " e.g. ", "tex")
+au FileType tex call IMAP(" ie ", " i.e. ", "tex")
+au FileType tex call IMAP("et al.", "et al{.}", "tex")
+au FileType tex call IMAP("et al ", "et al{.} ", "tex")
 
 " nerdcommenter
 let g:NERDSpaceDelims = 1
