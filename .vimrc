@@ -23,6 +23,7 @@ Plugin 'honza/vim-snippets'
 Plugin 'vimwiki/vimwiki'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'tpope/vim-repeat'
+Plugin 'terryma/vim-multiple-cursors'
 
 call vundle#end()
 
