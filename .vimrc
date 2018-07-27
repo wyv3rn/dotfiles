@@ -163,8 +163,10 @@ set completeopt-=preview
 nmap <F3> :w<CR><leader>ll
 imap <F3> <ESC>:w<CR><leader>ll
 imap <C-b> <Plug>IMAP_JumpForward
-let g:Tex_DefaultTargetFormat='pdf'
-let g:Tex_MultipleCompileFormats='pdf'
+let g:latex_view_general_viewer = 'zathura'
+let g:vimtex_view_method = 'zathura'
+let g:Tex_DefaultTargetFormat = 'pdf'
+let g:Tex_MultipleCompileFormats = 'pdf'
 let g:Tex_IgnoredWarnings =
     \'Underfull'."\n".
     \'Overfull'."\n".
@@ -188,12 +190,20 @@ au FileType tex call IMAP("tab:", "\\autoref{tab:<++>}<++>", "tex")
 au FileType tex call IMAP("ECH", "\\chapter{<++>}\<CR>\label{ch:<++>}\<CR>\<CR><++>\<CR>", "tex")
 au FileType tex call IMAP("ESE", "\\section{<++>}\<CR>\label{sec:<++>}\<CR>\<CR><++>\<CR>", "tex")
 au FileType tex call IMAP("ESU", "\\subsection{<++>}\<CR>\label{sub:<++>}\<CR>\<CR><++>\<CR>", "tex")
-au FileType tex call IMAP("z.b.", "z.\\,B{.}", "tex")
-au FileType tex call IMAP("bzw.", "bzw{.}", "tex")
-au FileType tex call IMAP(" eg ", " e.g. ", "tex")
-au FileType tex call IMAP(" ie ", " i.e. ", "tex")
-au FileType tex call IMAP("et al.", "et al{.}", "tex")
-au FileType tex call IMAP("et al ", "et al{.} ", "tex")
+au FileType tex call IMAP("z.b.", "z.\\,B{.}\\ ", "tex")
+au FileType tex call IMAP("bzw.", "bzw{.}\\ ", "tex")
+au FileType tex call IMAP(" eg ", " e.g.\\ ", "tex")
+au FileType tex call IMAP(" ie ", " i.e.\\ ", "tex")
+au FileType tex call IMAP("et al.", "et al{.}\\ ", "tex")
+au FileType tex call IMAP("et al ", "et al{.}\\ ", "tex")
+
+function! SyncTexForward()
+    let execstr = "silent !zathura --synctex-forward ".line(".").":".col(".").":%:p %:p:r.pdf &"
+    exec execstr
+    redraw!
+endfunction
+au FileType tex nmap <Leader>lf :call SyncTexForward()<CR>
+
 
 " nerdcommenter
 let g:NERDSpaceDelims = 1

@@ -108,9 +108,9 @@ alias svndiff='svn diff | vim -R -'
 if type "mvim" > /dev/null; then
     alias vim="mvim -v"
 fi
-alias v="vim"
-alias vi="vim"
-alias vmf="vim \$(fzf)"
+alias v="vim --servername vim"
+alias vi="vim --servername vim"
+alias vmf="vim --servername vim \$(fzf)"
 alias vrc="vim ~/.vimrc"
 alias t="tmux"
 alias l="ls -lh"

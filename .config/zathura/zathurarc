@@ -1,0 +1,4 @@
+set window-icon ~/.local/share/icons/hicolor/128x128/apps/zathura-icon.png
+set dbus-service true
+set synctex true
+set synctex-editor-command "vim --servername vim --remote +%{line} %{input}"
