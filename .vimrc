@@ -255,7 +255,7 @@ au FileType cpp,c call IMAP("SLOGW", "SOLOG(logWARNING, <++>);", "cpp")
 au FileType cpp,c call IMAP("SLOGE", "SOLOG(logERROR, <++>);", "cpp")
 
 " TODO the general C/C++ stuff could be a plugin as well
-nnoremap <leader>rh :e %:p:s,.hpp$,.X123X,:s,.cpp$,.hpp,:s,.X123X$,.cpp,<CR>
+nnoremap <leader>ch :e %:p:s,.hpp$,.X123X,:s,.cpp$,.hpp,:s,.X123X$,.cpp,<CR>
 inoremap {<CR> {<CR>}<ESC>O
 " TODO for c, a version of IMAP which takes multiple filetypes would be handy here ...
 au FileType cpp,c call IMAP("SIF", "if(<++>) {\<CR><++>\<CR>}<++>", "cpp")
