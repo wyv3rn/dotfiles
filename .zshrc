@@ -116,3 +116,4 @@ alias t="tmux"
 alias l="ls -lh"
 alias la="ls -lAh"
 alias grep='grep --color=auto'
+alias b="bear -a scons"

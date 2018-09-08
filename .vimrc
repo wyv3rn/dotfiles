@@ -24,6 +24,7 @@ Plugin 'vimwiki/vimwiki'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'tpope/vim-repeat'
 Plugin 'terryma/vim-multiple-cursors'
+Plugin 'skwp/greplace.vim'
 
 call vundle#end()
 
@@ -232,6 +233,10 @@ inoremap <F4> <ESC>:w<CR>:VimuxRunLastCommand<CR>
 nnoremap <leader>f :Files<CR>
 nnoremap <leader>b :Buffers<CR>
 
+" greplace
+set grepprg=ag
+let g:grep_cmd_opts = '--line-numbers --noheading'
+
 " ultisnips configuration
 let g:UltiSnipsExpandTrigger="<c-d>"
 let g:UltiSnipsJumpForwardTrigger="<Tab>"
@@ -285,3 +290,4 @@ au FileType cpp,c call IMAP("SCASE", "case <++>:\<CR><++>", "cpp")
 if filereadable(".vimrc.local")
     so .vimrc.local
 endif
+
