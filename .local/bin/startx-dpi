@@ -1,0 +1,22 @@
+#!/usr/bin/bash
+
+if [ "$#" -gt 1 ]; then
+    echo "Usage: startx-dpi [dpi]"
+    exit -1
+fi
+
+if [ "$#" -eq 0 ]; then
+    echo "Using default DPI of 192"
+    DPI=192
+else
+    DPI=$1
+fi
+
+re='^[0-9]+$'
+if ! [[ $DPI =~ $re ]] ; then
+    echo "Warning: DPI is not a number, using default DPI 192 instead" >&2
+    DPI=192
+fi
+
+set-dpi $DPI
+startx

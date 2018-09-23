@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+VERSION=`pacman -Q virtualbox |  grep -Po "\d+\.\d+\.\d+"`
+
+# download extension pack and windows guest additions
+wget -P /tmp/ https://download.virtualbox.org/virtualbox/$VERSION/Oracle_VM_VirtualBox_Extension_Pack-$VERSION.vbox-extpack
+wget -P /tmp/ https://download.virtualbox.org/virtualbox/$VERSION/VBoxGuestAdditions_$VERSION.iso
+
+sudo VBoxManage extpack install --replace /tmp/Oracle_VM_VirtualBox_Extension_Pack-$VERSION.vbox-extpack
+rm /tmp/Oracle_VM_VirtualBox_Extension_Pack-$VERSION.vbox-extpack

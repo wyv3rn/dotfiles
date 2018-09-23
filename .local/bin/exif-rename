@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+if [ $# -ne 1 ]; then
+    echo "Usage: exif-rename filename"
+    exit -1
+fi
+
+dst=$(exiftool -S -d "%Y%m%d_%H%M%S" -EXIF:DateTimeOriginal $1 | awk '{print $2}').jpg
+mv $1 $dst

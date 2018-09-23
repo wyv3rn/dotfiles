@@ -1,0 +1,6 @@
+#!/usr/bin/env python3
+
+import sys
+from subprocess import Popen, DEVNULL
+
+Popen(['nohup', sys.argv[1]], stdout=DEVNULL, stderr=DEVNULL)

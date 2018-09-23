@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# urxvt -name URxvtLauncher -geometry 80x40+1000+400 -e sh -c 'compgen -c | sort -u | fzf | xargs launch'
+urxvt -name URxvtLauncher -geometry 80x40+800+100 -e sh -c 'find ~/ | fzf | xargs open'
