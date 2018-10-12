@@ -255,14 +255,16 @@ nmap <Space>r <Plug>(easymotion-bd-jk)
 " C/C++ stuff TODO better use ultisnips for this?
 au FileType cpp,c call IMAP("SASS", "soAssert(<++>, \"<++>\");", "cpp")
 au FileType cpp,c call IMAP("SLOGINC", "#define SOLOGDOMAIN logGeneral\<CR>#include \"SOLog.hpp\"", "cpp")
-au FileType cpp,c call IMAP("SLOGT", "SOLOG(logTRACE, <++>);", "cpp")
-au FileType cpp,c call IMAP("SLOGD", "SOLOG(logDEBUG, <++>);", "cpp")
-au FileType cpp,c call IMAP("SLOGW", "SOLOG(logWARNING, <++>);", "cpp")
-au FileType cpp,c call IMAP("SLOGE", "SOLOG(logERROR, <++>);", "cpp")
+au FileType cpp,c call IMAP("SLOGT", "OPLOG(logTRACE, <++>);", "cpp")
+au FileType cpp,c call IMAP("SLOGD", "OPLOG(logDEBUG, <++>);", "cpp")
+au FileType cpp,c call IMAP("SLOGW", "OPLOG(logWARNING, <++>);", "cpp")
+au FileType cpp,c call IMAP("SLOGE", "OPLOG(logERROR, <++>);", "cpp")
 
 " TODO the general C/C++ stuff could be a plugin as well
+
+" switch between hpp and cpp
 nnoremap <leader>ch :e %:p:s,.hpp$,.X123X,:s,.cpp$,.hpp,:s,.X123X$,.cpp,<CR>
-inoremap {<CR> {<CR>}<ESC>O
+inoremap {<CR> {<CR>}<C-O>O
 " TODO for c, a version of IMAP which takes multiple filetypes would be handy here ...
 au FileType cpp,c call IMAP("SIF", "if(<++>) {\<CR><++>\<CR>}<++>", "cpp")
 au FileType cpp,c call IMAP("SEIF", "else if(<++>) {\<CR><++>\<CR>}<++>", "cpp")
