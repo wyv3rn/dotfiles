@@ -25,6 +25,7 @@ Plugin 'easymotion/vim-easymotion'
 Plugin 'tpope/vim-repeat'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'skwp/greplace.vim'
+Plugin 'fatih/vim-go'
 
 call vundle#end()
 
