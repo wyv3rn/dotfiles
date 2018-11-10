@@ -26,6 +26,7 @@ Plugin 'tpope/vim-repeat'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'skwp/greplace.vim'
 Plugin 'fatih/vim-go'
+Plugin 'wyv3rn/vim-tinycpp'
 
 call vundle#end()
 
@@ -240,9 +241,9 @@ set grepprg=ag
 let g:grep_cmd_opts = '--line-numbers --noheading'
 
 " ultisnips configuration
-let g:UltiSnipsExpandTrigger="<c-d>"
-let g:UltiSnipsJumpForwardTrigger="<Tab>"
-let g:UltiSnipsJumpBackwardTrigger="<c-f>"
+let g:UltiSnipsExpandTrigger="<C-d>"
+let g:UltiSnipsJumpForwardTrigger="<C-e>"
+let g:UltiSnipsJumpBackwardTrigger="<C-r>"
 let g:UltiSnipsUsePythonVersion = 3
 
 " easy motion stuff
@@ -253,27 +254,12 @@ nmap <Space><Space> <Plug>(easymotion-sn)
 nmap <Space>n <Plug>(easymotion-s2)
 nmap <Space>r <Plug>(easymotion-bd-jk)
 
-" C/C++ stuff TODO better use ultisnips for this?
-au FileType cpp,c call IMAP("SASS", "soAssert(<++>, \"<++>\");", "cpp")
-au FileType cpp,c call IMAP("SLOGINC", "#define SOLOGDOMAIN logGeneral\<CR>#include \"SOLog.hpp\"", "cpp")
-au FileType cpp,c call IMAP("SLOGT", "OPLOG(logTRACE, <++>);", "cpp")
-au FileType cpp,c call IMAP("SLOGD", "OPLOG(logDEBUG, <++>);", "cpp")
-au FileType cpp,c call IMAP("SLOGW", "OPLOG(logWARNING, <++>);", "cpp")
-au FileType cpp,c call IMAP("SLOGE", "OPLOG(logERROR, <++>);", "cpp")
-
 " TODO the general C/C++ stuff could be a plugin as well
 
-" switch between hpp and cpp
-nnoremap <leader>ch :e %:p:s,.hpp$,.X123X,:s,.cpp$,.hpp,:s,.X123X$,.cpp,<CR>
+nnoremap <leader>ch :TcSwitchHS<CR>
+nnoremap <leader>cg :TcIncGuard<CR>
 inoremap {<CR> {<CR>}<C-O>O
-" TODO for c, a version of IMAP which takes multiple filetypes would be handy here ...
-au FileType cpp,c call IMAP("SIF", "if(<++>) {\<CR><++>\<CR>}<++>", "cpp")
-au FileType cpp,c call IMAP("SEIF", "else if(<++>) {\<CR><++>\<CR>}<++>", "cpp")
-au FileType cpp,c call IMAP("SELSE", "else {\<CR><++>\<CR>}<++>", "cpp")
-au FileType cpp,c call IMAP("SFOR", "for(<++>) {\<CR><++>\<CR>}<++>", "cpp")
-au FileType cpp,c call IMAP("SWITCH", "switch(<++>) {\<CR><++>\<CR>default:\<CR><++>;\<CR>}<++>", "cpp")
-au FileType cpp,c call IMAP("SSWITCH", "switch(<++>) {\<CR><++>\<CR>default:\<CR><++>;\<CR>}<++>", "cpp")
-au FileType cpp,c call IMAP("SCASE", "case <++>:\<CR><++>", "cpp")
+au FileType cpp set iskeyword-=:
 
 " similar to deleting/changing inner and outer stuff: append to inner and outer stuff
 " TODO this could be a small plugin ;) -> make register for the d commands configurable
