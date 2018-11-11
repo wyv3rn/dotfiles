@@ -117,3 +117,5 @@ alias l="ls -lh"
 alias la="ls -lAh"
 alias grep='grep --color=auto'
 alias b="bear -a scons"
+
+[ -f $HOME/.zshrc_local ] && source $HOME/.zshrc_local || true

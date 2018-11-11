@@ -161,7 +161,9 @@ nmap ö <C-o>
 
 " YCM
 set completeopt-=preview
-au FileType cpp map <F7> :YcmCompleter FixIt<CR>
+au FileType cpp nmap <F7> :YcmCompleter FixIt<CR>
+nmap t :YcmCompleter GoTo<CR>
+nmap <C-t> <C-o>
 
 " vimlatex and latex in general
 nmap <F3> :w<CR><leader>ll

@@ -9,9 +9,11 @@ export VISUAL=vim
 export EDITOR="$VISUAL"
 
 export GUROBI_HOME=~/.local/gurobi750/linux64
-export PATH=~/.local/bin:~/.local/bin/Telegram:${GUROBI_HOME}/bin:$PATH
+export PATH=~/.local/bin:~/go/bin:~/.local/bin/Telegram:${GUROBI_HOME}/bin:$PATH
 export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${GUROBI_HOME}/lib"
 
 alias x="startx-dpi"
 alias sync-root="sudo rsync -aAXHS --stats --exclude={/dev/\*,/proc/\*,/sys/\*,/tmp/\*,/run/\*,/mnt/\*,/media/\*,/lost+found,/home/\*/.gvfs} /"
 alias dotf="/usr/bin/git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME"
+
+[ -f $HOME/.zshenv_local ] && source $HOME/.zshenv_local || true
