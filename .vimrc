@@ -257,9 +257,8 @@ nmap <Space><Space> <Plug>(easymotion-sn)
 nmap <Space>n <Plug>(easymotion-s2)
 nmap <Space>r <Plug>(easymotion-bd-jk)
 
-" TODO the general C/C++ stuff could be a plugin as well
-
-nnoremap <leader>ch :TcSwitchHS<CR>
+" C++ stuff
+nnoremap <leader><tab> :TcSwitchHS<CR>
 nnoremap <leader>cg :TcIncGuard<CR>
 inoremap {<CR> {<CR>}<C-O>O
 au FileType cpp set iskeyword-=:
