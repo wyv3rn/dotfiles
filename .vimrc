@@ -262,6 +262,8 @@ nnoremap <leader><tab> :TcSwitchHS<CR>
 nnoremap <leader>cg :TcIncGuard<CR>
 inoremap {<CR> {<CR>}<C-O>O
 au FileType cpp set iskeyword-=:
+" fix indent for switch case with {}
+set cinoptions=l1
 
 " similar to deleting/changing inner and outer stuff: append to inner and outer stuff
 " TODO this could be a small plugin ;) -> make register for the d commands configurable
