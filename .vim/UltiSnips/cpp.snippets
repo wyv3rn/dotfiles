@@ -62,3 +62,11 @@ endsnippet
 snippet todo "TODO"
 /// TODO ${1:`echo $USER`}$2
 endsnippet
+
+snippet Inc
+#include <$1>
+endsnippet
+
+snippet inc
+#include "${1:`!p snip.rv = snip.basename + '.hpp'`}"
+endsnippet
