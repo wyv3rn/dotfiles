@@ -108,7 +108,7 @@ nmap <F2> [s1z=<c-o>
 nnoremap <leader>wn <C-w>v<C-w>l
 nnoremap <leader>wf <C-w>v:e .<CR>
 let g:netrw_banner=0
-nnoremap <Tab> :e #<CR>
+nnoremap <Tab> :w<CR> :e #<CR>
 
 " search and sub stuff
 nnoremap / /\v
