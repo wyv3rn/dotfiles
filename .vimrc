@@ -108,7 +108,7 @@ nmap <F2> [s1z=<c-o>
 nnoremap <leader>wn <C-w>v<C-w>l
 nnoremap <leader>wf <C-w>v:e .<CR>
 let g:netrw_banner=0
-nnoremap <Tab> :w<CR> :e #<CR>
+nnoremap <Tab> :up<CR>:e #<CR>
 
 " search and sub stuff
 nnoremap / /\v
@@ -167,8 +167,8 @@ nmap t :YcmCompleter GoTo<CR>
 nmap <C-t> <C-o>
 
 " vimlatex and latex in general
-nmap <F3> :w<CR><leader>ll
-imap <F3> <ESC>:w<CR><leader>ll
+nmap <F3> :up<CR><leader>ll
+imap <F3> <ESC>:up<CR><leader>ll
 imap <C-b> <Plug>IMAP_JumpForward
 let g:latex_view_general_viewer = 'zathura'
 let g:vimtex_view_method = 'zathura'
@@ -232,8 +232,8 @@ nnoremap <silent> <C-S-Right> :TmuxNavigateRight<cr>
 
 " vimux
 nnoremap <Leader>p :VimuxPromptCommand<CR>
-nnoremap <F4> :w<CR>:VimuxRunLastCommand<CR>
-inoremap <F4> <ESC>:w<CR>:VimuxRunLastCommand<CR>
+nnoremap <F4> :up<CR>:VimuxRunLastCommand<CR>
+inoremap <F4> <ESC>:up<CR>:VimuxRunLastCommand<CR>
 
 " fzf
 nnoremap <leader>f :Files<CR>
