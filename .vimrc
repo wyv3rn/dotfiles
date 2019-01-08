@@ -184,8 +184,9 @@ let g:Tex_IgnoredWarnings =
     \'You need to compile with XeLaTeX or Lua'."\n".
     \'Package Babel Warning: The package option'."\n".
     \'Marginpar'."\n".
-    \'Font shape'
-let g:Tex_IgnoreLevel = 10
+    \'Font shape'."\n".
+    \'There is no short form set for acronym'
+let g:Tex_IgnoreLevel = 11
 set iskeyword+=:
 so ~/.vim/bundle/vim-latex/plugin/imaps.vim
 au FileType tex call IMAP("bib:", "\\cite{bib:<++>}<++>", "tex")
