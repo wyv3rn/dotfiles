@@ -161,7 +161,7 @@ nmap ö <C-o>
 
 " YCM
 set completeopt-=preview
-let g:ycm_extra_conf_globlist = ['~/OPAcITY/trunk/*']
+let g:ycm_extra_conf_globlist = ['~/OPAcITY/*']
 au FileType cpp map <F7> :YcmCompleter FixIt<CR>
 nmap t :YcmCompleter GoTo<CR>
 nmap <C-t> <C-o>
