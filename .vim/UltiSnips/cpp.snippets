@@ -14,6 +14,21 @@ def get_log_level(sc):
 		return 'ERROR'
 endglobal
 
+snippet hpp "Complete header with C++ class" b
+#ifndef ${1:`!p snip.rv = snip.basename.upper() + '_HPP'`}
+#define $1
+
+class ${2:`!p snip.rv = snip.basename or "name"`} {
+protected:
+
+public:
+	${2/(\w+).*/$1/}() {}
+	virtual ~${2/(\w+).*/$1/}() {}
+};
+
+#endif // $1
+endsnippet
+
 snippet cl "C++ class" b
 class ${1:`!p snip.rv = snip.basename or "name"`} {
 protected:
