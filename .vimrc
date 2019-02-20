@@ -56,6 +56,7 @@ set undodir=$HOME/.vim/undo
 set undolevels=1000
 set backspace=indent,eol,start
 au BufNewFile,BufRead SCons* set filetype=python
+nnoremap <leader>u :up<CR>
 
 " open files at last position
 if has("autocmd")
@@ -154,10 +155,6 @@ noremap <C-Down> }
 noremap <C-Up> {
 map <BS> k
 map <C-h> k
-
-" tag jumping with rtags
-nmap ä <leader>rj
-nmap ö <C-o>
 
 " YCM
 set completeopt-=preview
@@ -259,7 +256,7 @@ nmap <Space>n <Plug>(easymotion-s2)
 nmap <Space>r <Plug>(easymotion-bd-jk)
 
 " C++ stuff
-nnoremap <leader><tab> :TcSwitchHS<CR>
+nnoremap <leader><tab> :up<CR> :TcSwitchHS<CR>
 nnoremap <leader>cg :TcIncGuard<CR>
 inoremap {<CR> {<CR>}<C-O>O
 au FileType cpp set iskeyword-=:
