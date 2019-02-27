@@ -116,6 +116,6 @@ alias t="tmux"
 alias l="ls -lh"
 alias la="ls -lAh"
 alias grep='grep --color=auto'
-alias b="bear -a scons"
+alias f='fd -L'
 
 [ -f $HOME/.zshrc_local ] && source $HOME/.zshrc_local || true
