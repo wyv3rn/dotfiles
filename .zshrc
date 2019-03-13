@@ -118,4 +118,7 @@ alias la="ls -lAh"
 alias grep='grep --color=auto'
 alias f='fd -L'
 
+fpath+=~/.zfunc
+compinit
+
 [ -f $HOME/.zshrc_local ] && source $HOME/.zshrc_local || true

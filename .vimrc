@@ -26,6 +26,7 @@ Plugin 'tpope/vim-repeat'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'skwp/greplace.vim'
 Plugin 'fatih/vim-go'
+Plugin 'rust-lang/rust.vim'
 Plugin 'wyv3rn/vim-tinycpp'
 
 call vundle#end()
