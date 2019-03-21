@@ -165,8 +165,8 @@ nmap t :YcmCompleter GoTo<CR>
 nmap <C-t> <C-o>
 
 " vimlatex and latex in general
-nmap <F3> :up<CR><leader>ll
-imap <F3> <ESC>:up<CR><leader>ll
+au FileType tex nmap <F9> :up<CR><leader>ll
+au FileType tex imap <F9> <ESC>:up<CR><leader>ll
 imap <C-b> <Plug>IMAP_JumpForward
 let g:latex_view_general_viewer = 'zathura'
 let g:vimtex_view_method = 'zathura'
