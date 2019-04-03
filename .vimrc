@@ -228,6 +228,7 @@ nnoremap <silent> <C-S-Left> :TmuxNavigateLeft<cr>
 nnoremap <silent> <C-S-Down> :TmuxNavigateDown<cr>
 nnoremap <silent> <C-S-Up> :TmuxNavigateUp<cr>
 nnoremap <silent> <C-S-Right> :TmuxNavigateRight<cr>
+nnoremap <silent> <C-h> :TmuxNavigateRight<cr>
 
 " vimux
 nnoremap <Leader>p :VimuxPromptCommand<CR>
@@ -263,6 +264,10 @@ inoremap {<CR> {<CR>}<C-O>O
 au FileType cpp set iskeyword-=:
 " fix indent for switch case with {}
 set cinoptions=l1
+
+" Rust stuff
+" TODO :: is not recognized as word boundary
+au FileType rust set iskeyword+=:
 
 " similar to deleting/changing inner and outer stuff: append to inner and outer stuff
 " TODO this could be a small plugin ;) -> make register for the d commands configurable
