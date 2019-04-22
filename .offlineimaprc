@@ -1,0 +1,57 @@
+[general]
+pythonfile = ~/.offlineimap.py
+
+accounts = tui
+maxsyncaccounts = 1
+
+[Account tui]
+localrepository = tui-local
+remoterepository = tui-remote
+autorefresh = 1.0
+quick = 10
+postsynchook = notmuch new
+
+[Account gmx]
+localrepository = gmx-local
+remoterepository = gmx-remote
+autorefresh = 1.0
+quick = 10
+
+[Repository tui-local]
+type = Maildir
+localfolders = ~/mail/tui
+
+[Repository tui-remote]
+type = IMAP
+remotehost = imap.tu-ilmenau.de
+remoteport = 993
+remoteuser = get_pass("tui_user")
+remotepasseval = get_pass("tui")
+ssl = yes
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+holdconnectionopen = yes
+keepalive = 90
+
+[Repository gmx-local]
+type = Maildir
+localfolders = ~/mail/gmx
+
+[Repository gmx-remote]
+type = IMAP
+remotehost = imap.gmx.net
+remoteport = 993
+remoteuser = get_pass("gmx_user")
+remotepasseval = get_pass("gmx")
+ssl = yes
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+folderfilter = lambda f: f in ["INBOX", "Drafts", "Sent", "Junk", "Spamverdacht", "Trash", "Gutscheine", "Tickets", "Upswing"]
+holdconnectionopen = yes
+keepalive = 90
+
+[mbnames]
+enabled = yes
+filename = ~/.neomutt/mailboxes
+header = "mailboxes "
+peritem = "+%(accountname)s/%(foldername)s"
+sep = " "
+footer = "\n"

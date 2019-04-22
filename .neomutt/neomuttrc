@@ -1,0 +1,64 @@
+# general settings
+set editor = vim
+set assumed_charset = "utf-8"
+set history = 10000
+set history_remove_dups
+set history_file = "~/.neomutt/history"
+set sort=threads
+set timeout=10
+
+# unbinds
+bind index,pager m noop
+bind index,pager g noop
+bind index,pager G noop
+bind index,pager r noop
+
+# binds
+bind index,pager mm mail
+bind index,pager <ESC>d purge-message
+bind index,pager r group-reply
+bind index,pager R reply
+bind index gg first-entry
+bind index G last-entry
+
+# PGP
+set crypt_use_gpgme = yes
+set pgp_self_encrypt = yes
+set pgp_default_key = "57E6DE4CF818A68DC058791F3EED0C65E3BC0932"
+
+# HTML
+auto_view text/html
+
+# sidebar
+set sidebar_visible
+set sidebar_format = "%B%?F? [%F]?%* %?N?%N/?%S"
+set mail_check_stats
+set mail_check_stats_interval = 5
+set sidebar_width = 50
+
+# pager
+macro pager \cb <pipe-entry>'urlscan'<enter> 'Follow links with urlscan'
+set pager_index_lines = 20
+set pager_context = 3
+
+# color
+source dracula/dracula.muttrc
+
+# IMAP: offlineimap
+set folder = "~/mail"
+source ~/.neomutt/mailboxes
+
+# general account settings
+set realname = "David Schatz"
+set use_from = yes
+set my_tui_mail = "`pass mail/tui_mail`"
+set my_tui_user = "`pass mail/tui_user`"
+set my_tui_passwd = "`pass mail/tui`"
+set my_gmx_user = "`pass mail/gmx_user`"
+set my_gmx_passwd = "`pass mail/gmx`"
+
+# TUI account
+source ~/.neomutt/tui
+
+# GMX account
+source ~/.neomutt/gmx

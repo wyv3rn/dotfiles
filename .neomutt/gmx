@@ -1,0 +1,13 @@
+folder-hook gmx "set spoolfile = +gmx/INBOX"
+folder-hook gmx "set record = +gmx/Sent"
+folder-hook gmx "set postponed = +gmx/Drafts"
+folder-hook gmx "set trash = +gmx/Trash"
+
+folder-hook gmx "set from = $my_gmx_user"
+folder-hook gmx "unset signature"
+
+folder-hook gmx "set smtp_url = smtp://${my_gmx_user}@mail.gmx.net:587"
+folder-hook gmx "set smtp_pass = $my_gmx_passwd"
+folder-hook gmx "set ssl_force_tls = yes"
+folder-hook gmx "set ssl_starttls = yes"
+folder-hook gmx "set smtp_authenticators = plain"

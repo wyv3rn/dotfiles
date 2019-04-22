@@ -1,0 +1,7 @@
+text/html; w3m -I %{charset} -T text/html; copiousoutput; print=firefox %s
+image/png; feh -
+image/jpeg; feh -
+image/gif; feh -
+application/vnd.openxmlformats-officedocument.wordprocessingml.document; libreoffice %s
+application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; libreoffice %s
+application/vnd.openxmlformats-officedocument.presentationml.presentation; libreoffice %s
