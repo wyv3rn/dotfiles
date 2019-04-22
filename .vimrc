@@ -258,6 +258,8 @@ nmap <Space>n <Plug>(easymotion-s2)
 nmap <Space>r <Plug>(easymotion-bd-jk)
 
 " C++ stuff
+" don't indent namespace content and public/private/protected keywords
+au FileType cpp set cino=N-s,g-s
 nnoremap <leader><tab> :up<CR> :TcSwitchHS<CR>
 nnoremap <leader>cg :TcIncGuard<CR>
 inoremap {<CR> {<CR>}<C-O>O
