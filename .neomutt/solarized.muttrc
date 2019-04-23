@@ -5,19 +5,19 @@
 # @author David Schatz
 
 # general ------------ foreground ---- background -----------------------------
-color error		color231	color212
+color error		    color15	    color1
 color indicator		color231	color241
 color markers		color210	default
 color message		default		default
 color normal		default		default
-color prompt		default	        default
+color prompt		default	    default
 color search		color0		color3
-color status 		color13	default
-color tilde		color231	default
-color tree		color4	default
+color status 		color13	    default
+color tilde		    color231    default
+color tree		    color4	    default
 
 # message index ------ foreground ---- background -----------------------------
-color index		color1		default 	~F # flagged messages
+color index		color1	default 	~F # flagged messages
 color index		color2	default 	~N # new messages
 color index		color2	default 	~O # old messages
 # color index		color211	default 	~Q # messages which have been replied to
@@ -31,14 +31,17 @@ color header		color231	default		^Subject:.*
 
 # message body ------- foreground ---- background -----------------------------
 color attachment	color228	default
-color body		color231	default		[\-\.+_a-zA-Z0-9]+@[\-\.a-zA-Z0-9]+               # email addresses
-color body		color228	default		(https?|ftp)://[\-\.,/%~_:?&=\#a-zA-Z0-9]+        # URLs
-color body		color231	default		(^|[[:space:]])\\*[^[:space:]]+\\*([[:space:]]|$) # *bold* text
-color body		color231	default		(^|[[:space:]])_[^[:space:]]+_([[:space:]]|$)     # _underlined_ text
-color body		color231	default		(^|[[:space:]])/[^[:space:]]+/([[:space:]]|$)     # /italic/ text
+color body		    color231	default		[\-\.+_a-zA-Z0-9]+@[\-\.a-zA-Z0-9]+               # email addresses
+color body		    color228	default		(https?|ftp)://[\-\.,/%~_:?&=\#a-zA-Z0-9]+        # URLs
+color body		    color231	default		(^|[[:space:]])\\*[^[:space:]]+\\*([[:space:]]|$) # *bold* text
+color body		    color231	default		(^|[[:space:]])_[^[:space:]]+_([[:space:]]|$)     # _underlined_ text
+color body		    color231	default		(^|[[:space:]])/[^[:space:]]+/([[:space:]]|$)     # /italic/ text
 color quoted		color61		default
 color quoted1		color117	default
 color quoted2		color84		default
 color quoted3		color215	default
 color quoted4		color212	default
 color signature		color212	default
+
+# sidebar
+color sidebar_new   color2      default
