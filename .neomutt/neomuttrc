@@ -34,7 +34,11 @@ set sidebar_visible
 set sidebar_format = "%B%?F? [%F]?%* %?N?%N/?%S"
 set mail_check_stats
 set mail_check_stats_interval = 5
-set sidebar_width = 50
+set sidebar_width = 45
+
+# index
+set date_format="!%a, %b %d, %Y at %I:%M%p %Z"
+set index_format="%4C %Z %{%Y %b %d %H:%M}  %-20.20L  %s %> (%4c)"
 
 # pager
 macro pager \cb <pipe-entry>'urlscan'<enter> 'Follow links with urlscan'
@@ -42,7 +46,7 @@ set pager_index_lines = 20
 set pager_context = 3
 
 # color
-source dracula/dracula.muttrc
+source solarized.muttrc
 
 # IMAP: offlineimap
 set folder = "~/mail"
