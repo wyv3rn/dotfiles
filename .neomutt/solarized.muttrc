@@ -11,19 +11,19 @@ color markers		color210	default
 color message		default		default
 color normal		default		default
 color prompt		default	        default
-color search		color84		default
-color status 		color4	color8
+color search		color0		color3
+color status 		color13	default
 color tilde		color231	default
 color tree		color4	default
 
 # message index ------ foreground ---- background -----------------------------
-color index		color3	default 	~D # deleted messages
 color index		color1		default 	~F # flagged messages
 color index		color2	default 	~N # new messages
 color index		color2	default 	~O # old messages
 # color index		color211	default 	~Q # messages which have been replied to
-color index		color6	default 	~T # tagged messages
+color index		color3	default 	~T # tagged messages
 color index		color4	default		~v # messages part of a collapsed thread
+color index		color6	default 	~D # deleted messages
 
 # message headers ---- foreground ---- background -----------------------------
 color hdrdefault	color117	default

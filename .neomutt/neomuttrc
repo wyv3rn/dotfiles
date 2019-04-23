@@ -15,7 +15,7 @@ bind index,pager r noop
 
 # binds
 bind index,pager mm mail
-bind index,pager <ESC>d purge-message
+bind index,pager mp purge-message
 bind index,pager r group-reply
 bind index,pager R reply
 bind index gg first-entry
