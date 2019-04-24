@@ -7,15 +7,15 @@ maxsyncaccounts = 1
 [Account tui]
 localrepository = tui-local
 remoterepository = tui-remote
-autorefresh = 1.0
-quick = 10
+autorefresh = 0.5
+quick = 1
 postsynchook = notmuch new
 
 [Account gmx]
 localrepository = gmx-local
 remoterepository = gmx-remote
-autorefresh = 1.0
-quick = 10
+autorefresh = 0.5
+quick = 1
 
 [Repository tui-local]
 type = Maildir
@@ -30,7 +30,7 @@ remotepasseval = get_pass("tui")
 ssl = yes
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 holdconnectionopen = yes
-keepalive = 90
+keepalive = 60
 
 [Repository gmx-local]
 type = Maildir
@@ -46,7 +46,7 @@ ssl = yes
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 folderfilter = lambda f: f in ["INBOX", "Drafts", "Sent", "Junk", "Spamverdacht", "Trash", "Gutscheine", "Tickets", "Upswing"]
 holdconnectionopen = yes
-keepalive = 90
+keepalive = 60
 
 [mbnames]
 enabled = yes
