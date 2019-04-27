@@ -1,8 +1,8 @@
 [general]
 pythonfile = ~/.offlineimap.py
 
-accounts = tui
-maxsyncaccounts = 1
+accounts = gmx, tui
+maxsyncaccounts = 2
 
 [Account tui]
 localrepository = tui-local

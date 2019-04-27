@@ -5,6 +5,8 @@ set history = 10000
 set history_remove_dups
 set history_file = "~/.neomutt/history"
 set sort=threads
+set sort_aux = last-date-received
+set strict_threads
 set timeout=10
 
 # unbinds
@@ -12,6 +14,12 @@ bind index,pager m noop
 bind index,pager g noop
 bind index,pager G noop
 bind index,pager r noop
+bind index,pager J noop
+bind index,pager K noop
+bind index,pager o noop
+bind index,pager O noop
+bind index,pager c noop
+bind index,pager C noop
 
 # binds
 bind index,pager mm mail
@@ -20,6 +28,11 @@ bind index,pager r group-reply
 bind index,pager R reply
 bind index gg first-entry
 bind index G last-entry
+bind index,pager K sidebar-prev
+bind index,pager J sidebar-next
+bind index,pager o sidebar-open
+macro index,pager c ":source ~/.neomutt/fzfc.sh|<enter>"
+bind index,pager C change-folder
 
 # PGP
 set crypt_use_gpgme = yes
@@ -46,11 +59,11 @@ set pager_index_lines = 20
 set pager_context = 3
 
 # color
-source solarized.muttrc
+source solarized.rc
 
 # IMAP: offlineimap
 set folder = "~/mail"
-source ~/.neomutt/mailboxes
+source ~/.neomutt/mailboxes.rc
 
 # general account settings
 set realname = "David Schatz"
@@ -62,7 +75,10 @@ set my_gmx_user = "`pass mail/gmx_user`"
 set my_gmx_passwd = "`pass mail/gmx`"
 
 # TUI account
-source ~/.neomutt/tui
+source ~/.neomutt/tui.rc
 
 # GMX account
-source ~/.neomutt/gmx
+source ~/.neomutt/gmx.rc
+
+# aliases
+source ~/.neomutt/aliases.rc
