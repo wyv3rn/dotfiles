@@ -44,7 +44,8 @@ battery1 = battery_widget {
 }
 
 mail = email_widget {
-    count_cmd = "notmuch count tag:unread",
+    count_cmd = [[bash -c "offlineimap -o -1 -l ~/.imap.log > /dev/null 2>&1; notmuch count tag:unread"]],
+    interval = 30,
     read_cmd = [[bash -c "notmuch show tag:unread | grep -E '(Subject: .*)|From.*' | sed -E 's/^Subject: //; s/From: (.*)/[\1]/'"]],
     display_width = 800
 }
