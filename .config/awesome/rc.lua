@@ -35,12 +35,12 @@ bat_limits = {
 battery0 = battery_widget {
     adapter = "BAT0",
     limits = bat_limits,
-    widget_text = "| ${AC_BAT}${color_on}${percent}%${color_off}"
+    widget_text = "${AC_BAT}${color_on}${percent}%${color_off}"
 }
 battery1 = battery_widget {
     adapter = "BAT1",
     limits = bat_limits,
-    widget_text = " ${AC_BAT}${color_on}${percent}%${color_off} |"
+    widget_text = " ${AC_BAT}${color_on}${percent}%${color_off}"
 }
 
 mail = email_widget {
@@ -52,7 +52,18 @@ mail = email_widget {
 
 volumecfg = volume_ctrl({})
 
+local vert_sep = wibox.widget {
+    widget = wibox.widget.separator,
+    orientation = "vertical",
+    forced_width = 1,
+    color = "#aaaaaa",
+    span_ratio = 0.7,
+    forced_width = 20,
+    thickness = 1.5,
+}
+
 -- TODO clean up stuff below
+
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -255,13 +266,15 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             wibox.widget.systray(),
-            wibox.widget.textbox("| "),
+            vert_sep,
             mail.icon,
             mail.count,
-            wibox.widget.textbox(" |"),
+            vert_sep,
             volumecfg.widget,
+            vert_sep,
             battery0.widget,
             battery1.widget,
+            vert_sep,
             mytextclock,
             s.mylayoutbox,
         },
