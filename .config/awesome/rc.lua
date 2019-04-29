@@ -11,15 +11,47 @@ local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
 
--- external libraries
+-- 3rd party imports
 local battery_widget = require("widgets/battery-widget")
 local volume_ctrl = require("widgets/volume-control")
 local calendar = require("widgets/calendar")
+local email_widget = require("widgets/awesome-wm-widgets/email-widget")
 local switcher = require("widgets/awesome-switcher-macstyle")
 switcher.settings.preview_box_delay = 250
 switcher.settings.cycle_raise_client = false
 switcher.settings.preview_box_title_font_size_factor = 1.3
 switcher.settings.preview_box_bg = "#ffffff99"
+
+-- init theme
+beautiful.init(awful.util.getdir("config") .. "themes/default/theme.lua")
+
+-- init 3rd party widgets
+bat_limits = {
+    { 10, "red"   },
+    { 30, "orange"},
+    {100, "green" }
+}
+
+battery0 = battery_widget {
+    adapter = "BAT0",
+    limits = bat_limits,
+    widget_text = "| ${AC_BAT}${color_on}${percent}%${color_off}"
+}
+battery1 = battery_widget {
+    adapter = "BAT1",
+    limits = bat_limits,
+    widget_text = " ${AC_BAT}${color_on}${percent}%${color_off} |"
+}
+
+mail = email_widget {
+    count_cmd = "notmuch count tag:unread",
+    read_cmd = [[bash -c "notmuch show tag:unread | grep -E '(Subject: .*)|From.*' | sed -E 's/^Subject: //; s/From: (.*)/[\1]/'"]],
+    display_width = 800
+}
+
+volumecfg = volume_ctrl({})
+
+-- TODO clean up stuff below
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -46,9 +78,6 @@ do
 end
 -- }}}
 
--- {{{ Variable definitions
--- Themes define colours, icons, font and wallpapers.
-beautiful.init(awful.util.getdir("config") .. "themes/default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "urxvt"
@@ -81,7 +110,6 @@ awful.layout.layouts = {
     -- awful.layout.suit.corner.sw,
     -- awful.layout.suit.corner.se,
 }
--- }}}
 
 -- {{{ Helper functions
 local function client_menu_toggle_fn()
@@ -98,7 +126,7 @@ local function client_menu_toggle_fn()
 end
 -- }}}
 
--- {{{ Menu 
+-- {{{ Menu
 -- Create a launcher widget and a main menu
 myawesomemenu = {
    { "hotkeys", function() return false, hotkeys_popup.show_help end},
@@ -207,25 +235,6 @@ awful.screen.connect_for_each_screen(function(s)
     -- Create a taglist widget
     s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, taglist_buttons)
 
-    -- Create battery, volume ctrl widgets
-    bat_limits = {
-        { 10, "red"   },
-        { 30, "orange"},
-        {100, "green" }
-    }
-
-    battery0 = battery_widget {
-        adapter = "BAT0",
-        limits = bat_limits,
-        widget_text = "| ${AC_BAT}${color_on}${percent}%${color_off}"
-    }
-    battery1 = battery_widget {
-        adapter = "BAT1",
-        limits = bat_limits,
-        widget_text = " ${AC_BAT}${color_on}${percent}%${color_off} |"
-    }
-    volumecfg = volume_ctrl({})
-
     -- Create a tasklist widget
     s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, tasklist_buttons)
 
@@ -245,6 +254,10 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             wibox.widget.systray(),
+            wibox.widget.textbox("| "),
+            mail.icon,
+            mail.count,
+            wibox.widget.textbox(" |"),
             volumecfg.widget,
             battery0.widget,
             battery1.widget,

@@ -17,5 +17,6 @@ export FZF_DEFAULT_COMMAND='fd --type f --follow'
 alias x="startx-dpi"
 alias sync-root="sudo rsync -aAXHS --stats --exclude={/dev/\*,/proc/\*,/sys/\*,/tmp/\*,/run/\*,/mnt/\*,/media/\*,/lost+found,/home/\*/.gvfs} /"
 alias dotf="/usr/bin/git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME"
+alias mutt="neomutt"
 
 [ -f $HOME/.zshenv_local ] && source $HOME/.zshenv_local || true
