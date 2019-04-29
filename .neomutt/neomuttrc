@@ -18,7 +18,6 @@ bind index,pager J noop
 bind index,pager K noop
 bind index,pager o noop
 bind index,pager O noop
-bind index,pager c noop
 bind index,pager C noop
 
 # binds
@@ -31,8 +30,7 @@ bind index G last-entry
 bind index,pager K sidebar-prev
 bind index,pager J sidebar-next
 bind index,pager o sidebar-open
-macro index,pager c ":source ~/.neomutt/fzfc.sh|<enter>"
-bind index,pager C change-folder
+macro index,pager C ":source ~/.neomutt/fzfc.sh|<enter>"
 
 # PGP
 set crypt_use_gpgme = yes
