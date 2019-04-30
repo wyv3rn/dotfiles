@@ -1,0 +1,19 @@
+[general]
+status_path = "~/.vdirsyncer/status/"
+
+[pair tui_calendar]
+a = "tui_calendar_local"
+b = "tui_calendar_remote"
+collections = ["from a", "from b"]
+metadata = ["color", "displayname"]
+
+[storage tui_calendar_local]
+type = "filesystem"
+path = "~/.calendar/"
+fileext = ".ics"
+
+[storage tui_calendar_remote]
+type = "caldav"
+url.fetch = ["command", "bash", "-c", "cat ~/.vdirsyncer/tui_url"]
+username.fetch = ["command", "bash", "-c", "cat ~/.vdirsyncer/tui_user"]
+password.fetch = ["command", "pass", "cal/tui"]
