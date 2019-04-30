@@ -11,8 +11,10 @@ local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
 
+-- our helper lib
+require("helper")
+
 -- 3rd party imports
-local battery_widget = require("widgets/battery-widget")
 local volume_ctrl = require("widgets/volume-control")
 local calendar = require("widgets/calendar")
 local email_widget = require("widgets/awesome-wm-widgets/email-widget")
@@ -25,33 +27,7 @@ switcher.settings.preview_box_bg = "#ffffff99"
 -- init theme
 beautiful.init(awful.util.getdir("config") .. "themes/default/theme.lua")
 
--- init 3rd party widgets
-bat_limits = {
-    { 10, "red"   },
-    { 30, "orange"},
-    {100, "green" }
-}
-
-battery0 = battery_widget {
-    adapter = "BAT0",
-    limits = bat_limits,
-    widget_text = "${AC_BAT}${color_on}${percent}%${color_off}"
-}
-battery1 = battery_widget {
-    adapter = "BAT1",
-    limits = bat_limits,
-    widget_text = " ${AC_BAT}${color_on}${percent}%${color_off}"
-}
-
-mail = email_widget {
-    count_cmd = [[bash -c "offlineimap -o -1 -l ~/.imap.log > /dev/null 2>&1; notmuch count tag:unread"]],
-    interval = 30,
-    read_cmd = [[bash -c "notmuch show tag:unread | grep -E '(Subject: .*)|From.*' | sed -E 's/^Subject: //; s/From: (.*)/[\1]/'"]],
-    display_width = 800
-}
-
-volumecfg = volume_ctrl({})
-
+-- init simple separator for widgets
 local vert_sep = wibox.widget {
     widget = wibox.widget.separator,
     orientation = "vertical",
@@ -61,6 +37,27 @@ local vert_sep = wibox.widget {
     forced_width = 20,
     thickness = 1.5,
 }
+
+-- init 3rd party widgets
+if get_hostname() == "beta" then
+    require("init_bat")
+end
+
+-- if init_bat was called, neither battery0 nor battery1 is nil
+if battery0 then
+    battery0_widget = battery0.widget
+    battery1_widget = battery1.widget
+    battery_sep = vert_sep
+end
+
+mail = email_widget {
+    count_cmd = [[bash -c "offlineimap -o -1 -l ~/.imap.log > /dev/null 2>&1; notmuch count tag:unread"]],
+    interval = 30,
+    read_cmd = [[bash -c "notmuch show tag:unread | grep -E '(Subject: .*)|From.*' | sed -E 's/^Subject: //; s/From: (.*)/[\1]/'"]],
+    display_width = 800
+}
+
+volumecfg = volume_ctrl({})
 
 -- TODO clean up stuff below
 
@@ -272,9 +269,9 @@ awful.screen.connect_for_each_screen(function(s)
             vert_sep,
             volumecfg.widget,
             vert_sep,
-            battery0.widget,
-            battery1.widget,
-            vert_sep,
+            battery0_widget,
+            battery1_widget,
+            battery_sep,
             mytextclock,
             s.mylayoutbox,
         },
