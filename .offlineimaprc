@@ -49,7 +49,7 @@ holdconnectionopen = yes
 keepalive = 60
 
 [mbnames]
-enabled = yes
+enabled = no
 filename = ~/.neomutt/mailboxes
 header = "mailboxes "
 peritem = "+%(accountname)s/%(foldername)s"
