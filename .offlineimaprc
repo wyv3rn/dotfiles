@@ -9,7 +9,7 @@ localrepository = tui-local
 remoterepository = tui-remote
 autorefresh = 0.5
 quick = 1
-postsynchook = bash -c "notmuch new; notmuch tag -unread folder:gmx/Spamverdacht or folder:tui/INBOX.ActiveStuff"
+postsynchook = mail-filter
 
 [Account gmx]
 localrepository = gmx-local

@@ -31,6 +31,8 @@ bind index,pager K sidebar-prev
 bind index,pager J sidebar-next
 bind index,pager o sidebar-open
 macro index,pager C ":source ~/.neomutt/fzfc.sh|<enter>"
+bind generic { half-up
+bind generic } half-down
 
 # PGP
 set crypt_use_gpgme = yes

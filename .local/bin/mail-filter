@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+notmuch new
+notmuch tag +active-stuff subject:"Active Students" or subject:"Active Staff"
+notmuch search --output=files tag:active-stuff and folder:tui/INBOX | xargs -I % mv % ~/mail/tui/INBOX.ActiveStuff/cur/
+notmuch tag -unread folder:gmx/Spamverdacht or folder:tui/INBOX.ActiveStuff
