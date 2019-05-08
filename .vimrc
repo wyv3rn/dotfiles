@@ -256,6 +256,12 @@ map <Space> <Plug>(easymotion-prefix)
 nmap <Space><Space> <Plug>(easymotion-sn)
 nmap <Space>n <Plug>(easymotion-s2)
 nmap <Space>r <Plug>(easymotion-bd-jk)
+" TODO make delete/change till possible
+nmap f <Plug>(easymotion-fl)
+nmap F <Plug>(easymotion-Fl)
+" TODO conflic with C++ jumping ...
+" nmap t <Plug>(easymotion-tl)
+" nmap T <Plug>(easymotion-Tl)
 
 " C++ stuff
 " don't indent namespace content and public/private/protected keywords

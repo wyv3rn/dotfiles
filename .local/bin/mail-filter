@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 notmuch new
-notmuch tag +active-stuff subject:"Active Students" or subject:"Active Staff"
+notmuch tag +active-stuff to:"active-students@tu-ilmenau.de" or to:"active-staff@tu-ilmenau.de" or to:"phd-students@tu-ilmenau.de" or to:"students@tu-ilmenau.de"
 notmuch search --output=files tag:active-stuff and folder:tui/INBOX | xargs -I % mv % ~/mail/tui/INBOX.ActiveStuff/cur/
+notmuch new # not optimal, but at the moment necessary because of the move in the line above
 notmuch tag -unread folder:gmx/Spamverdacht or folder:tui/INBOX.ActiveStuff
