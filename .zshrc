@@ -118,6 +118,12 @@ alias la="ls -lAh"
 alias grep='grep --color=auto'
 alias f='fd -L'
 
+bindkey '^b' backward-word
+bindkey '^f' forward-word
+bindkey '^n' beginning-of-line
+bindkey '^h' backward-delete-word
+bindkey '^g' delete-word
+
 fpath+=~/.zfunc
 compinit
 
