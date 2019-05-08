@@ -4,3 +4,5 @@ set synctex true
 set synctex-editor-command "vim --servername vim --remote +%{line} %{input}"
 map { scroll half-up
 map } scroll half-down
+map [ navigate previous
+map ] navigate next
