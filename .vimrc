@@ -59,6 +59,9 @@ set backspace=indent,eol,start
 au BufNewFile,BufRead SCons* set filetype=python
 nnoremap <leader>u :up<CR>
 
+set timeoutlen=500
+set ttimeoutlen=10
+
 " open files at last position
 if has("autocmd")
   au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
@@ -85,6 +88,14 @@ endif
 let &t_SI = escPrefix . "\<Esc>[5 q" . escSuffix
 let &t_SR = escPrefix . "\<Esc>[3 q" . escSuffix
 let &t_EI = escPrefix . "\<Esc>[1 q" . escSuffix
+
+" better insert mode navigation
+imap <c-b> <c-left>
+imap <c-f> <c-right>
+imap <c-h> <c-w>
+" does not work for the last word, but not so important I guess (use <c-h>)
+imap <c-g> <Right><Esc>dawi
+imap <c-k> <Right><Esc>C
 
 " GUI stuff
 if has('gui_running')
@@ -167,7 +178,7 @@ nmap <C-t> <C-o>
 " vimlatex and latex in general
 au FileType tex nmap <F9> :up<CR><leader>ll
 au FileType tex imap <F9> <ESC>:up<CR><leader>ll
-imap <C-b> <Plug>IMAP_JumpForward
+imap <C-j> <Plug>IMAP_JumpForward
 let g:latex_view_general_viewer = 'zathura'
 let g:vimtex_view_method = 'zathura'
 let g:Tex_DefaultTargetFormat = 'pdf'
