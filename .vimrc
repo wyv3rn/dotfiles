@@ -59,7 +59,7 @@ set backspace=indent,eol,start
 au BufNewFile,BufRead SCons* set filetype=python
 nnoremap <leader>u :up<CR>
 
-set timeoutlen=500
+set timeoutlen=350
 set ttimeoutlen=10
 
 " open files at last position
@@ -146,6 +146,8 @@ nnoremap <leader>rtw ms:%s/\s\+$//<CR>`s
 filetype plugin indent on
 au FileType ruby setl sw=2 sts=2
 au Filetype tex setl nofoldenable
+au FileType mail setl spell
+au FileType mail setl spelllang=de
 
 " moving lines up and down
 nnoremap <S-Down> :m .+1<CR>==

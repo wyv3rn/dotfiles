@@ -8,6 +8,7 @@ set sort=threads
 set sort_aux = last-date-received
 set strict_threads
 set timeout=10
+set pager_stop
 
 # unbinds
 bind index,pager m noop
