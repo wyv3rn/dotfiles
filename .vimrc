@@ -59,7 +59,7 @@ set backspace=indent,eol,start
 au BufNewFile,BufRead SCons* set filetype=python
 nnoremap <leader>u :up<CR>
 
-set timeoutlen=350
+set timeoutlen=750
 set ttimeoutlen=10
 
 " open files at last position

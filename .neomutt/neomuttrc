@@ -4,11 +4,16 @@ set assumed_charset = "utf-8"
 set history = 10000
 set history_remove_dups
 set history_file = "~/.neomutt/history"
-set sort=threads
 set sort_aux = last-date-received
-set strict_threads
 set timeout=10
 set pager_stop
+
+# threads
+set sort=threads
+set strict_threads
+set collapse_all
+unset collapse_flagged
+unset collapse_unread
 
 # unbinds
 bind index,pager m noop
