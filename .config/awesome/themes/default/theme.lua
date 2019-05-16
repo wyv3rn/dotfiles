@@ -36,9 +36,15 @@ theme.border_marked = "#91231c"
 -- Example:
 --theme.taglist_bg_focus = "#ff0000"
 
--- Display the taglist squares
-theme.taglist_squares_sel   = "/usr/share/awesome/themes/default/taglist/squarefw.png"
-theme.taglist_squares_unsel = "/usr/share/awesome/themes/default/taglist/squarew.png"
+-- Taglist
+-- theme.taglist_squares_sel   = "/usr/share/awesome/themes/default/taglist/squarefw.png"
+-- theme.taglist_squares_unsel = "/usr/share/awesome/themes/default/taglist/squarew.png"
+theme.taglist_font          = "awesomewm-font 9"
+theme.taglist_fg_focus      = "#177DC5"
+theme.taglist_fg_occupied   = "#cb4b16"
+theme.taglist_fg_urgent     = "#ffffff"
+theme.taglist_fg_empty      = "#828282"
+theme.taglist_spacing       = 1
 
 -- Variables set for theming the menu:
 -- menu_[bg|fg]_[normal|focus]
