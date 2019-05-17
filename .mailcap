@@ -1,6 +1,7 @@
 text/html; w3m -I %{charset} -T text/html; copiousoutput; print=firefox %s
 text/x-c; vim -R -c "setl filetype=cpp" -
 text/x-c++; vim -R -c "setl filetype=cpp" -
+text/x-c++src; vim -R -c "setl filetype=cpp" -
 image/png; feh -
 image/jpeg; feh -
 image/gif; feh -
