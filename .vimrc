@@ -267,7 +267,8 @@ let g:EasyMotion_smartcase = 1
 let g:EasyMotion_keys = 'ratidubpsolgen'
 map <Space> <Plug>(easymotion-prefix)
 nmap <Space><Space> <Plug>(easymotion-sn)
-nmap <Space>n <Plug>(easymotion-s2)
+nmap <Space>n <Plug>(easymotion-s)
+nmap <Space>s <Plug>(easymotion-s2)
 nmap <Space>r <Plug>(easymotion-bd-jk)
 " TODO make delete/change till possible
 nmap f <Plug>(easymotion-fl)
