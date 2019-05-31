@@ -241,7 +241,7 @@ nnoremap <silent> <C-S-Left> :TmuxNavigateLeft<cr>
 nnoremap <silent> <C-S-Down> :TmuxNavigateDown<cr>
 nnoremap <silent> <C-S-Up> :TmuxNavigateUp<cr>
 nnoremap <silent> <C-S-Right> :TmuxNavigateRight<cr>
-nnoremap <silent> <C-y> :TmuxNavigateRight<cr>
+nnoremap <silent> <C-y> :TmuxNavigatePrevious<cr>
 
 " vimux
 nnoremap <Leader>p :VimuxPromptCommand<CR>
