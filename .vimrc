@@ -288,9 +288,7 @@ au FileType cpp set iskeyword-=:
 set cinoptions=l1
 
 " Rust stuff
-" TODO :: is not recognized as word boundary
-au FileType rust set iskeyword+=:
-let g:rustfmt_autosave = 1
+au FileType rust set iskeyword-=:
 
 " similar to deleting/changing inner and outer stuff: append to inner and outer stuff
 " TODO this could be a small plugin ;) -> make register for the d commands configurable
