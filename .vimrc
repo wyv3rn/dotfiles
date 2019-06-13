@@ -97,6 +97,10 @@ imap <c-h> <c-w>
 imap <c-g> <Right><Esc>dawi
 imap <c-k> <Right><Esc>C
 
+" match behavior of c-b and c-f in normal mode to insert mode
+nmap <c-b> b
+nmap <c-f> w
+
 " GUI stuff
 if has('gui_running')
     colorscheme solarized
