@@ -316,4 +316,4 @@ if filereadable(".vimrc.local")
     so .vimrc.local
 endif
 
-au bufnewfile */OPAcITY/* if &ft == 'cpp' | exec "normal ciwdschatz\<ESC>7j" | endif
+au bufnewfile */OPAcITY/* if &ft == 'cpp' | exec "normal ciwdschatz\<ESC>4jo" | endif
