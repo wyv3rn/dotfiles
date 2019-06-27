@@ -57,6 +57,7 @@ set undodir=$HOME/.vim/undo
 set undolevels=1000
 set backspace=indent,eol,start
 au BufNewFile,BufRead SCons* set filetype=python
+au BufNewFile,BufRead Doxyfile set filetype=conf
 nnoremap <leader>u :up<CR>
 
 set timeoutlen=750
@@ -315,4 +316,4 @@ if filereadable(".vimrc.local")
     so .vimrc.local
 endif
 
-au bufnewfile */OPAcITY/* if &ft == 'cpp' | exec "normal ciwdschatz\<ESC>4jo" | endif
+au bufnewfile */OPAcITY/* if &ft == 'cpp' | exec "normal ciwdschatz\<ESC>7j" | endif
