@@ -324,10 +324,18 @@ globalkeys = awful.util.table.join(
               {description = "swap with next client by index", group = "client"}),
     awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1)    end,
               {description = "swap with previous client by index", group = "client"}),
+
+    -- Screen navigation
     awful.key({ modkey,           }, "o", function () awful.screen.focus_relative( 1) end,
               {description = "focus the next screen", group = "screen"}),
     awful.key({ modkey,           }, "i", function () awful.screen.focus_relative(-1) end,
               {description = "focus the previous screen", group = "screen"}),
+    awful.key({ modkey,           }, "8", function () awful.screen.focus(2) end,
+              {description = "focus screen 3", group = "screen"}),
+    awful.key({ modkey,           }, "9", function () awful.screen.focus(3) end,
+              {description = "focus screen 3", group = "screen"}),
+    awful.key({ modkey,           }, "0", function () awful.screen.focus(1) end,
+              {description = "focus screen 1", group = "screen"}),
     awful.key({ modkey,           }, "u", awful.client.urgent.jumpto,
               {description = "jump to urgent client", group = "client"}),
     awful.key({ modkey            }, "Tab",
