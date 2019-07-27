@@ -37,7 +37,7 @@ class Track:
 
     def record(self, is_album, track_no):
         filename = self.filename(is_album, track_no)
-        if album:
+        if is_album:
             dirname = os.path.dirname(filename)
             if not os.path.exists(dirname):
                 os.makedirs(dirname)
@@ -113,7 +113,7 @@ def main():
 
     print('Recording to the following filenames:')
     for tn, track in enumerate(tracks, args.track_number):
-        print(track.filename(is_album, tn)
+        print('.. {}'.format(track.filename(is_album, tn)))
     input('Press Enter to start recording ... ')
 
     for tn, track in enumerate(tracks, args.track_number):
