@@ -1,0 +1,124 @@
+#!/usr/bin/env python3
+
+import sys
+import subprocess
+import argparse
+import json
+import re
+import time
+import os
+
+class Track:
+    def __init__(self, artist, album, title, length_mu, uri, track_no):
+        self.artist = artist
+        self.album = album
+        self.title = title
+        self.length = length_mu / (1000**2)
+        self.uri = uri
+        self.track_no = track_no
+
+    def filename(self, is_album, track_no):
+        if is_album == True or track_no == None:
+            track_no = self.track_no
+
+        if is_album:
+            fmt_str = '{0}/{1}/{3:03d}-{2}'
+        else:
+            fmt_str = '{3:03d}-{0}-{1}-{2}'
+
+        filename = fmt_str.format(self.artist, self.album, self.title, track_no)
+        filename = re.sub(r'[\s]', '_', filename)
+        filename = re.sub(r'ä', 'ae', filename)
+        filename = re.sub(r'ö', 'oe', filename)
+        filename = re.sub(r'ü', 'ue', filename)
+        filename = re.sub(r'[^0-9a-zA-Z-_/]', '', filename)
+        filename += '.mp3'
+        return filename
+
+    def record(self, is_album, track_no):
+        filename = self.filename(is_album, track_no)
+        if album:
+            dirname = os.path.dirname(filename)
+            if not os.path.exists(dirname):
+                os.makedirs(dirname)
+
+        print('Recording to file {}'.format(filename))
+        record_cmd = 'ffmpeg -y -f pulse -i default -codec:a libmp3lame -q:a 0 -metadata artist="{}" -metadata album="{}" -metadata title="{}" -metadata track="{}" {}'.format(self.artist, self.album, self.title, self.track_no, filename)
+        ffmpeg = shell(record_cmd, shell=True)
+        time.sleep(0.1)
+        ctl_open(self.uri)
+        time.sleep(self.length)
+        ctl_pause()
+        time.sleep(0.1)
+        ffmpeg.terminate()
+        print(' ..done')
+
+
+def shell(cmd_str, silent=True, shell=False):
+    cmd = cmd_str
+    if shell == False:
+        cmd = cmd_str.split()
+    if silent:
+        return subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=shell)
+    else:
+        return subprocess.Popen(cmd, stdin=subprocess.PIPE, shell=shell)
+
+def ctl_open(uri):
+    shell('playerctl open {}'.format(uri))
+
+def ctl_pause():
+    shell('playerctl pause')
+
+def ctl_play():
+    shell('playerctl play')
+
+def ctl_track_from_metadata():
+    cmd_str = 'playerctl metadata --format "{{artist}};; {{album}};; {{title}};; {{mpris:length}};; {{mpris:trackid}};; {{xesam:trackNumber}}"'
+    output = subprocess.check_output(cmd_str, shell=True).decode('utf-8')
+    match = re.match(r'(?P<artist>.+);; (?P<album>.+);; (?P<title>.+);; (?P<length>\d+);; (?P<uri>[\w:]+);; (?P<trackNumber>\d+)', output)
+    assert match is not None, "Broken regex"
+    track = Track(match.group('artist'), match.group('album'), match.group('title'), float(match.group('length')), match.group('uri'), int(match.group('trackNumber')))
+    return track
+
+def ctl_next():
+    shell('playerctl next')
+
+
+def main():
+    arg_parser = argparse.ArgumentParser()
+    arg_parser.add_argument('uri', help='The URI to record')
+    arg_parser.add_argument('-n', default=1, type=int, help='How many tracks to record')
+    arg_parser.add_argument('-t', '--track-number', metavar='tn', default=1, type=int, help='Track number to start with (for track file names')
+
+    args = arg_parser.parse_args()
+
+    # TODO check that we got an album or playlist when n > 1 (single songs don't like getting nexted ...)
+
+    interval = 0.33
+
+    tracks = []
+
+    ctl_open(args.uri)
+    time.sleep(interval)
+    for i in range(args.n):
+        tracks.append(ctl_track_from_metadata())
+        if i < args.n - 1:
+            ctl_next()
+        time.sleep(interval)
+    ctl_pause()
+
+    time.sleep(interval)
+
+    is_album = re.search(r'album', args.uri) is not None
+
+    print('Recording to the following filenames:')
+    for tn, track in enumerate(tracks, args.track_number):
+        print(track.filename(is_album, tn)
+    input('Press Enter to start recording ... ')
+
+    for tn, track in enumerate(tracks, args.track_number):
+        track.record(is_album, tn)
+
+
+if __name__ == '__main__':
+    main()

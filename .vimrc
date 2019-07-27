@@ -78,7 +78,7 @@ hi SpellBad cterm=underline ctermbg=none ctermfg=red
 map <F12> :let &background = ( &background == "dark"? "light" : "dark" )<CR>
 
 " python: "else:" is the same as "else"
-autocmd BufEnter,BufRead,BufNewFile *.py set iskeyword-=:
+au FileType python set iskeyword-=:
 
 " cursor shape
 let escPrefix = ""
