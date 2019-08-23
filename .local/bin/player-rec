@@ -31,6 +31,9 @@ class Track:
         filename = re.sub(r'ä', 'ae', filename)
         filename = re.sub(r'ö', 'oe', filename)
         filename = re.sub(r'ü', 'ue', filename)
+        filename = re.sub(r'Ä', 'AE', filename)
+        filename = re.sub(r'Ö', 'OE', filename)
+        filename = re.sub(r'Ü', 'UE', filename)
         filename = re.sub(r'[^0-9a-zA-Z-_/]', '', filename)
         filename += '.mp3'
         return filename

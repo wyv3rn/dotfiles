@@ -44,7 +44,7 @@ remoteusereval = get_pass("gmx_user")
 remotepasseval = get_pass("gmx")
 ssl = yes
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
-folderfilter = lambda f: f in ["INBOX", "Drafts", "Sent", "Junk", "Spamverdacht", "Trash", "Gutscheine", "Tickets", "Upswing"]
+folderfilter = lambda f: f in ["INBOX", "Drafts", "Sent", "Junk", "Spamverdacht", "Trash", "Gutscheine", "Tickets", "Upswing", "Piano"]
 holdconnectionopen = yes
 keepalive = 60
 
