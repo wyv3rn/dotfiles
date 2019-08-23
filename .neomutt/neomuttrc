@@ -8,6 +8,7 @@ set sort_aux = last-date-received
 set timeout=10
 set pager_stop
 set alias_file = "~/.neomutt/aliases.rc"
+set forward_format = "Fwd: %s"
 
 # threads
 set sort=threads
