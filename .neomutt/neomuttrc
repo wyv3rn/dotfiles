@@ -65,7 +65,7 @@ set index_format="%4C %Z %{%Y %b %d %H:%M}  %-20.20L  %s %> (%4c)"
 
 # pager
 macro pager ml <pipe-entry>'urlscan'<enter> 'Follow links with urlscan'
-set pager_index_lines = 20
+# set pager_index_lines = 20
 set pager_context = 3
 
 # color

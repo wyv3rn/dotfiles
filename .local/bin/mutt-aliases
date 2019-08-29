@@ -4,6 +4,7 @@ import re
 import tempfile
 import subprocess
 import os
+import shutil
 
 class Alias:
     def __init__(self, alias, full_name, mail):
@@ -32,13 +33,19 @@ def main():
 
     remote_output = subprocess.Popen(['ssh', remote_host, 'cat', remote_filename], stdout=subprocess.PIPE)
     remote_list = []
-    for line in remote_output.stdout:
-        alias = alias_from_mutt_format(line.decode('utf-8'))
+    for line_enc in remote_output.stdout:
+        line = line_enc.decode('utf-8').strip()
+        if len(line) == 0 or line.startswith('#'):
+            continue
+        alias = alias_from_mutt_format(line)
         remote_list.append(alias)
 
     local_list = []
     with open(local_filename, 'r') as local_file:
         for line in local_file:
+            line = line.strip()
+            if len(line) == 0 or line.startswith('#'):
+                continue
             alias = alias_from_mutt_format(line)
             local_list.append(alias)
 
@@ -68,9 +75,12 @@ def main():
                 j += 1
             else:
                 # conflict
-                assert false, 'Conflict detected, handling not implemented yet\n{}\n{}'.format(remote_list[i], local_list[j])
+                assert false, 'Conflict detected, handling not implemented yet\n{}\n{}'.format(remote, local)
 
-    # overwrite local with merged version
+    # overwrite local with merged version (but backup old one first)
+    backup_filename = '{}.bak'.format(local_filename)
+    shutil.move(local_filename, backup_filename)
+
     with open(local_filename, 'w') as local_file:
         for alias in merged:
             local_file.write('{}\n'.format(alias.to_mutt_format()))
