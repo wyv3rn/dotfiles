@@ -137,6 +137,15 @@ func main() {
 			}
 		}
 	}
+	for i < len(remote_list) {
+		merged = append(merged, remote_list[i])
+		i++
+	}
+	for j < len(local_list) {
+		merged = append(merged, local_list[j])
+		j++
+	}
+
 	// overwrite local with merged version (but backup old one first)
 	backup_filename := fmt.Sprintf("%s.bak", local_filename)
 	err = os.Rename(local_filename, backup_filename)
