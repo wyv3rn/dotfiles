@@ -297,6 +297,11 @@ set cinoptions=l1
 " Rust stuff
 au FileType rust set iskeyword-=:
 
+" Go stuff
+au FileType go nmap <F9> :up<CR>:make<CR>
+au FileType go nmap <F10> :up<CR>:GoBuild<CR>
+au FileType go nmap t :GoDef<CR>
+
 " similar to deleting/changing inner and outer stuff: append to inner and outer stuff
 " TODO this could be a small plugin ;) -> make register for the d commands configurable
 :nnoremap <leader>ai( F(%i

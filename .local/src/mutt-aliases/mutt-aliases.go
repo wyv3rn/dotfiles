@@ -77,10 +77,12 @@ func aliasListFromScanner(scanner *bufio.Scanner) []Alias {
 
 func main() {
 	// parse arguments
-	deleteAliasPtr := flag.String("delete", "", "Delete alias while syncing")
+	var deleteAlias, localFilename string
+	flag.StringVar(&deleteAlias, "delete", "", "Delete alias while syncing")
+	flag.StringVar(&localFilename, "local-filename", "~/.neomutt/aliases.rc", "Local alias file")
 	flag.Parse()
 
-	localFilename, err := expanduser("~/.neomutt/aliases.rc")
+	localFilename, err := expanduser(localFilename)
 	assert(err == nil, "Expanding home directory in local filename failed")
 
 	remoteFilename := ".neomutt/aliases.rc"
@@ -124,44 +126,54 @@ func main() {
 		remotePtr := &remoteList[i]
 		localPtr := &localList[j]
 		var nextPtr *Alias
-		var nextIdxPtr *int
-		var nextIdxPtr2 *int
 		if remotePtr.alias < localPtr.alias {
-			nextPtr = localPtr
-			nextIdxPtr = &i
-		} else if remotePtr.alias > localPtr.alias {
 			nextPtr = remotePtr
-			nextIdxPtr = &j
+			i++
+		} else if remotePtr.alias > localPtr.alias {
+			nextPtr = localPtr
+			j++
 		} else {
 			// same alias, check if its a conflict or if its a duplicate
 			if *remotePtr == *localPtr {
-				// duplicate -> take one, skip the other
+				// duplicate -> take one, skip the other (but have to check for duplicate with the last taken as well -> potentially skipping both)
 				nextPtr = localPtr
-				nextIdxPtr = &i
-				nextIdxPtr2 = &j
+				if len(merged) > 0 {
+					lastPtr := &merged[len(merged)-1]
+					if nextPtr.alias == lastPtr.alias {
+						if *nextPtr == *lastPtr {
+							// skip this duplicate as well
+							nextPtr = nil
+						} else {
+							assert(false, fmt.Sprintf("Conflict detected, handling not implemented yet\n%s\n%s\n", *nextPtr, *lastPtr))
+						}
+					}
+				}
+				i++
+				j++
 			} else {
 				// conflict
 				assert(false, fmt.Sprintf("Conflict detected, handling not implemented yet\n%s\n%s\n", *remotePtr, *localPtr))
 			}
 		}
 
-		if nextPtr.alias != *deleteAliasPtr {
+		if nextPtr != nil && nextPtr.alias != deleteAlias {
 			merged = append(merged, *nextPtr)
 		}
-		if nextIdxPtr != nil {
-			*nextIdxPtr++
-		}
-		if nextIdxPtr2 != nil {
-			*nextIdxPtr2++
-		}
 	}
-	for i < len(remoteList) {
-		merged = append(merged, remoteList[i])
-		i++
+	var remainingListPtr *[]Alias
+	var k int
+
+	if i < len(remoteList) {
+		remainingListPtr = &remoteList
+		k = i
+	} else {
+		remainingListPtr = &localList
+		k = j
 	}
-	for j < len(localList) {
-		merged = append(merged, localList[j])
-		j++
+
+	for k < len(*remainingListPtr) {
+		merged = append(merged, (*remainingListPtr)[k])
+		k++
 	}
 
 	// overwrite local with merged version (but backup old one first)
@@ -175,6 +187,7 @@ func main() {
 
 	for _, a := range merged {
 		newLocalFile.WriteString(fmt.Sprintf("%s\n", a.ToMuttFormat()))
+		fmt.Printf(fmt.Sprintf("%s\n", a.ToMuttFormat()))
 	}
 
 	// overwrite remote with merged version
