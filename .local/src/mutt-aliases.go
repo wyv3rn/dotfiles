@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"errors"
+	"flag"
 	"fmt"
 	"os"
 	"os/exec"
@@ -34,22 +35,22 @@ func assert(b bool, msg string) {
 }
 
 type Alias struct {
-	alias     string
-	full_name string
-	mail      string
+	alias    string
+	fullName string
+	mail     string
 }
 
-func (a *Alias) to_mutt_format() string {
-	return fmt.Sprintf("alias %s %s <%s>", a.alias, a.full_name, a.mail)
+func (a *Alias) ToMuttFormat() string {
+	return fmt.Sprintf("alias %s %s <%s>", a.alias, a.fullName, a.mail)
 }
 
 func (a Alias) String() string {
-	return a.to_mutt_format()
+	return a.ToMuttFormat()
 }
 
-func alias_from_mutt_format(mutt_string string) (Alias, error) {
+func aliasFromMuttFormat(muttString string) (Alias, error) {
 	r := regexp.MustCompile(`alias (?P<alias>\S+) (?P<name>[^>]+) <(?P<mail>\S+)>`)
-	match := r.FindStringSubmatch(mutt_string)
+	match := r.FindStringSubmatch(muttString)
 	if match == nil {
 		return Alias{}, errors.New("Wrong format")
 	} else {
@@ -57,14 +58,14 @@ func alias_from_mutt_format(mutt_string string) (Alias, error) {
 	}
 }
 
-func alias_list_from_scanner(scanner *bufio.Scanner) []Alias {
+func aliasListFromScanner(scanner *bufio.Scanner) []Alias {
 	aliases := make([]Alias, 0)
 	for scanner.Scan() {
 		line := strings.TrimSpace(scanner.Text())
 		if len(line) == 0 {
 			continue
 		}
-		alias, err := alias_from_mutt_format(line)
+		alias, err := aliasFromMuttFormat(line)
 		if err != nil {
 			fmt.Printf("[WARN] Skipping (and deleting) entry because the format is not correct: %s\n", line)
 			continue
@@ -75,32 +76,36 @@ func alias_list_from_scanner(scanner *bufio.Scanner) []Alias {
 }
 
 func main() {
-	local_filename, err := expanduser("~/.neomutt/aliases.rc")
+	// parse arguments
+	deleteAliasPtr := flag.String("delete", "", "Delete alias while syncing")
+	flag.Parse()
+
+	localFilename, err := expanduser("~/.neomutt/aliases.rc")
 	assert(err == nil, "Expanding home directory in local filename failed")
 
-	remote_filename := ".neomutt/aliases.rc"
-	remote_host := "alpha"
-	cmd := exec.Command("ssh", remote_host, "cat", remote_filename)
+	remoteFilename := ".neomutt/aliases.rc"
+	remoteHost := "alpha"
+	cmd := exec.Command("ssh", remoteHost, "cat", remoteFilename)
 	cmdReader, err := cmd.StdoutPipe()
 	assert(err == nil, "Failed getting stdout pipe")
 
 	scanner := bufio.NewScanner(cmdReader)
-	var remote_list []Alias
+	var remoteList []Alias
 	// fetch remote list in go-routine
 	go func() {
-		remote_list = alias_list_from_scanner(scanner)
+		remoteList = aliasListFromScanner(scanner)
 	}()
 
 	err = cmd.Start()
 	assert(err == nil, "Starting ssh command failed")
 
-	local_file, err := os.Open(local_filename)
+	localFile, err := os.Open(localFilename)
 	assert(err == nil, "Opening local file failed")
-	defer local_file.Close()
-	scanner = bufio.NewScanner(local_file)
-	local_list := alias_list_from_scanner(scanner)
-	sort.Slice(local_list, func(i, j int) bool {
-		return local_list[i].alias < local_list[j].alias
+	defer localFile.Close()
+	scanner = bufio.NewScanner(localFile)
+	localList := aliasListFromScanner(scanner)
+	sort.Slice(localList, func(i, j int) bool {
+		return localList[i].alias < localList[j].alias
 	})
 
 	// wait for the remote fetching
@@ -108,58 +113,71 @@ func main() {
 	assert(err == nil, "Waiting for the ssh command failed")
 
 	/// TODO avoid copy and paste of custom comparison?
-	sort.Slice(remote_list, func(i, j int) bool {
-		return remote_list[i].alias < remote_list[j].alias
+	sort.Slice(remoteList, func(i, j int) bool {
+		return remoteList[i].alias < remoteList[j].alias
 	})
 
 	// merge together
-	merged := make([]Alias, 0, len(remote_list)+len(local_list))
+	merged := make([]Alias, 0, len(remoteList)+len(localList))
 	i, j := 0, 0
-	for i < len(remote_list) && j < len(local_list) {
-		remote := &remote_list[i]
-		local := &local_list[j]
-		if remote.alias < local.alias {
-			merged = append(merged, *remote)
-			i++
-		} else if remote.alias > local.alias {
-			merged = append(merged, *local)
-			j++
+	for i < len(remoteList) && j < len(localList) {
+		remotePtr := &remoteList[i]
+		localPtr := &localList[j]
+		var nextPtr *Alias
+		var nextIdxPtr *int
+		var nextIdxPtr2 *int
+		if remotePtr.alias < localPtr.alias {
+			nextPtr = localPtr
+			nextIdxPtr = &i
+		} else if remotePtr.alias > localPtr.alias {
+			nextPtr = remotePtr
+			nextIdxPtr = &j
 		} else {
 			// same alias, check if its a conflict or if its a duplicate
-			if *remote == *local {
+			if *remotePtr == *localPtr {
 				// duplicate -> take one, skip the other
-				merged = append(merged, *remote)
-				i++
-				j++
+				nextPtr = localPtr
+				nextIdxPtr = &i
+				nextIdxPtr2 = &j
 			} else {
 				// conflict
-				assert(false, fmt.Sprintf("Conflict detected, handling not implemented yet\n%s\n%s\n", *remote, *local))
+				assert(false, fmt.Sprintf("Conflict detected, handling not implemented yet\n%s\n%s\n", *remotePtr, *localPtr))
 			}
 		}
+
+		if nextPtr.alias != *deleteAliasPtr {
+			merged = append(merged, *nextPtr)
+		}
+		if nextIdxPtr != nil {
+			*nextIdxPtr++
+		}
+		if nextIdxPtr2 != nil {
+			*nextIdxPtr2++
+		}
 	}
-	for i < len(remote_list) {
-		merged = append(merged, remote_list[i])
+	for i < len(remoteList) {
+		merged = append(merged, remoteList[i])
 		i++
 	}
-	for j < len(local_list) {
-		merged = append(merged, local_list[j])
+	for j < len(localList) {
+		merged = append(merged, localList[j])
 		j++
 	}
 
 	// overwrite local with merged version (but backup old one first)
-	backup_filename := fmt.Sprintf("%s.bak", local_filename)
-	err = os.Rename(local_filename, backup_filename)
+	backupFilename := fmt.Sprintf("%s.bak", localFilename)
+	err = os.Rename(localFilename, backupFilename)
 	assert(err == nil, "Backing up local file failed")
 
-	new_local_file, err := os.Create(local_filename)
+	newLocalFile, err := os.Create(localFilename)
 	assert(err == nil, "Creating new local file failed")
-	defer new_local_file.Close()
+	defer newLocalFile.Close()
 
 	for _, a := range merged {
-		new_local_file.WriteString(fmt.Sprintf("%s\n", a.to_mutt_format()))
+		newLocalFile.WriteString(fmt.Sprintf("%s\n", a.ToMuttFormat()))
 	}
 
 	// overwrite remote with merged version
-	err = exec.Command("scp", local_filename, fmt.Sprintf("%s:%s", remote_host, remote_filename)).Run()
+	err = exec.Command("scp", localFilename, fmt.Sprintf("%s:%s", remoteHost, remoteFilename)).Run()
 	assert(err == nil, "Syncing merged version to remote failed")
 }
