@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+cd ~/.local/src
+
+cd mutt-aliases
+go build mutt-aliases.go
+ln -srf mutt-aliases ../../bin/
+
+cd ..
