@@ -75,8 +75,40 @@ func AliasListFromScanner(scanner *bufio.Scanner) []Alias {
 }
 
 func ResolveConflict(a, b *Alias) *Alias {
-	assert(false, fmt.Sprintf("Conflict detected, handling not implemented yet\n%s\n%s\n", *a, *b))
-	return a // TODO implement for real
+	fmt.Printf("Conflict detected, how to resolve it (enter one character)?\n(1) %s\n(2) %s\n(m) Merge manually \n(d) Delete\n(q) Exit\n> ", *a, *b)
+	scanner := bufio.NewScanner(os.Stdin)
+	scanner.Scan()
+	input := scanner.Text()
+	if len(input) != 1 {
+		fmt.Println("Invalid choice (enter exactly one char) ...\n")
+		return ResolveConflict(a, b)
+	}
+	char := input[0]
+	switch char {
+	case '1':
+		return a
+	case '2':
+		return b
+	case 'm':
+		fmt.Printf("Enter the alias (starting with \"alias\"):\n> ")
+		scanner.Scan()
+		line := scanner.Text()
+		strings.TrimSpace(line)
+		alias, err := AliasFromMuttFormat(line)
+		if err != nil {
+			fmt.Println("Parsing your new alias failed ...\n")
+			return ResolveConflict(a, b)
+		}
+		return &alias
+	case 'd':
+		return nil
+	case 'q':
+		os.Exit(1)
+	default:
+		fmt.Println("Invalid choice ...\n")
+		return ResolveConflict(a, b)
+	}
+	return nil
 }
 
 func main() {
@@ -169,17 +201,21 @@ func main() {
 			}
 		}
 
-		assert(nextPtr != nil, "No next entry to take?")
-		if nextPtr.alias != deleteAlias {
+		if nextPtr != nil && nextPtr.alias != deleteAlias {
 			// check for duplicate with the last entry as well
 			if len(merged) > 0 {
 				lastPtr := &merged[len(merged)-1]
 				if nextPtr.alias == lastPtr.alias {
-					nextPtr = nil             // don't add another element, either skip or overwrite last
-					if *nextPtr == *lastPtr { // skip duplicate
-					} else { // conflict -> override last entry with resolved version
-						*lastPtr = *ResolveConflict(nextPtr, lastPtr)
-					}
+					if *nextPtr != *lastPtr { // conflict -> override last entry with resolved version
+						resolvedPtr := ResolveConflict(nextPtr, lastPtr)
+						if resolvedPtr != nil {
+							*lastPtr = *resolvedPtr
+						} else {
+							// delete last entry as well
+							merged = merged[:len(merged)-1]
+						}
+					} // else: skip duplicate
+					nextPtr = nil // don't add another element
 				}
 			}
 			if nextPtr != nil {
