@@ -28,6 +28,7 @@ Plugin 'skwp/greplace.vim'
 Plugin 'fatih/vim-go'
 Plugin 'rust-lang/rust.vim'
 Plugin 'machakann/vim-swap'
+Plugin 'rhysd/vim-clang-format'
 Plugin 'wyv3rn/vim-tinycpp'
 
 call vundle#end()
@@ -293,6 +294,21 @@ inoremap {<CR> {<CR>}<C-O>O
 au FileType cpp set iskeyword-=:
 " fix indent for switch case with {}
 set cinoptions=l1
+
+" clang-format
+let g:clang_format#code_style="google"
+let g:clang_format#style_options = {
+            \ "AlignConsecutiveDeclarations" : "true",
+            \ "IndentWidth" : "4",
+            \ "SpaceBeforeParens" : "false",
+            \ "SpaceAfterCStyleCast" : "true",
+            \ "SpaceAfterTemplateKeyword" : "false",
+            \ "AccessModifierOffset": "-4",
+            \ "BreakConstructorInitializers" : "AfterColon",
+            \ "BreakInheritanceList" : "AfterColon",
+            \ "ColumnLimit" : "80",
+            \ }
+" au FileType c,cpp ClangFormatAutoEnable
 
 " Rust stuff
 au FileType rust set iskeyword-=:
