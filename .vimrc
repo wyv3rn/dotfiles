@@ -75,6 +75,8 @@ endif
 " highlight stuff
 hi MatchParen cterm=none ctermbg=none ctermfg=red
 hi SpellBad cterm=underline ctermbg=none ctermfg=red
+hi LineNr ctermfg=darkgrey
+hi CursorLineNR cterm=bold
 
 " switch between light and dark background setting
 map <F12> :let &background = ( &background == "dark"? "light" : "dark" )<CR>
@@ -105,6 +107,7 @@ imap <c-k> <Right><Esc>C
 nmap <c-b> b
 nmap <c-f> w
 
+
 " GUI stuff
 if has('gui_running')
     colorscheme solarized
@@ -117,8 +120,6 @@ if has('gui_running')
     set guioptions-=T
     set guioptions-=r
     set guioptions-=L
-else
-    highlight LineNr ctermfg=darkgrey
 endif
 
 " correct last spelling error
