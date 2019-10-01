@@ -29,6 +29,7 @@ Plugin 'fatih/vim-go'
 Plugin 'rust-lang/rust.vim'
 Plugin 'machakann/vim-swap'
 Plugin 'rhysd/vim-clang-format'
+Plugin 'ElmCast/elm-vim'
 Plugin 'wyv3rn/vim-tinycpp'
 
 call vundle#end()
@@ -183,6 +184,9 @@ let g:ycm_extra_conf_globlist = ['~/OPAcITY/*']
 au FileType cpp map <F7> :YcmCompleter FixIt<CR>
 nmap t :YcmCompleter GoTo<CR>
 nmap <C-t> <C-o>
+let g:ycm_semantic_triggers = {
+     \ 'elm' : ['.'],
+     \}
 
 " vimlatex and latex in general
 au FileType tex nmap <F9> :up<CR><leader>ll
@@ -306,9 +310,11 @@ let g:clang_format#style_options = {
             \ "AccessModifierOffset": "-4",
             \ "BreakConstructorInitializers" : "AfterColon",
             \ "BreakInheritanceList" : "AfterColon",
+            \ "BinPackParameters" : "false",
             \ "ColumnLimit" : "80",
             \ }
 " au FileType c,cpp ClangFormatAutoEnable
+nnoremap maf :ClangFormat<CR>
 
 " Rust stuff
 au FileType rust set iskeyword-=:
@@ -317,6 +323,10 @@ au FileType rust set iskeyword-=:
 au FileType go nmap <F9> :up<CR>:make<CR>
 au FileType go nmap <F10> :up<CR>:GoBuild<CR>
 au FileType go nmap t :GoDef<CR>
+
+" Elm stuff
+au FileType elm set cc=81
+au FileType elm highlight ColorColumn ctermbg=8
 
 " similar to deleting/changing inner and outer stuff: append to inner and outer stuff
 " TODO this could be a small plugin ;) -> make register for the d commands configurable
