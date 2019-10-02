@@ -301,22 +301,7 @@ au FileType cpp set iskeyword-=:
 set cinoptions=l1
 
 " clang-format
-let g:clang_format#code_style="google"
-let g:clang_format#style_options = {
-            \ "AlignConsecutiveDeclarations" : "true",
-            \ "IndentWidth" : "4",
-            \ "BreakBeforeBraces" : "WebKit",
-            \ "SpaceBeforeParens" : "false",
-            \ "SpaceAfterCStyleCast" : "true",
-            \ "SpaceAfterTemplateKeyword" : "false",
-            \ "AccessModifierOffset": "-4",
-            \ "BreakConstructorInitializers" : "AfterColon",
-            \ "BreakInheritanceList" : "AfterColon",
-            \ "AlignAfterOpenBracket": "AlwaysBreak",
-            \ "BinPackParameters" : "false",
-            \ "BinPackArguments" : "false",
-            \ "ColumnLimit" : "80",
-            \ }
+let g:clang_format#detect_style_file=1
 " au FileType c,cpp ClangFormatAutoEnable
 nnoremap maf :ClangFormat<CR>
 

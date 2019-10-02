@@ -2,7 +2,7 @@
 -- Tweaked default awesome theme --
 ---------------------------
 
-local dpi = 96
+local dpi = 110
 
 local theme = {}
 
