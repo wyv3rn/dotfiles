@@ -181,7 +181,7 @@ map <C-h> k
 
 " YCM
 set completeopt-=preview
-let g:ycm_extra_conf_globlist = ['~/OPAcITY/*']
+let g:ycm_extra_conf_globlist = ['~/OPAcITY/*', '~/gitlab/OPAcITY/*']
 au FileType cpp map <F7> :YcmCompleter FixIt<CR>
 nmap t :YcmCompleter GoTo<CR>
 nmap <C-t> <C-o>
