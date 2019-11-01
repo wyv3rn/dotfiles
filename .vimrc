@@ -313,9 +313,9 @@ au FileType go nmap <F9> :up<CR>:make<CR>
 au FileType go nmap <F10> :up<CR>:GoBuild<CR>
 au FileType go nmap t :GoDef<CR>
 
-" Elm stuff
-au FileType elm set cc=81
-au FileType elm highlight ColorColumn ctermbg=8
+" Highlight column 81 for some filetypes
+au FileType elm,python,cpp,c set cc=81
+au FileType elm,python,cpp,c highlight ColorColumn ctermbg=8
 
 " similar to deleting/changing inner and outer stuff: append to inner and outer stuff
 " TODO this could be a small plugin ;) -> make register for the d commands configurable
