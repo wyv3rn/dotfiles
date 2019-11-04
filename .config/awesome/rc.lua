@@ -416,8 +416,8 @@ globalkeys = awful.util.table.join(
     -- custom file launcher
     awful.key({ modkey, "Shift" }, "space", function () awful.util.spawn("file-launcher") end),
 
-    -- custom python terminal
-    awful.key({ modkey, "Shift" }, "Return", function () awful.util.spawn("python-terminal") end),
+    -- custom ghci terminal
+    awful.key({ modkey, "Shift" }, "Return", function () awful.util.spawn("ghci-terminal") end),
 
     -- lock screen
     awful.key({ modkey, "Control"   }, ".", function () awful.util.spawn("xscreensaver-command -lock") end),
@@ -562,6 +562,7 @@ awful.rules.rules = {
           "copyq",  -- Includes session name in class.
           "URxvtLauncher",
           "URxvtPython",
+          "URxvtHaskell",
         },
         class = {
           "Arandr",

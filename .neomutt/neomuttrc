@@ -9,6 +9,8 @@ set timeout=10
 set pager_stop
 set alias_file = "~/.neomutt/aliases.rc"
 set forward_format = "Fwd: %s"
+set fast_reply = yes
+set include = yes
 
 # threads
 set sort=threads
