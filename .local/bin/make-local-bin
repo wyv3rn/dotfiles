@@ -3,7 +3,7 @@
 cd ~/.local/src
 
 cd mutt-aliases
-go build mutt-aliases.go
+ghc -dynamic mutt-aliases.hs
 ln -srf mutt-aliases ../../bin/
 
 cd ..
