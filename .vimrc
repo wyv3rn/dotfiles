@@ -3,6 +3,11 @@ set nocompatible
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 set rtp+=/usr/local/opt/fzf
+
+" force all plugins to use python3
+if has('python3')
+endif
+
 call vundle#begin()
 
 " let Vundle manage Vundle, required
@@ -17,7 +22,7 @@ Plugin 'tpope/vim-surround'
 Plugin 'benmills/vimux'
 Plugin 'vim-latex/vim-latex'
 Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'Valloric/YouCompleteMe'
+Plugin 'ycm-core/YouCompleteMe'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'vimwiki/vimwiki'
@@ -273,7 +278,6 @@ let g:grep_cmd_opts = '--line-numbers --noheading'
 let g:UltiSnipsExpandTrigger="<C-d>"
 let g:UltiSnipsJumpForwardTrigger="<C-e>"
 let g:UltiSnipsJumpBackwardTrigger="<C-r>"
-let g:UltiSnipsUsePythonVersion = 3
 
 " easy motion stuff
 let g:EasyMotion_smartcase = 1
