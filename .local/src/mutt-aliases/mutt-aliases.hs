@@ -42,8 +42,7 @@ resolveConflicts [] = return []
 resolveConflicts [a] = return [a]
 resolveConflicts (a:b:as) =
     if alias a /= alias b then do
-        rest <- resolveConflicts (b:as)
-        return (a:rest)
+        fmap (a:) $ resolveConflicts (b:as)
     else do
         resolved <- resolveOne a b
         case resolved of
@@ -91,6 +90,7 @@ handleLocalError e =
     else ioError e
 
 main = do
+    let localUserPath = "/.neomutt/aliases.rc"
     let host = "alpha"
     let remotePath = ".neomutt/aliases.rc"
     let remoteBackupPath = remotePath ++ ".bak"
@@ -98,11 +98,9 @@ main = do
         createProcess (shell $ "ssh " ++ host ++ " cat " ++ remotePath) {
             std_out = CreatePipe
         }
-    remoteContent <- hGetContents hout
-    let remoteList = filterEmptyLines . lines $ remoteContent
 
-    homePath <- getHomeDirectory
-    let localPath = homePath ++ "/.neomutt/aliases.rc"
+    remoteList <- fmap (filterEmptyLines . lines) $ hGetContents hout
+    localPath <- fmap (++ localUserPath) getHomeDirectory
     let localBackupPath = localPath ++ ".bak"
     localContent <- (readFile localPath) `catch` handleLocalError
     let localList = filterEmptyLines . lines $ localContent
@@ -116,11 +114,11 @@ main = do
         putStrLn $ "[WARN] Deleting " ++ show (l - l') ++ " lines"
                     ++ " that did not contain valid aliases"
 
-    merged <- resolveConflicts aliases
-    let mergedLines = map aliasToMuttStr merged
+    mergedLines <- fmap (map aliasToMuttStr) $ resolveConflicts aliases
     mapM putStrLn mergedLines
 
-    copyFile localPath localBackupPath
+    when (not . null $ localList) $ do
+        copyFile localPath localBackupPath
     writeFile localPath $ unlines mergedLines
 
     callCommand $
