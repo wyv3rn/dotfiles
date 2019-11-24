@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ $# -ne 1 ]; then
+    dir=`pwd`
+else
+    dir=$1
+fi
+
+for f in `find $dir -iname "*.tex"`; do
+    sed -n 's/\\\(acro\|acrodef\|DeclareAcronym\){\(.\+\)}{.\+}$/call IMAP ("\2", "\\\\ac{\2}<++>", "tex")/p' $f | sed -n 'p;s/"\([^"]\+\)", "\\\\ac/"p\1", "\\\\acp/p';
+done
