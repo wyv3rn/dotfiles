@@ -307,7 +307,7 @@ set cinoptions=l1
 " clang-format
 let g:clang_format#detect_style_file=1
 " au FileType c,cpp ClangFormatAutoEnable
-nnoremap maf :ClangFormat<CR>
+nnoremap <leader>af :ClangFormat<CR> :up<CR>
 
 " Rust stuff
 au FileType rust set iskeyword-=:
