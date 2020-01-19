@@ -419,6 +419,9 @@ globalkeys = awful.util.table.join(
     -- custom ghci terminal
     awful.key({ modkey, "Shift" }, "Return", function () awful.util.spawn("ghci-terminal") end),
 
+    -- neomutt in its own terminal
+    awful.key({ modkey, "Shift" }, "m", function () awful.util.spawn("gmutt") end),
+
     -- lock screen
     awful.key({ modkey, "Control"   }, ".", function () awful.util.spawn("xscreensaver-command -lock") end),
 
