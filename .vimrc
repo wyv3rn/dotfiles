@@ -33,6 +33,7 @@ Plugin 'skwp/greplace.vim'
 Plugin 'fatih/vim-go'
 Plugin 'rust-lang/rust.vim'
 Plugin 'machakann/vim-swap'
+Plugin 'Chiel92/vim-autoformat'
 Plugin 'rhysd/vim-clang-format'
 Plugin 'ElmCast/elm-vim'
 Plugin 'wyv3rn/vim-tinycpp'
@@ -293,6 +294,11 @@ nmap F <Plug>(easymotion-Fl)
 " TODO conflic with C++ jumping ...
 " nmap t <Plug>(easymotion-tl)
 " nmap T <Plug>(easymotion-Tl)
+
+" Autoformat
+let g:autoformat_autoindent = 0
+let g:autoformat_retab = 0
+au FileType haskell nnoremap <leader>af :Autoformat<CR> :up<CR>
 
 " C++ stuff
 " don't indent namespace content and public/private/protected keywords
