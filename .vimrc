@@ -34,7 +34,6 @@ Plugin 'fatih/vim-go'
 Plugin 'rust-lang/rust.vim'
 Plugin 'machakann/vim-swap'
 Plugin 'Chiel92/vim-autoformat'
-Plugin 'rhysd/vim-clang-format'
 Plugin 'ElmCast/elm-vim'
 Plugin 'wyv3rn/vim-tinycpp'
 
@@ -298,7 +297,7 @@ nmap F <Plug>(easymotion-Fl)
 " Autoformat
 let g:autoformat_autoindent = 0
 let g:autoformat_retab = 0
-au FileType haskell nnoremap <leader>af :Autoformat<CR> :up<CR>
+nnoremap <leader>af :Autoformat<CR> :up<CR>
 
 " C++ stuff
 " don't indent namespace content and public/private/protected keywords
@@ -309,11 +308,6 @@ inoremap {<CR> {<CR>}<C-O>O
 au FileType cpp set iskeyword-=:
 " fix indent for switch case with {}
 set cinoptions=l1
-
-" clang-format
-let g:clang_format#detect_style_file=1
-" au FileType c,cpp ClangFormatAutoEnable
-au FileType c,cpp nnoremap <leader>af :ClangFormat<CR> :up<CR>
 
 " Rust stuff
 au FileType rust set iskeyword-=:
