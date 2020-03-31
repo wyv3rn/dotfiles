@@ -23,6 +23,7 @@ switcher.settings.preview_box_delay = 250
 switcher.settings.cycle_raise_client = false
 switcher.settings.preview_box_title_font_size_factor = 1.3
 switcher.settings.preview_box_bg = "#ffffff99"
+switcher.settings.swap_with_master = true
 
 -- init theme
 beautiful.init(awful.util.getdir("config") .. "themes/default/theme.lua")
@@ -305,6 +306,12 @@ globalkeys = awful.util.table.join(
               {description = "go back", group = "tag"}),
 
     awful.key({ modkey,           }, "j",
+        function ()
+            awful.client.focus.byidx( 1)
+        end,
+        {description = "focus next by index", group = "client"}
+    ),
+    awful.key({ modkey,           }, "y",
         function ()
             awful.client.focus.byidx( 1)
         end,

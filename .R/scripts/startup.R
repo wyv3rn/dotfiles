@@ -4,6 +4,7 @@ options(editor="vim")
 options(menu.graphics=FALSE)
 options(prompt="> ")
 options(continue="... ")
+options(browser="firefox")
 
 q <- function (save="no", ...) {
   quit(save=save, ...)
