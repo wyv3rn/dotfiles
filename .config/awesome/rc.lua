@@ -570,9 +570,9 @@ awful.rules.rules = {
         instance = {
           "DTA",  -- Firefox addon DownThemAll.
           "copyq",  -- Includes session name in class.
-          "URxvtLauncher",
-          "URxvtPython",
-          "URxvtHaskell",
+          "TermLauncher",
+          "TermPython",
+          "TermHaskell",
         },
         class = {
           "Arandr",

@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-urxvt -name URxvtHaskell -geometry 80x40+800+100 -e sh -c 'ghci'
+urxvt -name TermHaskell -geometry 80x40+800+100 -e sh -c 'ghci'
