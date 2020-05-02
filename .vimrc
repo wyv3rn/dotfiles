@@ -36,6 +36,9 @@ Plugin 'machakann/vim-swap'
 Plugin 'Chiel92/vim-autoformat'
 Plugin 'ElmCast/elm-vim'
 Plugin 'wyv3rn/vim-tinycpp'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'tpope/vim-fugitive'
 
 call vundle#end()
 
@@ -112,7 +115,6 @@ imap <c-k> <Right><Esc>C
 nmap <c-b> b
 nmap <c-f> w
 
-
 " GUI stuff
 if has('gui_running')
     colorscheme solarized
@@ -128,8 +130,8 @@ if has('gui_running')
 endif
 
 " correct last spelling error
-imap <F2> <c-g>u<Esc>[s1z=`]a<c-g>u
-nmap <F2> [s1z=<c-o>
+inoremap <F2> <c-g>u<Esc>[s1z=`]a<c-g>u
+nnoremap <F2> [s1z=<c-o>
 
 " window and buffer stuff
 nnoremap <leader>wn <C-w>v<C-w>l
@@ -184,6 +186,16 @@ noremap <C-Up> {
 map <BS> k
 map <C-h> k
 
+" airline
+let g:airline_theme='minimalist'
+let g:airline_powerline_fonts = 1
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+let g:airline_symbols.linenr = 'Ξ'
+let g:airline_symbols.maxlinenr = ''
+let g:airline_right_sep = ''
+
 " YCM
 set completeopt-=preview
 let g:ycm_extra_conf_globlist = ['~/OPAcITY/*', '~/gitlab/OPAcITY/*']
@@ -193,6 +205,11 @@ nmap <C-t> <C-o>
 let g:ycm_semantic_triggers = {
      \ 'elm' : ['.'],
      \}
+highlight YcmErrorLine ctermbg=Black
+highlight YcmErrorSection ctermbg=Black
+highlight YcmWarningLine ctermbg=Black
+highlight YcmWarningSection ctermbg=Black
+
 
 " vimlatex and latex in general
 au FileType tex nmap <F9> :up<CR><leader>ll
@@ -213,8 +230,9 @@ let g:Tex_IgnoredWarnings =
     \'Package Babel Warning: The package option'."\n".
     \'Marginpar'."\n".
     \'Font shape'."\n".
-    \'There is no short form set for acronym'
-let g:Tex_IgnoreLevel = 11
+    \'There is no short form set for acronym'."\n".
+    \'Package hyperref Warning: Token not allowed in a PDF'
+let g:Tex_IgnoreLevel = 12
 set iskeyword+=:
 so ~/.vim/bundle/vim-latex/plugin/imaps.vim
 au FileType tex call IMAP("bib:", "\\cite{bib:<++>}<++>", "tex")
@@ -320,10 +338,11 @@ au FileType go nmap <F9> :up<CR>:make<CR>
 au FileType go nmap <F10> :up<CR>:GoBuild<CR>
 au FileType go nmap t :GoDef<CR>
 
-" Highlight column 81 for most filetypes
-let blacklist = ['tex', 'vim']
+" Highlight maximum width for most filetypes
+au FileType * highlight ColorColumn ctermbg=8
+au FileType rust set cc=101
+let blacklist = ['tex', 'vim', 'rust']
 au FileType * if index(blacklist, &ft) < 0 | set cc=81
-au FileType * if index(blacklist, &ft) < 0 | highlight ColorColumn ctermbg=8
 
 " similar to deleting/changing inner and outer stuff: append to inner and outer stuff
 " TODO this could be a small plugin ;) -> make register for the d commands configurable
