@@ -94,3 +94,7 @@ source ~/.neomutt/gmx.rc
 
 # aliases
 source ~/.neomutt/aliases.rc
+
+# complete addresses
+set query_command = "echo '' && notmuch address /%s/"
+set query_format="%4c %t %-70.70a %-70.70n %?e?(%e)?"
