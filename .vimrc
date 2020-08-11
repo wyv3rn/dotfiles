@@ -39,6 +39,7 @@ Plugin 'wyv3rn/vim-tinycpp'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tpope/vim-fugitive'
+Plugin 'udalov/kotlin-vim'
 
 call vundle#end()
 
@@ -231,8 +232,10 @@ let g:Tex_IgnoredWarnings =
     \'Marginpar'."\n".
     \'Font shape'."\n".
     \'There is no short form set for acronym'."\n".
+    \'Package fixltx2e Warning: fixltx2e is not required'."\n".
+    \'Package multicol Warning: May not work with the twocolumn option'."\n".
     \'Package hyperref Warning: Token not allowed in a PDF'
-let g:Tex_IgnoreLevel = 12
+let g:Tex_IgnoreLevel = 14
 set iskeyword+=:
 so ~/.vim/bundle/vim-latex/plugin/imaps.vim
 au FileType tex call IMAP("bib:", "\\cite{bib:<++>}<++>", "tex")
@@ -341,7 +344,8 @@ au FileType go nmap t :GoDef<CR>
 " Highlight maximum width for most filetypes
 au FileType * highlight ColorColumn ctermbg=8
 au FileType rust set cc=101
-let blacklist = ['tex', 'vim', 'rust']
+au FileType kotlin set cc=101
+let blacklist = ['tex', 'vim', 'rust', 'kotlin']
 au FileType * if index(blacklist, &ft) < 0 | set cc=81
 
 " similar to deleting/changing inner and outer stuff: append to inner and outer stuff
