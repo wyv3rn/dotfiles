@@ -234,8 +234,9 @@ let g:Tex_IgnoredWarnings =
     \'There is no short form set for acronym'."\n".
     \'Package fixltx2e Warning: fixltx2e is not required'."\n".
     \'Package multicol Warning: May not work with the twocolumn option'."\n".
-    \'Package hyperref Warning: Token not allowed in a PDF'
-let g:Tex_IgnoreLevel = 14
+    \'Package hyperref Warning: Token not allowed in a PDF'."\n".
+    \'LaTeX Font Warning: Size substitutions'
+let g:Tex_IgnoreLevel = 15
 set iskeyword+=:
 so ~/.vim/bundle/vim-latex/plugin/imaps.vim
 au FileType tex call IMAP("bib:", "\\cite{bib:<++>}<++>", "tex")
@@ -345,7 +346,8 @@ au FileType go nmap t :GoDef<CR>
 au FileType * highlight ColorColumn ctermbg=8
 au FileType rust set cc=101
 au FileType kotlin set cc=101
-let blacklist = ['tex', 'vim', 'rust', 'kotlin']
+au FileType elm set cc=101
+let blacklist = ['tex', 'vim', 'rust', 'kotlin', 'elm']
 au FileType * if index(blacklist, &ft) < 0 | set cc=81
 
 " similar to deleting/changing inner and outer stuff: append to inner and outer stuff
