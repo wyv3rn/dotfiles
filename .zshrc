@@ -6,9 +6,9 @@ export ZSH=$HOME/.oh-my-zsh
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 
 if [[ -n $SSH_CONNECTION ]]; then
-    ZSH_THEME="mytheme"
-else
     ZSH_THEME="mysshtheme"
+else
+    ZSH_THEME="mytheme"
 fi
 
 
