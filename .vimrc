@@ -347,7 +347,8 @@ au FileType * highlight ColorColumn ctermbg=8
 au FileType rust set cc=101
 au FileType kotlin set cc=101
 au FileType elm set cc=101
-let blacklist = ['tex', 'vim', 'rust', 'kotlin', 'elm']
+au FileType cpp set cc=101
+let blacklist = ['tex', 'vim', 'rust', 'kotlin', 'elm', 'cpp']
 au FileType * if index(blacklist, &ft) < 0 | set cc=81
 
 " similar to deleting/changing inner and outer stuff: append to inner and outer stuff
