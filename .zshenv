@@ -9,7 +9,7 @@ export VISUAL=vim
 export EDITOR="$VISUAL"
 
 export GUROBI_HOME=~/.local/gurobi911/linux64
-export PATH=~/.local/bin:~/go/bin:~/.local/bin/Telegram:${GUROBI_HOME}/bin:$PATH
+export PATH=~/.ghcup/bin:~/.local/bin:~/go/bin:~/.local/bin/Telegram:${GUROBI_HOME}/bin:$PATH
 export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${GUROBI_HOME}/lib"
 
 export FZF_DEFAULT_COMMAND='fd --type f --follow'
