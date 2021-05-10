@@ -235,8 +235,9 @@ let g:Tex_IgnoredWarnings =
     \'Package fixltx2e Warning: fixltx2e is not required'."\n".
     \'Package multicol Warning: May not work with the twocolumn option'."\n".
     \'Package hyperref Warning: Token not allowed in a PDF'."\n".
-    \'LaTeX Font Warning: Size substitutions'
-let g:Tex_IgnoreLevel = 15
+    \'LaTeX Font Warning: Size substitutions'."\n".
+    \'Package balance Warning: You have called'
+let g:Tex_IgnoreLevel = 16
 set iskeyword+=:
 so ~/.vim/bundle/vim-latex/plugin/imaps.vim
 au FileType tex call IMAP("bib:", "\\cite{bib:<++>}<++>", "tex")
