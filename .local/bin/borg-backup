@@ -16,6 +16,7 @@ borg create                    	    \
     --compression lz4               \
     --exclude-caches                \
     --exclude '/home/*/.cache/*'    \
+    --exclude '/home/*/mnt/*'       \
     --exclude '/dev/*'              \
     --exclude '/proc/*'             \
     --exclude '/sys/*'              \
