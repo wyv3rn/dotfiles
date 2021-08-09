@@ -50,6 +50,8 @@ bind index,pager ] next-page
 set crypt_use_gpgme = yes
 set pgp_self_encrypt = yes
 set pgp_default_key = "57E6DE4CF818A68DC058791F3EED0C65E3BC0932"
+set crypt_autoencrypt = yes
+set crypt_autosign = yes
 
 # HTML
 auto_view text/html
