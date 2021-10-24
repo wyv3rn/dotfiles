@@ -1,0 +1,39 @@
+font:
+  size: 9
+  normal:
+    family: Inconsolata for Powerline
+    style: regular
+
+schemes:
+  solarized_dark: &solarized_dark
+    primary:
+      background: '#002b36' # base03
+      foreground: '#839496' # base0
+
+    cursor:
+      # text:   '#002b36' # base03
+      # cursor: '#839496' # base0
+      text:   '#fdf6e3' # base3
+      cursor: '#859900' # green
+
+    normal:
+      black:   '#073642' # base02
+      red:     '#dc322f' # red
+      green:   '#859900' # green
+      yellow:  '#b58900' # yellow
+      blue:    '#268bd2' # blue
+      magenta: '#d33682' # magenta
+      cyan:    '#2aa198' # cyan
+      white:   '#eee8d5' # base2
+
+    bright:
+      black:   '#586e75' # base01
+      red:     '#cb4b16' # orange
+      green:   '#859900' # green
+      yellow:  '#b58900' # yellow
+      blue:    '#268bd2' # blue
+      magenta: '#6c71c4' # violet
+      cyan:    '#2aa198' # cyan
+      white:   '#fdf6e3' # base3
+
+colors: *solarized_dark
