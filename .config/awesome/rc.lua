@@ -90,9 +90,9 @@ end
 
 
 -- This is used later as the default terminal and editor to run.
-terminal = "alacritty"
+terminal = "urxvt"
 editor = os.getenv("EDITOR") or "nvim"
-editor_cmd = "alacritty -e " .. editor
+editor_cmd = "urxvt -e " .. editor
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.

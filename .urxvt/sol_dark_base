@@ -2,8 +2,6 @@
 
 !!Source http://github.com/altercation/solarized
 
-URxvt.cursorColor: #657b83
-
 URxvt*background: [85]#002b36
 URxvt*borderColor: [85]#002b36
 URxvt*foreground: #839496
