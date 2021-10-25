@@ -93,7 +93,7 @@ map <F12> :let &background = ( &background == "dark"? "light" : "dark" )<CR>
 " python: "else:" is the same as "else"
 au FileType python set iskeyword-=:
 
-" cursor shape
+" cursor shape and blink
 let escPrefix = ""
 let escSuffix = ""
 if exists('$TMUX')
@@ -103,6 +103,7 @@ endif
 let &t_SI = escPrefix . "\<Esc>[5 q" . escSuffix
 let &t_SR = escPrefix . "\<Esc>[3 q" . escSuffix
 let &t_EI = escPrefix . "\<Esc>[1 q" . escSuffix
+set guicursor+=a:blinkon1
 
 " better insert mode navigation
 imap <c-b> <c-left>
@@ -120,7 +121,6 @@ nmap <c-f> w
 if has('gui_running')
     colorscheme solarized
     set background=dark
-    set guicursor=a:blinkon600-blinkoff400  " Slow down cursor blinking speed
     set guifont=DejaVu\ Sans\ Mono\ 9
     set antialias
     set guioptions-=m
