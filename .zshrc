@@ -90,7 +90,7 @@ source $ZSH/oh-my-zsh.sh
 zstyle ':completion:*' special-dirs true
 
 if type "keychain" > /dev/null; then
-    eval `keychain --eval id_rsa`
+    eval `keychain --ignore-missing --eval id_rsa id_ed25519`
 fi
 
 if [ "$(uname 2> /dev/null)" = "Linux" ]; then
