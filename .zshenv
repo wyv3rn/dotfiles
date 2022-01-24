@@ -21,3 +21,4 @@ alias mutt="neomutt"
 alias R="R --no-save --quiet"
 
 [ -f $HOME/.zshenv_local ] && source $HOME/.zshenv_local || true
+. "$HOME/.cargo/env"
