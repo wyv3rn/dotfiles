@@ -216,8 +216,7 @@ highlight YcmWarningSection ctermbg=Black
 
 
 " vimlatex and latex in general
-au FileType tex nmap <F9> :up<CR><leader>ll
-au FileType tex imap <F9> <ESC>:up<CR><leader>ll
+au FileType tex nmap <F9> :up<CR>:call VimuxRunCommand("clear; latexmk -pdf")<CR>
 imap <C-j> <Plug>IMAP_JumpForward
 let g:latex_view_general_viewer = 'zathura'
 let g:vimtex_view_method = 'zathura'
