@@ -377,4 +377,7 @@ au FileType * if index(blacklist, &ft) < 0 | set cc=81
 if filereadable(".vimrc.local")
     so .vimrc.local
 endif
+if filereadable(".vimrc.acro")
+    so .vimrc.acro
+endif
 
