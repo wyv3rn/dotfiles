@@ -1,0 +1,28 @@
+#!/usr/bin/env python3
+
+import sys
+import types
+import re
+import uuid
+from icalendar.parser import Contentline, Contentlines
+from icalendar import Calendar
+
+infile = sys.argv[1]
+
+with open(infile) as f:
+    cal = Calendar.from_ical(f.read())
+
+all_content_lines = cal.content_lines(True)
+content_lines = Contentlines()
+for line in all_content_lines:
+    if line.startswith('ATTENDEE') or line.startswith('ORGANIZER'):
+        continue
+    uuid_match = re.match('UID\:(.+)', line)
+    if uuid_match:
+        uid = uuid.UUID(uuid_match.group(1))
+        new_uid = uuid.UUID(int=uid.int + 1)
+        line = Contentline(line.replace(uuid_match.group(1), str(new_uid).upper()))
+    content_lines.append(line)
+
+with open('out.ics', 'wb') as f:
+    f.write(content_lines.to_ical())
