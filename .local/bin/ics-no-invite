@@ -17,11 +17,18 @@ content_lines = Contentlines()
 for line in all_content_lines:
     if line.startswith('ATTENDEE') or line.startswith('ORGANIZER'):
         continue
-    uuid_match = re.match('UID\:(.+)', line)
-    if uuid_match:
-        uid = uuid.UUID(uuid_match.group(1))
-        new_uid = uuid.UUID(int=uid.int + 1)
-        line = Contentline(line.replace(uuid_match.group(1), str(new_uid).upper()))
+    uid_match = re.match('UID\:(.+)', line)
+    if uid_match:
+        uid_str = uid_match.group(1)
+        try:
+            uid = uuid.UUID(uid_str)
+            new_uid = uuid.UUID(int=uid.int + 1)
+            new_uid_str = str(new_uid).upper()
+        except:
+            uid = int(uid_str, 16)
+            new_uid = uid + 1
+            new_uid_str = '{:x}'.format(new_uid).upper()
+        line = Contentline(line.replace(uid_str, new_uid_str))
     content_lines.append(line)
 
 with open('out.ics', 'wb') as f:
