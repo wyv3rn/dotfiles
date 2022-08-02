@@ -336,7 +336,7 @@ set cinoptions=l1
 
 " Rust stuff
 au FileType rust set iskeyword-=:
-au FileType rust nmap <F8> :up<CR>:call VimuxRunCommand("clear; cargo fmt --check && cargo clippy")<CR>
+au FileType rust nmap <F8> :up<CR>:call VimuxRunCommand("clear; cargo fmt --check && cargo clippy --all-targets --all-features -- -D warnings")<CR>
 au FileType rust nmap <F9> :up<CR>:call VimuxRunCommand("clear; cargo build --release")<CR>
 au FileType rust nmap <F10> :up<CR>:call VimuxRunCommand("clear; cargo build")<CR>
 au FileType rust nmap <F11> :up<CR>:call VimuxRunCommand("clear; cargo test")<CR>
