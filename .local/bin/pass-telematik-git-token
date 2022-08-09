@@ -1,2 +1,5 @@
 #!/usr/bin/env bash
-pass telematik/git/token
+case "$1" in
+    Username*) pass telematik/git/username ;;
+    Password*) pass telematik/git/token ;;
+esac
