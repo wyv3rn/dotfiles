@@ -39,8 +39,15 @@ local vert_sep = wibox.widget {
     thickness = 1.5,
 }
 
--- init 3rd party widgets
+local backlight = ""
 if get_hostname() == "beta" then
+    backlight = "intel_backlight"
+elseif get_hostname() == "tau" then
+    backlight = "amdgpu_bl0"
+end
+
+-- init 3rd party widgets
+if get_hostname() == "beta" or get_hostname() == "tau" then
     require("init_bat")
 end
 
@@ -439,8 +446,8 @@ globalkeys = awful.util.table.join(
     awful.key({ }, "XF86AudioMicMute",      function () awful.util.spawn("amixer set Capture toggle") end),
 
     -- brightness ctrl
-    awful.key({ }, "XF86MonBrightnessDown", function () awful.util.spawn("set-backlight 10 --dec") end),
-    awful.key({ }, "XF86MonBrightnessUp", function () awful.util.spawn("set-backlight 10 --inc") end),
+    awful.key({ }, "XF86MonBrightnessDown", function () awful.util.spawn("set-backlight " .. backlight .. " 10 --dec") end),
+    awful.key({ }, "XF86MonBrightnessUp", function () awful.util.spawn("set-backlight " .. backlight .. " 10 --inc") end),
 
     -- player ctrl (once for keyboards without XF86Audio* keys)
     awful.key({ }, "XF86AudioPrev", function () awful.util.spawn("playerctl previous") end),

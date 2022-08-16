@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+if [ "$#" -lt 2 ]; then
+   echo "Usage: set-backlight driver percentage [--inc|--dec]"
+   exit -1
+fi
+
+driver=$1
+percentage=$2
+cmd=$3
+
+current=$(cat /sys/class/backlight/${driver}/brightness)
+max=$(cat /sys/class/backlight/${driver}/max_brightness)
+p=$(bc <<< "scale=0;$percentage * $max / 100")
+value=$p
+
+if [ "$cmd" == "--inc" ]; then
+    value=$(bc <<< "$current + $p")
+    if [ $value -gt $max ]; then
+        value=$max
+    fi
+fi
+
+if [ "$cmd" == "--dec" ]; then
+    value=$(bc <<< "$current - $p")
+    if [ $value -lt 0 ]; then
+        value=$current
+    fi
+fi
+
+echo $value | sudo tee /sys/class/backlight/${driver}/brightness
