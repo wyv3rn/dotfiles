@@ -1,5 +1,5 @@
 # general settings
-set editor = vim
+set editor = nvim
 set assumed_charset = "utf-8"
 set history = 10000
 set history_remove_dups
