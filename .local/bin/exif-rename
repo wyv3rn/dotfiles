@@ -1,9 +1,46 @@
 #!/usr/bin/env bash
 
-if [ $# -ne 1 ]; then
-    echo "Usage: exif-rename filename"
+if [ $# -lt 1 ]; then
+    echo "Usage: exif-rename [--keep|-k] [--suffix|-s] own-suffix [--dry-run] file"
     exit -1
 fi
 
-dst=$(exiftool -S -d "%Y%m%d_%H%M%S" -EXIF:DateTimeOriginal $1 | awk '{print $2}').jpg
-mv $1 $dst
+keep=0
+suffix=""
+dry=0
+
+while [ "$1" != "" ]; do
+    case $1 in
+        -k | --keep )
+            keep=1
+        ;;
+        -s | --suffix )
+            shift
+            addsuffix=$1
+        ;;
+        --dry-run )
+            dry=1
+        ;;
+        * )
+            file=$1
+    esac
+    shift
+done
+
+if [ $keep -eq 1 ]; then
+    original=`echo $file | awk -F. '{print $1}'`
+    suffix="${suffix}-$original"
+fi
+
+if [ "$addsuffix" != "" ]; then
+    suffix=${suffix}-${addsuffix}
+fi
+
+base=$(exiftool -S -d "%Y%m%d-%H%M%S" -EXIF:DateTimeOriginal $file | awk '{print $2}')
+dst="${base}${suffix}.jpg"
+
+echo "mv ${file} ${dst}"
+
+if [ $dry -eq 0 ]; then
+    mv ${file} ${dst}
+fi
