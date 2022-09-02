@@ -4,6 +4,9 @@ font:
     family: Inconsolata for Powerline
     style: regular
 
+cursor:
+  blinking: Always
+
 schemes:
   solarized_dark: &solarized_dark
     primary:
