@@ -23,7 +23,7 @@ switcher.settings.preview_box_delay = 250
 switcher.settings.cycle_raise_client = false
 switcher.settings.preview_box_title_font_size_factor = 1.3
 switcher.settings.preview_box_bg = "#ffffff99"
-switcher.settings.swap_with_master = true
+switcher.settings.swap_with_master = false
 
 -- init theme
 beautiful.init(awful.util.getdir("config") .. "themes/default/theme.lua")
