@@ -90,9 +90,6 @@ hi CursorLineNR cterm=bold
 " switch between light and dark background setting
 map <F12> :let &background = ( &background == "dark"? "light" : "dark" )<CR>
 
-" python: "else:" is the same as "else"
-au FileType python set iskeyword-=:
-
 " cursor shape and blink
 let escPrefix = ""
 let escSuffix = ""
@@ -341,6 +338,11 @@ au FileType rust nmap <F8> :up<CR>:call VimuxRunCommand("clear; cargo fmt --chec
 au FileType rust nmap <F9> :up<CR>:call VimuxRunCommand("clear; cargo build --release")<CR>
 au FileType rust nmap <F10> :up<CR>:call VimuxRunCommand("clear; cargo build")<CR>
 au FileType rust nmap <F11> :up<CR>:call VimuxRunCommand("clear; cargo test")<CR>
+
+" python stuff
+" "else:" is the same as "else"
+au FileType python set iskeyword-=:
+au FileType python nmap <F8> :up<CR>:call VimuxRunCommand("clear; black --check . && poetry run pylint --recursive=y .")<CR>
 
 " Haskell stuff
 au FileType haskell set iskeyword-=:
