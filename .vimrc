@@ -14,6 +14,7 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 Plugin 'mileszs/ack.vim'
+Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
 Plugin 'roman/golden-ratio'
 Plugin 'scrooloose/nerdcommenter'
