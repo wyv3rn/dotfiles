@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if [ $# -lt 1 ]; then
-    echo "Usage: exif-rename [--keep|-k] [--suffix|-s] own-suffix [--dry-run] file"
+    echo "Usage: exif-rename [--keep|-k] [--suffix|-s own-suffix] [--dry-run] file"
     exit -1
 fi
 
