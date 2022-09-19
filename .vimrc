@@ -198,7 +198,7 @@ let g:airline_right_sep = ''
 " YCM
 set completeopt-=preview
 let g:ycm_auto_hover=''
-let g:ycm_extra_conf_globlist = ['~/gitlab/*', '~/github/*']
+let g:ycm_extra_conf_globlist = ['~/gitlab/*', '~/github/*', '~/devops/*']
 au FileType cpp map <F7> :YcmCompleter FixIt<CR>
 nmap t :YcmCompleter GoTo<CR>
 nmap <C-t> <C-o>
