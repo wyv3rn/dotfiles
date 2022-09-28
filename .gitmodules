@@ -10,3 +10,6 @@
 [submodule ".config/awesome/widgets/volume-control"]
 	path = .config/awesome/widgets/volume-control
 	url = https://github.com/coldfix/awesome.volume-control.git
+[submodule ".vim/bundle/Vundle.vim"]
+	path = .vim/bundle/Vundle.vim
+	url = https://github.com/VundleVim/Vundle.vim.git
