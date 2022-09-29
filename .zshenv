@@ -5,7 +5,7 @@ if ! type "env" > /dev/null; then
 fi
 
 export NO_AT_BRIDGE=1 # silence some GTK warnings
-export VISUAL=vim
+export VISUAL=nvim
 export EDITOR="$VISUAL"
 
 export GUROBI_HOME=~/.local/gurobi951/linux64
