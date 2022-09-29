@@ -5,7 +5,7 @@ folder-hook . "set postponed = +tui/INBOX.Drafts"
 folder-hook . "set trash = +tui/INBOX.Trash"
 
 folder-hook . "set from = $my_tui_mail"
-folder-hook . "set signature = ~/mail_signature.txt"
+folder-hook . "set signature = ~/mail/tui-signature.txt"
 
 folder-hook . "set smtp_url = smtp://${my_tui_user}@smail.tu-ilmenau.de:25"
 folder-hook . "set smtp_pass = $my_tui_passwd"

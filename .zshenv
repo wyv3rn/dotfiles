@@ -14,6 +14,8 @@ export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${GUROBI_HOME}/lib"
 
 export FZF_DEFAULT_COMMAND='fd --type f --follow'
 
+export GIT_ASKPASS=pass-telematik-git-token
+
 alias x="startx-dpi"
 alias sync-root="sudo rsync -aAXHS --stats --exclude={/dev/\*,/proc/\*,/sys/\*,/tmp/\*,/run/\*,/mnt/\*,/media/\*,/lost+found,/home/\*/.gvfs} /"
 alias dotf="/usr/bin/git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME"
