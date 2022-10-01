@@ -2,6 +2,12 @@
 
 export BORG_REPO=$1
 
+if [ -z "$SUDO_USER" ]; then
+    export BORG_PASSCOMMAND=pass-borg-default
+else
+    export BORG_PASSCOMMAND="sudo su - $SUDO_USER -c pass-borg-default";
+fi
+
 # some helpers and error handling:
 info() { printf "\n%s %s\n\n" "$( date )" "$*" >&2; }
 trap 'echo $( date ) Backup interrupted >&2; exit 2' INT TERM
@@ -23,6 +29,7 @@ borg create                    	    \
     --exclude '/tmp/*'              \
     --exclude '/run/*'              \
     --exclude '/mnt/*'              \
+    --exclude '/efi'                \
     --exclude '/media/*'            \
     --exclude '/lost+found'         \
     --exclude '/home/*/.gvfs'       \
@@ -41,11 +48,12 @@ info "Pruning repository"
 
 borg prune                          \
     --list                          \
-    --prefix '{hostname}-'          \
+    --glob-archives '{hostname}-*'  \
     --show-rc                       \
     --keep-daily    7               \
     --keep-weekly   4               \
     --keep-monthly  6               \
+&& borg compact
 
 prune_exit=$?
 
