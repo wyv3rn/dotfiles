@@ -175,7 +175,7 @@ vnoremap <S-Up> :m '<-2<CR>gv=gv
 " insert empty line in normal mode
 nnoremap <leader>il o<Esc>d0
 
-" convenient copy/paste
+" copy/paste from clipboard (requires xclip on X or wl-copy/wl-paste on Wayland)
 vnoremap <C-c><C-c> "+y
 nnoremap <C-c><C-v> "+gP
 
