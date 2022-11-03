@@ -61,11 +61,11 @@ switch($1) {
 }
 endsnippet
 
-snippet "log([tdiwe])" "OPLOG" r
-OPLOG(log`!p snip.rv = get_log_level(match.group(1))`, "$1");
+snippet "log([tdiwe])" "SOLOG" r
+SOLOG(log`!p snip.rv = get_log_level(match.group(1))`, "$1");
 endsnippet
 
-snippet loginc "OPLOG include"
+snippet loginc "SOLOG include"
 #define SOLOGDOMAIN logGeneral
 #include "SOLog.hpp"
 endsnippet
