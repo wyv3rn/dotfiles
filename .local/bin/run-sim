@@ -1,0 +1,162 @@
+#!/usr/bin/python3
+
+import argparse
+import shlex
+import subprocess as sproc
+import re
+import os
+import tempfile
+
+
+def main():
+    arg_parser = argparse.ArgumentParser()
+    arg_parser.add_argument("-b", metavar="bin", required=True, help="the simulation binary to use")
+    arg_parser.add_argument(
+        "-f",
+        metavar="config",
+        default="./config.ini",
+        help="the config file to use; default: ./config.ini",
+    )
+    arg_parser.add_argument(
+        "-c",
+        metavar="experiment",
+        default="General",
+        help="the configuration to simulate; default: General",
+    )
+    arg_parser.add_argument(
+        "-r",
+        metavar="runs",
+        help="execute specific runs of the given configuration: either a single run (-r run) or a range (-r start..end, inclusive!) of runs",
+    )
+    arg_parser.add_argument(
+        "-R",
+        metavar="repetitions",
+        help="execute specific repetitions (rather then runs) of the given configuration: syntax: see -r",
+    )
+    arg_parser.add_argument(
+        "-j", type=int, help="how many parallel processes to use, default: number of availabe virtual cores"
+    )
+    arg_parser.add_argument(
+        "-k",
+        "--keep-going",
+        action="store_true",
+        help="Try to run as many runs as possible, even after one run fails",
+    )
+
+    args = arg_parser.parse_args()
+
+    if args.r and args.R:
+        print("Specify either runs or repetitions, not both!")
+        exit(-1)
+
+    base_cmd = args.b + " -u Cmdenv -f " + args.f
+    sim_cmd = base_cmd + " -c " + args.c + " -r "
+
+    # get total runs and number of repetitions
+
+    info_cmd = base_cmd + " -q rundetails -c " + args.c
+    info = sproc.check_output(shlex.split(info_cmd), universal_newlines=True).splitlines()
+
+    total_runs = -1
+    total_repetitions = 0
+    result_dir = ""
+    log_files = {}  # mapping run to log file
+    for line in info:
+        total_runs_match = re.match(r"Number of runs: (\d+)", line)
+        if total_runs_match:
+            total_runs = int(total_runs_match.group(1))
+
+        current_run_match = re.search(r"Run (\d+):", line)
+        if current_run_match:
+            current_run = int(current_run_match.group(1))
+
+        repetition_match = re.search(r"\$repetition=(\d+)", line)
+        if repetition_match:
+            total_repetitions = max([total_repetitions, int(repetition_match.group(1)) + 1])
+
+        output_dir_match = re.search(r'outputDir|outdir = "(.*)"', line)
+        if output_dir_match:
+            if result_dir == "":
+                result_dir = output_dir_match.group(1)
+                if result_dir.endswith("/"):
+                    result_dir = result_dir[:-1]
+                print("Result directory: " + result_dir)
+            if current_run not in log_files:
+                log_files[current_run] = "{}/r{}.log".format(result_dir, current_run)
+
+    assert result_dir != "", "Could not determine result directory"
+    assert (
+        total_runs % total_repetitions == 0
+    ), "Expected total runs to be a multiply of repetitions"
+    param_combinations = total_runs // total_repetitions
+
+    if args.r:
+        # runs given as args
+        range_match = re.match(r"(\d+)\.\.(\d+)", args.r)
+        if range_match:
+            r_start = int(range_match.group(1))
+            r_end = int(range_match.group(2))
+        else:
+            r_start = r_end = int(args.r)
+
+        assert 0 <= r_start <= r_end < total_runs, "Specified runs are not sensible."
+        runs = range(r_start, r_end + 1)
+
+    elif args.R:
+        # repetitions given as args
+        range_match = re.match(r"(\d+)\.\.(\d+)", args.R)
+        if range_match:
+            r_start = int(range_match.group(1))
+            r_end = int(range_match.group(2))
+        else:
+            r_start = r_end = int(args.R)
+
+        assert 0 <= r_start <= r_end < total_repetitions, "Specified repetitions are not sensible."
+
+        repetitions = range(r_start, r_end + 1)
+        runs = [r + pc * total_repetitions for pc in range(param_combinations) for r in repetitions]
+    else:
+        print("Either runs (-r) or repetitions (-R) must be specified")
+        exit(-1)
+
+    runs_str = " ".join("r" + str(r) for r in runs)
+    print("Executing the following runs:")
+    print(runs_str + "\n")
+
+    if not os.path.exists(result_dir):
+        os.makedirs(result_dir)
+
+    runfd, runfilename = tempfile.mkstemp(prefix="op_runfile.", text=True)
+    try:
+        runfile = os.fdopen(runfd, "w")
+        # build up makefile
+        runfile.write(".PHONY: " + runs_str + "\n\n")
+        runfile.write("all: " + runs_str + "\n\n")
+
+        for r in runs:
+            runfile.write("r" + str(r) + ":\n")
+            runfile.write("\t" + sim_cmd + str(r) + " > " + log_files[r] + " 2>&1\n\n")
+            #  runfile.write('\t' + sim_cmd + str(r) + "\n\n")
+
+        runfile.flush()
+
+        # make
+        if args.j:
+            j_val = args.j
+        else:
+            j_val = os.cpu_count()
+        make_cmd = "make -f " + runfilename + " -j " + str(j_val)
+        if args.keep_going:
+            make_cmd += " -k"
+        sproc.check_call(shlex.split(make_cmd), universal_newlines=True)
+    except Exception as e:
+        print("Execution of at least one run failed! Exception: {}".format(repr(e)))
+    finally:
+        runfile.close()
+        os.remove(runfilename)
+
+    print("\nDone!")
+
+
+if __name__ == "__main__":
+    main()
