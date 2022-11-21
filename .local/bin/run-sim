@@ -6,6 +6,7 @@ import subprocess as sproc
 import re
 import os
 import tempfile
+import pathlib
 
 
 def main():
@@ -53,8 +54,7 @@ def main():
     sim_cmd = base_cmd + " -c " + args.c + " -r "
 
     # get total runs and number of repetitions
-
-    info_cmd = base_cmd + " -q rundetails -c " + args.c
+    info_cmd = base_cmd + " -x " + args.c + " -G"
     info = sproc.check_output(shlex.split(info_cmd), universal_newlines=True).splitlines()
 
     total_runs = -1
@@ -74,12 +74,11 @@ def main():
         if repetition_match:
             total_repetitions = max([total_repetitions, int(repetition_match.group(1)) + 1])
 
-        output_dir_match = re.search(r'outputDir|outdir = "(.*)"', line)
+        output_dir_match = re.search(r'output\-scalar\-file = (.*)', line)
         if output_dir_match:
             if result_dir == "":
-                result_dir = output_dir_match.group(1)
-                if result_dir.endswith("/"):
-                    result_dir = result_dir[:-1]
+                outfile = pathlib.Path(output_dir_match.group(1))
+                result_dir = str(outfile.parent)
                 print("Result directory: " + result_dir)
             if current_run not in log_files:
                 log_files[current_run] = "{}/r{}.log".format(result_dir, current_run)
