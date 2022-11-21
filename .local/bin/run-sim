@@ -74,7 +74,7 @@ def main():
         if repetition_match:
             total_repetitions = max([total_repetitions, int(repetition_match.group(1)) + 1])
 
-        output_dir_match = re.search(r'output\-scalar\-file = (.*)', line)
+        output_dir_match = re.search(r'output\-scalar\-file = \.\./(.*)', line)
         if output_dir_match:
             if result_dir == "":
                 outfile = pathlib.Path(output_dir_match.group(1))
