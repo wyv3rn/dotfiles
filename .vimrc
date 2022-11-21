@@ -343,7 +343,7 @@ au FileType rust nmap <F11> :up<CR>:call VimuxRunCommand("clear; cargo test")<CR
 " python stuff
 " "else:" is the same as "else"
 au FileType python set iskeyword-=:
-au FileType python nmap <F8> :up<CR>:call VimuxRunCommand("clear; black --check . && poetry run pylint --recursive=y .")<CR>
+au FileType python nmap <F8> :up<CR>:call VimuxRunCommand("clear; black --extend-exclude 'build\.py\|bootstrap\.py' --check . && poetry run pylint --recursive=y .")<CR>
 au FileType python nmap <F11> :up<CR>:call VimuxRunCommand("clear; poetry run pytest --cov=src --cov-report html:.coverage-html")<CR>
 
 " Haskell stuff
