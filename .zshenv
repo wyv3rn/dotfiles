@@ -23,4 +23,6 @@ alias dotf="/usr/bin/git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME"
 alias mutt="neomutt"
 alias R="R --no-save --quiet"
 
+export FREEPLANE_USE_UNSUPPORTED_JAVA_VERSION=1
+
 [ -f $HOME/.zshenv_local ] && source $HOME/.zshenv_local || true
