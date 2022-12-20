@@ -14,6 +14,7 @@ with open(infile) as f:
 
 all_content_lines = cal.content_lines(True)
 content_lines = Contentlines()
+alarm_line = False
 for line in all_content_lines:
     if line.startswith('ATTENDEE') or line.startswith('ORGANIZER'):
         continue
@@ -29,6 +30,15 @@ for line in all_content_lines:
             new_uid = uid + 1
             new_uid_str = '{:x}'.format(new_uid).upper()
         line = Contentline(line.replace(uid_str, new_uid_str))
+
+    if line.startswith('BEGIN:VALARM'):
+        alarm_line = True
+
+    if alarm_line:
+        if line.startswith('END:VALARM'):
+            alarm_line = False
+        continue
+
     content_lines.append(line)
 
 with open('out.ics', 'wb') as f:
