@@ -54,7 +54,7 @@ def main():
     sim_cmd = base_cmd + " -c " + args.c + " -r "
 
     # get total runs and number of repetitions
-    info_cmd = base_cmd + " -x " + args.c + " -G"
+    info_cmd = base_cmd + " -c " + args.c + " -q rundetails"
     info = sproc.check_output(shlex.split(info_cmd), universal_newlines=True).splitlines()
 
     total_runs = -1
