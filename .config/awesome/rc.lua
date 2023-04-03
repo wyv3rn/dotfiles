@@ -58,12 +58,12 @@ if battery0 then
     battery_sep = vert_sep
 end
 
-mail = email_widget {
-    count_cmd = [[bash -c "offlineimap -o -1 -l ~/.imap.log > /dev/null 2>&1; notmuch count tag:unread"]],
-    interval = 30,
-    read_cmd = [[bash -c "notmuch show tag:unread | grep -E '(Subject: .*)|From.*' | sed -E 's/^Subject: //; s/From: (.*)/[\1]/'"]],
-    display_width = 800
-}
+-- mail = email_widget {
+--     count_cmd = [[bash -c "offlineimap -o -1 -l ~/.imap.log > /dev/null 2>&1; notmuch count tag:unread"]],
+--     interval = 30,
+--     read_cmd = [[bash -c "notmuch show tag:unread | grep -E '(Subject: .*)|From.*' | sed -E 's/^Subject: //; s/From: (.*)/[\1]/'"]],
+--     display_width = 800
+-- }
 
 volumecfg = volume_ctrl({})
 
@@ -272,9 +272,9 @@ awful.screen.connect_for_each_screen(function(s)
             layout = wibox.layout.fixed.horizontal,
             wibox.widget.systray(),
             vert_sep,
-            mail.icon,
-            mail.count,
-            vert_sep,
+            -- mail.icon,
+            -- mail.count,
+            -- vert_sep,
             volumecfg.widget,
             vert_sep,
             battery0_widget,
