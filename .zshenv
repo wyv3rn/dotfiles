@@ -4,12 +4,14 @@ if ! type "env" > /dev/null; then
     export PATH=/usr/local/bin:/usr/bin:/bin:$PATH
 fi
 
+export PATH=~/.local/bin:$PATH
+
 export NO_AT_BRIDGE=1 # silence some GTK warnings
 export VISUAL=nvim
 export EDITOR="$VISUAL"
 
 export GUROBI_HOME=~/.local/gurobi952/linux64
-export PATH=~/.ghcup/bin:~/.local/bin:~/go/bin:~/.local/bin/Telegram:${GUROBI_HOME}/bin:$PATH
+export PATH=${GUROBI_HOME}/bin:$PATH
 export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${GUROBI_HOME}/lib"
 
 export FZF_DEFAULT_COMMAND='fd --type f --follow'
@@ -17,6 +19,8 @@ export TEXMFHOME=$HOME/.texmf
 
 export GIT_ASKPASS=pass-telematik-git-token
 export CARGO_NET_GIT_FETCH_WITH_CLI=true
+
+export PATH=~/.doom.d/bin:$PATH
 
 alias x="startx-dpi"
 alias sync-root="sudo rsync -aAXHS --stats --exclude={/dev/\*,/proc/\*,/sys/\*,/tmp/\*,/run/\*,/mnt/\*,/media/\*,/lost+found,/home/\*/.gvfs} /"
