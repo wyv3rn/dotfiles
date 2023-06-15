@@ -15,7 +15,7 @@
 - [[#which-key][Which Key]]
 - [[#org-mode][Org Mode]]
   - [[#enable-toc][Enable TOC]]
-  - [[#enabling-fancy-bullets][Enabling Fancy Bullets]]
+  - [[#enable-fancy-bullets][Enable Fancy Bullets]]
 - [[#zen][Zen]]
 
 * First Things First
@@ -164,7 +164,7 @@
     )
 #+end_src
 
-** Enabling Fancy Bullets
+** Enable Fancy Bullets
 #+begin_src emacs-lisp
   (add-hook 'org-mode-hook 'org-indent-mode)
   (use-package org-bullets)
