@@ -44,8 +44,9 @@ Plugin 'udalov/kotlin-vim'
 
 call vundle#end()
 
-" redefine the mapleader key
-let mapleader = "m"
+" redefine the mapleader key to Space
+nnoremap <Space> <Nop>
+let mapleader = "\<Space>"
 
 " general stuff
 syntax enable
@@ -149,8 +150,8 @@ set smartcase
 set incsearch
 set hlsearch
 
-" Press Space to turn off highlighting and clear any message already displayed.
-:nnoremap <silent> <Space>c :nohlsearch<Bar>:echo<CR>
+" Turn off highlighting and clear any message already displayed.
+:nnoremap <silent> <leader>c :nohlsearch<Bar>:echo<CR>
 
 " trailing whitespaces
 hi ExtraWhitespace cterm=none ctermbg=red guibg=red
@@ -305,11 +306,11 @@ let g:UltiSnipsJumpBackwardTrigger="<C-r>"
 " easy motion stuff
 let g:EasyMotion_smartcase = 1
 let g:EasyMotion_keys = 'ratidubpsolgen'
-map <Space> <Plug>(easymotion-prefix)
-nmap <Space><Space> <Plug>(easymotion-sn)
-nmap <Space>n <Plug>(easymotion-s)
-nmap <Space>s <Plug>(easymotion-s2)
-nmap <Space>r <Plug>(easymotion-bd-jk)
+" map <leader> <Plug>(easymotion-prefix)
+" nmap <Space><Space> <Plug>(easymotion-sn)
+nmap <leader>n <Plug>(easymotion-s2)
+nmap <leader>s <Plug>(easymotion-s1)
+"nmap <Space>r <Plug>(easymotion-bd-jk)
 " TODO make delete/change till possible
 nmap f <Plug>(easymotion-fl)
 nmap F <Plug>(easymotion-Fl)
