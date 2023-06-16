@@ -16,7 +16,6 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'mileszs/ack.vim'
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
-Plugin 'roman/golden-ratio'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'lyuts/vim-rtags'
 Plugin 'tpope/vim-surround'
@@ -133,9 +132,18 @@ endif
 inoremap <F2> <c-g>u<Esc>[s1z=`]a<c-g>u
 nnoremap <F2> [s1z=<c-o>
 
-" window and buffer stuff
-nnoremap <leader>wn <C-w>v<C-w>l
-nnoremap <leader>wf <C-w>v:e .<CR>
+" window stuff
+nnoremap <leader>ww <C-w>v<C-w>l
+nnoremap <leader>ws <C-w>s<C-w>j
+nnoremap <leader>wf <C-w>v<C-w>l:Files<CR>
+nnoremap <leader>wb <C-w>v<C-w>l:Buffers<CR>
+nnoremap <leader>w= <C-w>=
+nnoremap <leader>y <C-w><C-p>
+nnoremap <leader>l <C-w>k
+nnoremap <leader>e <C-w>l
+nnoremap <leader>i <C-w>h
+nnoremap <leader>a <C-w>j
+
 let g:netrw_banner=0
 nnoremap <Tab> :up<CR>:e #<CR>
 
@@ -172,9 +180,6 @@ inoremap <S-Down> <Esc>:m .+1<CR>==gi
 inoremap <S-Up> <Esc>:m .-2<CR>==gi
 vnoremap <S-Down> :m '>+1<CR>gv=gv
 vnoremap <S-Up> :m '<-2<CR>gv=gv
-
-" insert empty line in normal mode
-nnoremap <leader>il o<Esc>d0
 
 " copy/paste from clipboard (requires xclip on X or wl-copy/wl-paste on Wayland)
 vnoremap <C-c><C-c> "+y
@@ -267,9 +272,9 @@ au FileType tex nmap <Leader>lf :call SyncTexForward()<CR>
 
 
 " nerdcommenter
+let g:NERDCreateDefaultMappings = 0
 let g:NERDSpaceDelims = 1
-map <leader>cl <plug>NERDCommenterComment
-map <leader>cc <plug>NERDCommenterAlignLeft
+map <leader>cc <plug>NERDCommenterToggle
 
 " ack
 cnoreabbrev ack Ack!
@@ -321,12 +326,12 @@ nmap F <Plug>(easymotion-Fl)
 " Autoformat
 let g:autoformat_autoindent = 0
 let g:autoformat_retab = 0
-nnoremap <leader>af :Autoformat<CR> :up<CR>
+nnoremap <leader>cf :Autoformat<CR> :up<CR>
 
 " C++ stuff
 " don't indent namespace content and public/private/protected keywords
 au FileType cpp set cino=N-s,g-s
-nnoremap <leader><tab> :up<CR> :TcSwitchHS<CR>
+nnoremap <leader>ch :up<CR> :TcSwitchHS<CR>
 nnoremap <leader>cg :TcIncGuard<CR>
 inoremap {<CR> {<CR>}<C-O>O
 au FileType cpp set iskeyword-=:
@@ -364,21 +369,6 @@ au FileType elm set cc=101
 au FileType cpp set cc=101
 let blacklist = ['tex', 'vim', 'rust', 'python', 'kotlin', 'elm', 'cpp']
 au FileType * if index(blacklist, &ft) < 0 | set cc=81
-
-" similar to deleting/changing inner and outer stuff: append to inner and outer stuff
-" TODO this could be a small plugin ;) -> make register for the d commands configurable
-:nnoremap <leader>ai( F(%i
-:nnoremap <leader>aa( F(%a
-:nnoremap <leader>ai[ F[%i
-:nnoremap <leader>aa[ F[%a
-:nnoremap <leader>ai{ F{%i
-:nnoremap <leader>aa{ F{%a
-:nnoremap <leader>ai" di"hpa
-:nnoremap <leader>aa" di"hpla
-:nnoremap <leader>ai' di'hpa
-:nnoremap <leader>aa' di'hpla
-:nnoremap <leader>ai< di<hpa
-:nnoremap <leader>aa< di<hpla
 
 " execute local vimrc files as well
 if filereadable(".vimrc.local")
