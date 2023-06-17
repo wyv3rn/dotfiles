@@ -132,6 +132,20 @@ endif
 inoremap <F2> <c-g>u<Esc>[s1z=`]a<c-g>u
 nnoremap <F2> [s1z=<c-o>
 
+" Use and navigate quickfix list with ease
+function! ToggleQuickFix()
+    if empty(filter(getwininfo(), 'v:val.quickfix'))
+        copen
+    else
+        cclose
+    endif
+endfunction
+
+" TODO [[ and ]] would be better
+nnoremap <silent> [l :cprevious<CR>
+nnoremap <silent> ]c :cnext<CR>
+nnoremap <leader>tl :call ToggleQuickFix()<CR>
+
 " window stuff
 nnoremap <leader>ww <C-w>v<C-w>l
 nnoremap <leader>ws <C-w>s<C-w>j
@@ -139,6 +153,7 @@ nnoremap <leader>wf <C-w>v<C-w>l:Files<CR>
 nnoremap <leader>wb <C-w>v<C-w>l:Buffers<CR>
 nnoremap <leader>w= <C-w>=
 nnoremap <leader>y <C-w><C-p>
+nnoremap <leader><Tab> <C-w><C-p>
 nnoremap <leader>l <C-w>k
 nnoremap <leader>e <C-w>l
 nnoremap <leader>i <C-w>h
@@ -270,17 +285,17 @@ function! SyncTexForward()
 endfunction
 au FileType tex nmap <Leader>lf :call SyncTexForward()<CR>
 
-
 " nerdcommenter
 let g:NERDCreateDefaultMappings = 0
 let g:NERDSpaceDelims = 1
 map <leader>cc <plug>NERDCommenterToggle
 
-" ack
+" ack config
 cnoreabbrev ack Ack!
-if executable('ag')
-      let g:ackprg = 'ag --vimgrep'
-endif
+let g:ackprg = 'rg --vimgrep --type-not sql --smart-case'
+let g:ack_autoclose = 1
+let g:ack_use_cword_for_empty_search = 1
+nnoremap <leader>/ :Ack!<Space>
 
 " tmux navigation integration
 let g:tmux_navigator_no_mappings = 1
