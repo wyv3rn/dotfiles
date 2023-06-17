@@ -17,7 +17,6 @@ Plugin 'mileszs/ack.vim'
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
 Plugin 'scrooloose/nerdcommenter'
-Plugin 'lyuts/vim-rtags'
 Plugin 'tpope/vim-surround'
 Plugin 'benmills/vimux'
 Plugin 'vim-latex/vim-latex'
@@ -40,7 +39,6 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tpope/vim-fugitive'
 Plugin 'dense-analysis/ale'
-
 
 call vundle#end()
 
@@ -76,6 +74,10 @@ nnoremap <leader>u :up<CR>
 
 set timeoutlen=750
 set ttimeoutlen=10
+
+" edit and reload config
+nnoremap <leader>x :edit ~/.vimrc<CR>
+nnoremap <leader>X :source ~/.vimrc<CR>
 
 " open files at last position
 if has("autocmd")
@@ -180,7 +182,7 @@ set hlsearch
 " trailing whitespaces
 hi ExtraWhitespace cterm=none ctermbg=red guibg=red
 match ExtraWhitespace /\s\+$/
-nnoremap <leader>rtw ms:%s/\s\+$//<CR>`s
+nnoremap <leader>tw ms:%s/\s\+$//<CR>`s
 
 " filetype stuff
 filetype plugin indent on
@@ -314,10 +316,11 @@ inoremap <F4> <ESC>:up<CR>:VimuxRunLastCommand<CR>
 " fzf
 nnoremap <leader>f :Files<CR>
 nnoremap <leader>b :Buffers<CR>
+nnoremap <leader>r :History<CR>
 
 " greplace
-set grepprg=ag
-let g:grep_cmd_opts = '--line-numbers --noheading'
+set grepprg=rg
+let g:grep_cmd_opts = '--line-number --noheading'
 
 " ultisnips configuration
 let g:UltiSnipsExpandTrigger="<C-d>"

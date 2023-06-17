@@ -116,7 +116,8 @@ if type "mvim" > /dev/null; then
 fi
 alias vi="vim"
 alias v="nvim"
-alias vmf="nvim \$(fzf)"
+alias vmf="nvim -c \":Files\""
+alias vrf="nvim -c \":History\""
 alias t="tmux"
 alias l="ls -lh"
 alias la="ls -lAh"
