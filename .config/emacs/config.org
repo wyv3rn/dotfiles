@@ -82,9 +82,13 @@
     (setq evil-want-keybinding nil)
     (setq evil-vsplit-window-left t)
     (setq evil-split-window-below t)
+    ;; TODO better undo-redo system?
     (setq evil-undo-system 'undo-redo)
     (evil-mode))
-  ;; TODO do we want evil-collection, too?
+
+  (use-package evil-collection
+    :init
+    (evil-collection-init))
 #+end_src
 
 ** Enable Recent Files
@@ -109,7 +113,7 @@
 
     ;; Toggle between the two recent buffers
     (general-define-key
-     :states '(normal)
+     :states '(normal emacs)
      "<tab>" 'mode-line-other-buffer
      )
 
@@ -127,6 +131,8 @@
     ;; Buffers
     (ds/leader-keys
       "b" '(switch-to-buffer :wk "Switch buffer")
+      "k" '(next-buffer :wk "Next buffer")
+      "j" '(previous-buffer :wk "Previous buffer")
       )
 
     ;; Window handling and navigation
