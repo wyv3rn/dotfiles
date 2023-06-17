@@ -39,7 +39,8 @@ Plugin 'wyv3rn/vim-tinycpp'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tpope/vim-fugitive'
-Plugin 'udalov/kotlin-vim'
+Plugin 'dense-analysis/ale'
+
 
 call vundle#end()
 
@@ -342,6 +343,13 @@ nmap F <Plug>(easymotion-Fl)
 let g:autoformat_autoindent = 0
 let g:autoformat_retab = 0
 nnoremap <leader>cf :Autoformat<CR> :up<CR>
+
+" ALE (linting)
+let g:ale_rust_cargo_use_clippy = executable('cargo-clippy')
+let g:ale_virtualtext_cursor = 'current'
+let g:ale_set_highlights = 0
+" do not check on the fly
+let g:ale_lint_on_text_changed = 'never'
 
 " C++ stuff
 " don't indent namespace content and public/private/protected keywords
