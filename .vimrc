@@ -24,7 +24,6 @@ Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'ycm-core/YouCompleteMe'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
-Plugin 'vimwiki/vimwiki'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'tpope/vim-repeat'
 Plugin 'terryma/vim-multiple-cursors'
@@ -39,6 +38,7 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tpope/vim-fugitive'
 Plugin 'dense-analysis/ale'
+Plugin 'preservim/nerdtree'
 
 call vundle#end()
 
@@ -150,8 +150,8 @@ nnoremap <silent> ]c :cnext<CR>
 nnoremap <leader>tl :call ToggleQuickFix()<CR>
 
 " window stuff
-nnoremap <leader>ww <C-w>v<C-w>l
-nnoremap <leader>ws <C-w>s<C-w>j
+nnoremap <leader>ww <C-w>v<C-w>p
+nnoremap <leader>ws <C-w>s<C-w>p
 nnoremap <leader>wf <C-w>v<C-w>l:Files<CR>
 nnoremap <leader>wb <C-w>v<C-w>l:Buffers<CR>
 nnoremap <leader>w= <C-w>=
@@ -291,7 +291,11 @@ au FileType tex nmap <Leader>lf :call SyncTexForward()<CR>
 " nerdcommenter
 let g:NERDCreateDefaultMappings = 0
 let g:NERDSpaceDelims = 1
-map <leader>cc <plug>NERDCommenterToggle
+nnoremap <leader>cc <plug>NERDCommenterToggle
+
+" nerdtree
+nnoremap <leader>tt :NERDTreeToggle<CR>
+let NERDTreeWinSize = 42
 
 " ack config
 cnoreabbrev ack Ack!
