@@ -10,10 +10,13 @@ if ! [[ $1 =~ $re ]] ; then
    echo "Error: DPI is not a number" >&2; exit 1
 fi
 
-alacritty_font_size=9
+alacritty_font_size=10
 case $1 in
     120)
         alacritty_font_size=8
+        ;;
+    144)
+        alacritty_font_size=11
         ;;
     168)
         alacritty_font_size=10
