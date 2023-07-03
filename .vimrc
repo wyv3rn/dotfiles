@@ -154,7 +154,10 @@ nnoremap <leader>ww <C-w>v<C-w>p
 nnoremap <leader>ws <C-w>s<C-w>p
 nnoremap <leader>wf <C-w>v<C-w>l:Files<CR>
 nnoremap <leader>wb <C-w>v<C-w>l:Buffers<CR>
+nnoremap <leader>wr <C-w>v<C-w>l:History<CR>
 nnoremap <leader>w= <C-w>=
+nnoremap <leader>wq <C-w>q
+nnoremap <leader>wc <C-w>q
 nnoremap <leader>y <C-w><C-p>
 nnoremap <leader><Tab> <C-w><C-p>
 nnoremap <leader>l <C-w>k
@@ -295,7 +298,7 @@ noremap <leader>cc <plug>NERDCommenterToggle
 
 " nerdtree
 nnoremap <leader>tt :NERDTreeToggle<CR>
-let NERDTreeWinSize = 42
+let NERDTreeWinSize = 52
 " If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
 autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
             \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
