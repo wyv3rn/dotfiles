@@ -4,7 +4,7 @@ env:
 font:
   size: 9
   normal:
-    family: Inconsolata for Powerline
+    family: Dejavu Sans Mono
     style: regular
 
 cursor:
@@ -42,4 +42,6 @@ schemes:
       cyan:    '#2aa198' # cyan
       white:   '#fdf6e3' # base3
 
-colors: *solarized_dark
+# colors: *solarized_dark
+import:
+  - ~/.config/alacritty/catppuccin/catppuccin-frappe.yml

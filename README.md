@@ -7,3 +7,5 @@ dotfiles submodule update --init --recursive
 dotfiles config --local status.showUntrackedFiles no
 dotfiles remote set-url origin git@github.com:wyv3rn/dotfiles.git
 ```
+
+[Catppuccin Wallpapers](https://github.com/Gingeh/wallpapers): Copyright (c) 2021 Catppuccin

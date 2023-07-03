@@ -26,7 +26,7 @@ switcher.settings.preview_box_bg = "#ffffff99"
 switcher.settings.swap_with_master = false
 
 -- init theme
-beautiful.init(awful.util.getdir("config") .. "themes/default/theme.lua")
+beautiful.init(awful.util.getdir("config") .. "themes/catppuccin/theme.lua")
 
 -- init simple separator for widgets
 local vert_sep = wibox.widget {

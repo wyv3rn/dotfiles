@@ -13,3 +13,6 @@
 [submodule ".vim/bundle/Vundle.vim"]
 	path = .vim/bundle/Vundle.vim
 	url = https://github.com/VundleVim/Vundle.vim.git
+[submodule ".config/alacritty/catppuccin"]
+	path = .config/alacritty/catppuccin
+	url = https://github.com/catppuccin/alacritty.git
