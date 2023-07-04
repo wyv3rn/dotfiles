@@ -397,7 +397,7 @@ au FileType go nmap <F10> :up<CR>:GoBuild<CR>
 au FileType go nmap t :GoDef<CR>
 
 " Highlight maximum width for most filetypes
-au FileType * highlight ColorColumn ctermbg=8
+au FileType * highlight ColorColumn ctermbg=0
 au FileType rust set cc=101
 au FileType python set cc=101
 au FileType kotlin set cc=101
