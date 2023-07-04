@@ -8,7 +8,8 @@ font:
     style: regular
 
 cursor:
-  blinking: Always
+  style:
+    blinking: Never
 
 schemes:
   solarized_dark: &solarized_dark
