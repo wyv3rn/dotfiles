@@ -11,6 +11,10 @@ cursor:
   style:
     blinking: Never
 
+colors:
+  cursor:
+    cursor: '#ffffff'
+
 schemes:
   solarized_dark: &solarized_dark
     primary:
