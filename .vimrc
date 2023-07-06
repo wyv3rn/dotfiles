@@ -295,7 +295,8 @@ au FileType tex nmap <Leader>lf :call SyncTexForward()<CR>
 " nerdcommenter
 let g:NERDCreateDefaultMappings = 0
 let g:NERDSpaceDelims = 1
-noremap <leader>cc <plug>NERDCommenterToggle
+noremap <leader>cc <plug>NERDCommenterComment
+noremap <leader>cu <plug>NERDCommenterUncomment
 
 " nerdtree
 nnoremap <leader>tt :NERDTreeToggle<CR>
