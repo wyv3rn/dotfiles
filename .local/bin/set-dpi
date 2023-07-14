@@ -13,13 +13,13 @@ fi
 alacritty_font_size=10
 case $1 in
     120)
-        alacritty_font_size=8
+        alacritty_font_size=7
         ;;
     144)
         alacritty_font_size=11
         ;;
     168)
-        alacritty_font_size=10
+        alacritty_font_size=9
         ;;
 esac
 
