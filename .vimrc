@@ -368,6 +368,8 @@ let g:ale_virtualtext_cursor = 'current'
 let g:ale_set_highlights = 0
 " do not check on the fly
 let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 0
+let g:ale_linters_ignore = { 'cpp': ['clangtidy'] }
 
 " C++ stuff
 " don't indent namespace content and public/private/protected keywords
