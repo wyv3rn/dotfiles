@@ -290,7 +290,8 @@ function! SyncTexForward()
     exec execstr
     redraw!
 endfunction
-au FileType tex nmap <Leader>lf :call SyncTexForward()<CR>
+au FileType tex nmap <leader>lf :call SyncTexForward()<CR>
+au FileType tex silent! nunmap <buffer> <leader>rf
 
 " nerdcommenter
 let g:NERDCreateDefaultMappings = 0
