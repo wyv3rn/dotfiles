@@ -227,7 +227,7 @@ let g:airline_right_sep = ''
 set completeopt-=preview
 let g:ycm_auto_hover=''
 let g:ycm_extra_conf_globlist = ['~/gitlab/*', '~/github/*', '~/devops/*']
-au FileType cpp map <F7> :YcmCompleter FixIt<CR>
+nmap <F7> :YcmCompleter FixIt<CR>
 nmap t :YcmCompleter GoTo<CR>
 nmap <C-t> <C-o>
 nmap T :YcmCompleter GetType<CR>
@@ -385,7 +385,6 @@ set cinoptions=l1
 
 " Rust stuff
 au FileType rust set iskeyword-=:
-au FileType rust nmap <F7> :YcmCompleter FixIt<CR>
 au FileType rust nmap <F8> :up<CR>:call VimuxRunCommand("clear; cargo fmt --check && cargo clippy --all-targets --all-features -- -D warnings")<CR>
 au FileType rust nmap <F9> :up<CR>:call VimuxRunCommand("clear; cargo build --release")<CR>
 au FileType rust nmap <F10> :up<CR>:call VimuxRunCommand("clear; cargo build")<CR>
