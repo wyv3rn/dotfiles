@@ -372,6 +372,7 @@ let g:ale_set_highlights = 0
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 0
 let g:ale_linters_ignore = { 'cpp': ['clangtidy'] }
+let g:ale_echo_msg_format = '[%linter%] %code: %%s'
 
 " C++ stuff
 " don't indent namespace content and public/private/protected keywords
