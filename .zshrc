@@ -123,6 +123,7 @@ alias l="ls -lh"
 alias la="ls -lAh"
 alias grep='grep --color=auto'
 alias f='fd -L'
+alias h="helix"
 
 bindkey '^b' backward-word
 bindkey '^f' forward-word

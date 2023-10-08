@@ -1,0 +1,30 @@
+theme = "base16_transparent"
+
+[editor]
+line-number = "relative"
+auto-completion = true
+auto-format = false
+
+[editor.cursor-shape]
+insert = "bar"
+
+[keys.normal]
+X = "extend_line_above"
+C-r = "jump_backward"
+C-t = "jump_forward"
+"{" = "goto_prev_paragraph"
+"}" = "goto_next_paragraph"
+
+[keys.select]
+"{" = "goto_prev_paragraph"
+"}" = "goto_next_paragraph"
+
+[keys.normal."space"]
+u = ":update"
+
+# TODO give section a description (no support as of 2023/10?)
+[keys.normal."space".c]
+f = [":format", ":update"]
+c = "toggle_comments"
+
+# TODO highlight (and remove) trailing whitespaces (no support as of 2023/10?)
