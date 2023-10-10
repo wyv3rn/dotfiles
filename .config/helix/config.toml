@@ -10,8 +10,8 @@ insert = "bar"
 
 [keys.normal]
 X = "extend_line_above"
-C-r = "jump_backward"
-C-t = "jump_forward"
+C-t = "jump_backward"
+C-r = "jump_forward"
 "{" = "goto_prev_paragraph"
 "}" = "goto_next_paragraph"
 
