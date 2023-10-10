@@ -9,11 +9,13 @@ auto-format = false
 insert = "bar"
 
 [keys.normal]
+G = "goto_last_line"
 X = "extend_line_above"
 C-t = "jump_backward"
 C-r = "jump_forward"
 "{" = "goto_prev_paragraph"
 "}" = "goto_next_paragraph"
+"tab" = "goto_last_accessed_file"
 
 [keys.select]
 "{" = "goto_prev_paragraph"
