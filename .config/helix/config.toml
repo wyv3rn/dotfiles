@@ -29,9 +29,15 @@ C-r = "redo"
 # Muscle memory from my vim config
 C-t = "jump_backward"
 "tab" = "goto_last_accessed_file"
+F4 = ":sh hemux-last"
+F9 = [":update", ":sh hemux autobuild release"]
 
 # Fine tune helix itself
 X = "extend_line_above"
+
+# Make j and k behave as they do Vim when soft-wrap is enabled
+j = "move_line_down"
+k = "move_line_up"
 
 [keys.select]
 # Muscle memory from default vim

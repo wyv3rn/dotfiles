@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# Inspired by https://dev.to/rajasegar/helix-and-tmux-integration-3fd0
+hemux `cat /tmp/hemux-last-cmd`

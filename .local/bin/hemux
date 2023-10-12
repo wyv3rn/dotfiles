@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# Inspired by https://dev.to/rajasegar/helix-and-tmux-integration-3fd0
+
+num_panes=$(tmux list-panes | wc -l)
+if [ "$num_panes" -gt 1 ]
+  then
+    tmux send-keys -t 2 "$*" Enter
+  else
+    tmux split-window -v
+    tmux send "$*" Enter
+fi
+echo "$*" > /tmp/hemux-last-cmd
