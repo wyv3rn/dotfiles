@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+clear
+
+# TODO support "build" flags --release|debug|tests
+# TODO support more build envs
+#   - detect Cargo.toml
+#   - detect build.py (?)
+
+if [ -f Makefile ]; then
+  make
+elif [ -f .latexmkrc ]; then
+  latexmk
+else
+  echo "Do not know how to build your project, giving up"
+  exit -1
+fi
