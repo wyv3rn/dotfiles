@@ -17,23 +17,36 @@ enable = true
 # Muscle memory from default vim
 esc = ["collapse_selection", "keep_primary_selection"]
 G = "goto_last_line"
-"{" = "goto_prev_paragraph"
-"}" = "goto_next_paragraph"
+"{" = ["goto_prev_paragraph", "collapse_selection"]
+"}" = ["goto_next_paragraph", "collapse_selection"]
 0 = "goto_line_start"
 "$" = "goto_line_end"
 "^" = "goto_first_nonwhitespace"
 "*" = ["move_char_right", "move_prev_word_start", "move_next_word_end", "search_selection", "search_next"]
 "#" = ["move_char_right", "move_prev_word_start", "move_next_word_end", "search_selection", "search_prev"]
 C-r = "redo"
+C = ["extend_to_line_end", "yank_main_selection_to_clipboard", "delete_selection", "insert_mode"]
+D = ["extend_to_line_end", "yank_main_selection_to_clipboard", "delete_selection"]
+V = ["select_mode", "extend_to_line_bounds"]
+x = ["delete_selection"]
+
+# No selection while moving
+w = ["move_next_word_start", "move_char_right", "collapse_selection"]
+W = ["move_next_long_word_start", "move_char_right", "collapse_selection"]
+e = ["move_next_word_end", "collapse_selection"]
+E = ["move_next_long_word_end", "collapse_selection"]
+b = ["move_prev_word_start", "collapse_selection"]
+B = ["move_prev_long_word_start", "collapse_selection"]
+
+# Just to be sure that we do not have any unintended selection left when editing
+i = ["insert_mode", "collapse_selection"]
+a = ["append_mode", "collapse_selection"]
 
 # Muscle memory from my vim config
 C-t = "jump_backward"
 "tab" = "goto_last_accessed_file"
-F4 = ":sh hemux-last"
+F4 = [":update", ":sh hemux-last"]
 F9 = [":update", ":sh hemux autobuild release"]
-
-# Fine tune helix itself
-X = "extend_line_above"
 
 # Make j and k behave as they do Vim when soft-wrap is enabled
 j = "move_line_down"
@@ -41,18 +54,29 @@ k = "move_line_up"
 
 [keys.select]
 # Muscle memory from default vim
-"{" = "goto_prev_paragraph"
-"}" = "goto_next_paragraph"
+esc = ["normal_mode", "collapse_selection", "keep_primary_selection"]
+"{" = ["goto_prev_paragraph", "collapse_selection"]
+"}" = ["goto_next_paragraph", "collapse_selection"]
 0 = "goto_line_start"
 "$" = "goto_line_end"
 "^" = "goto_first_nonwhitespace"
 "*" = ["move_char_right", "move_prev_word_start", "move_next_word_end", "search_selection", "search_next"]
+"up" = "extend_line_above"
+"down" = "extend_line_below"
+V = ["select_mode", "extend_to_line_bounds"]
+x = ["delete_selection"]
+
+# Just to be sure that we do not have any unintended selection left when editing
+i = ["insert_mode", "collapse_selection"]
+I = ["goto_line_start", "insert_mode", "collapse_selection"]
+a = ["append_mode", "collapse_selection"]
 
 [keys.normal."space"]
 u = ":update"
-v = ":config-open"
-V = ":config-reload"
+x = ":config-open"
+X = ":config-reload"
 
+# Code mode
 # TODO give section a description (no support as of 2023/10?)
 [keys.normal."space".c]
 f = [":format", ":update"]
