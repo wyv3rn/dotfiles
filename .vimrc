@@ -228,10 +228,11 @@ set completeopt-=preview
 let g:ycm_auto_hover=''
 let g:ycm_extra_conf_globlist = ['~/gitlab/*', '~/github/*', '~/devops/*']
 nmap <F7> :YcmCompleter FixIt<CR>
-nmap t :YcmCompleter GoTo<CR>
+nmap gd :YcmCompleter GoTo<CR>
 nmap <C-t> <C-o>
-nmap T :YcmCompleter GetType<CR>
-nmap mi <Plug>(YCMHover)
+nmap <leader>t :YcmCompleter GetType<CR>
+" TODO hover does not work?
+nmap <leader>h <Plug>(YCMHover)
 let g:ycm_semantic_triggers = {
      \ 'elm' : ['.'],
      \}
@@ -347,17 +348,13 @@ let g:UltiSnipsJumpBackwardTrigger="<C-r>"
 " easy motion stuff
 let g:EasyMotion_smartcase = 1
 let g:EasyMotion_keys = 'ratidubpsolgen'
-" map <leader> <Plug>(easymotion-prefix)
-" nmap <Space><Space> <Plug>(easymotion-sn)
 nmap <leader>n <Plug>(easymotion-s2)
 nmap <leader>s <Plug>(easymotion-s1)
-"nmap <Space>r <Plug>(easymotion-bd-jk)
-" TODO make delete/change till possible
+" TODO make delete/change till possible with easymotion
 nmap f <Plug>(easymotion-fl)
 nmap F <Plug>(easymotion-Fl)
-" TODO conflic with C++ jumping ...
-" nmap t <Plug>(easymotion-tl)
-" nmap T <Plug>(easymotion-Tl)
+nmap t <Plug>(easymotion-tl)
+nmap T <Plug>(easymotion-Tl)
 
 " Autoformat
 let g:autoformat_autoindent = 0
