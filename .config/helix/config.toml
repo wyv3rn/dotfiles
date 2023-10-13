@@ -1,6 +1,6 @@
 # NOTE: Default vim behavior stuff mostly inspired by https://github.com/LGUG2Z/helix-vim
 
-theme = "base16_transparent"
+theme = "my_terminal"
 
 [editor]
 line-number = "relative"
