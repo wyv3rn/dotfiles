@@ -1,7 +1,3 @@
--- Theming
-vim.opt.termguicolors = true
-vim.cmd.colorscheme "catppuccin-frappe"
-
 -- Line numbering
 vim.opt.number = true
 vim.opt.relativenumber = true

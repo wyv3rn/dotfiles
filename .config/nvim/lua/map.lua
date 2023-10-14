@@ -1,6 +1,3 @@
--- One to lead them all (well, at least most of them)
-vim.g.mapleader = " "
-
 -- System clipboard
 vim.keymap.set({ 'v' }, '<C-c><C-c>', '"+y')
 vim.keymap.set({ 'n', 'v' }, '<C-c><C-v>', '"+p')
@@ -25,15 +22,9 @@ vim.keymap.set('n', '<F11>', '<cmd>!sh hemux autobuild --test<cr><cr>')
 -- TODO can we make this during WhichKey register?
 vim.keymap.set('v', '<leader>cc', ":CommentToggle<cr>", { desc = 'Toggle comments' })
 
--- WhichKey
+-- Configure the rest with WhichKey
 local wk = require("which-key")
-
--- Good place to init some other plugins, too
 local telescope = require("telescope.builtin")
-require("nvim_comment").setup({
-    create_mappings = false,
-})
-require("blame").setup({})
 
 wk.register({
     -- Space mode
