@@ -5,9 +5,6 @@ vim.keymap.set({ 'n', 'v' }, '<C-c><C-v>', '"+p')
 -- Update and goto last file
 vim.keymap.set({ 'n' }, '<tab>', '<cmd>update<cr><cmd>edit #<cr>')
 
--- Remove search highlighting
-vim.keymap.set('n', ';', '<cmd>nohlsearch<cr>', { desc = 'Clear highlighting' })
-
 -- Jumps
 vim.keymap.set('n', '<C-t>', '<C-o>')
 
@@ -39,6 +36,7 @@ wk.register({
         h = { "<cmd>lua vim.lsp.buf.hover()<cr>", "Show symbol information in hover" },
         ["/"] = { telescope.live_grep, "Live grep" },
         ["*"] = { telescope.grep_string, "Grep string under cursor" },
+        ["<leader>"] = { "<cmd>nohlsearch<cr>", "Clear everything!" },
 
         -- Code mode
         c = {
