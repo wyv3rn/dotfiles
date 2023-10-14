@@ -33,6 +33,7 @@ local telescope = require("telescope.builtin")
 require("nvim_comment").setup({
     create_mappings = false,
 })
+require("blame").setup({})
 
 wk.register({
     -- Space mode
@@ -61,7 +62,7 @@ wk.register({
         -- Toggle mode
         t = {
             name = "Toggle mode",
-            b = { "<cmd>echo 'Not installed'<cr>", "Toggle git blame" },
+            b = { "<cmd>ToggleBlame<cr>", "Toggle git blame" },
         },
     },
 

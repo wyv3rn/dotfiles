@@ -4,6 +4,7 @@ require("set")
 require("map")
 require("treesitter")
 
+-- TODO highlight and remove trailing whitespaces
 -- TODO easymotions
 -- TODO goto hpp/cpp
 -- TODO git blame

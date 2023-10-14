@@ -3,38 +3,89 @@ local lsp_zero = require('lsp-zero')
 -- Install lsp servers with mason
 require('mason').setup({})
 require('mason-lspconfig').setup({
-  handlers = {
-    lsp_zero.default_setup,
-  },
+    handlers = {
+        lsp_zero.default_setup,
+    },
 })
 
 -- Autocomplete
+vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
 local luasnip = require("luasnip")
 local cmp = require("cmp")
+local select_opts = { behavior = cmp.SelectBehavior.Insert }
+local confirm_opts = { select = true }
+
 cmp.setup({
-	snippet = {
-		-- REQUIRED - you must specify a snippet engine
-		expand = function(args)
-			require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-		end,
-	},
-	mapping = cmp.mapping.preset.insert({
-        ['<C-Space>'] = cmp.mapping.complete(),
-		["<Tab>"] = cmp.mapping(function(fallback)
-			if cmp.visible() then
-				cmp.select_next_item()
-			elseif luasnip.expand_or_jumpable() then
-				luasnip.expand_or_jump()
-			else
-				fallback()
-			end
-		end, {"i", "s"}),
-		['<CR>'] = cmp.mapping.confirm({select = true}),
-	}),
-	sources = cmp.config.sources({
-		{ name = 'nvim_lsp' },
-		{ name = 'luasnip' }, -- For luasnip users.
-	}, {
-		{ name = 'buffer' },
-	})
+    snippet = {
+        expand = function(args)
+            luasnip.lsp_expand(args.body)
+        end
+    },
+    sources = {
+        { name = 'path' },
+        { name = 'nvim_lsp', keyword_length = 1 },
+        { name = 'buffer',   keyword_length = 3 },
+        { name = 'luasnip',  keyword_length = 2 },
+    },
+    window = {
+        documentation = cmp.config.window.bordered()
+    },
+    formatting = {
+        fields = { 'menu', 'abbr', 'kind' },
+    },
+    mapping = {
+        ['<Up>'] = cmp.mapping.select_prev_item(select_opts),
+        ['<Down>'] = cmp.mapping.select_next_item(select_opts),
+
+        ['<C-p>'] = cmp.mapping.select_prev_item(select_opts),
+        ['<C-n>'] = cmp.mapping.select_next_item(select_opts),
+
+        ['<C-u>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-d>'] = cmp.mapping.scroll_docs(4),
+
+        ['<C-g>'] = cmp.mapping.abort(),
+        ['<C-c>'] = cmp.mapping.abort(),
+        ['<CR>'] = cmp.mapping.confirm(confirm_opts),
+
+        ['<C-f>'] = cmp.mapping(function(fallback)
+            if luasnip.jumpable(1) then
+                luasnip.jump(1)
+            else
+                fallback()
+            end
+        end, { 'i', 's' }),
+
+        ['<C-b>'] = cmp.mapping(function(fallback)
+            if luasnip.jumpable(-1) then
+                luasnip.jump(-1)
+            else
+                fallback()
+            end
+        end, { 'i', 's' }),
+
+        ['<C-space>'] = cmp.mapping(function(fallback)
+            local entries = cmp.get_entries()
+            if #entries > 0 and (#entries == 1 or entries[1].exact) then
+                cmp.confirm(confirm_opts)
+            elseif cmp.visible() then
+                cmp.select_next_item(select_opts)
+            else
+                cmp.complete()
+            end
+        end, { 'i', 's' }),
+
+        ['<Tab>'] = cmp.mapping(function(fallback)
+            local col = vim.fn.col('.') - 1
+            local entries = cmp.get_entries()
+            if #entries > 0 and (#entries == 1 or entries[1].exact) then
+                cmp.confirm(confirm_opts)
+            elseif cmp.visible() then
+                cmp.select_next_item(select_opts)
+            elseif col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
+                fallback()
+            else
+                cmp.complete()
+            end
+        end, { 'i', 's' }),
+    },
 })
