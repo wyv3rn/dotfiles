@@ -1,16 +1,46 @@
 #!/usr/bin/env bash
 
-clear
+mode="release"
 
-# TODO support "build" flags --release|debug|tests
-# TODO support more build envs
-#   - detect Cargo.toml
-#   - detect build.py (?)
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -h|--help)
+            echo "No help yet :("
+            exit 0
+            ;;
+        --mode)
+            mode="$2"
+            shift
+            ;;
+        -*|--*)
+            echo "Unknown option $1"
+            exit -1
+            ;;
+        *)
+            pos_args+=("$1")
+            ;;
+    esac
+    shift
+done
+
+set -- "${pos_args[@]}"
+
+
+# TODO switch whether we should clear or not
+clear
 
 if [ -f Makefile ]; then
   make
 elif [ -f .latexmkrc ]; then
   latexmk
+elif [ -f Cargo.toml ]; then
+    if [ "$mode" == "release" ] || [ "$mode" == "debug" ]; then
+        cargo build --${mode}
+    elif [ "$mode" == "check" ]; then
+        cargo fmt --check && cargo clippy --all-targets --all-features -- -D warnings
+    elif [ "$mode" == "test" ]; then
+        cargo test
+    fi
 else
   echo "Do not know how to build your project, giving up"
   exit -1

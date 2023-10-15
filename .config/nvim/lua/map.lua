@@ -10,10 +10,10 @@ vim.keymap.set('n', '<C-t>', '<C-o>')
 
 -- Compiling
 vim.keymap.set('n', '<F4>', '<cmd>!sh hemux-last<cr><cr>')
-vim.keymap.set('n', '<F8>', '<cmd>!sh hemux autobuild --check<cr><cr>')
-vim.keymap.set('n', '<F9>', '<cmd>!sh hemux autobuild --release<cr><cr>')
-vim.keymap.set('n', '<F10>', '<cmd>!sh hemux autobuild --debug<cr><cr>')
-vim.keymap.set('n', '<F11>', '<cmd>!sh hemux autobuild --test<cr><cr>')
+vim.keymap.set('n', '<F8>', '<cmd>!sh hemux autobuild --mode check<cr><cr>')
+vim.keymap.set('n', '<F9>', '<cmd>!sh hemux autobuild --mode release<cr><cr>')
+vim.keymap.set('n', '<F10>', '<cmd>!sh hemux autobuild --mode debug<cr><cr>')
+vim.keymap.set('n', '<F11>', '<cmd>!sh hemux autobuild --mode test<cr><cr>')
 
 -- Toggle comments in visual mode (normal mode -> WhichKey)
 -- TODO can we make this during WhichKey register?
