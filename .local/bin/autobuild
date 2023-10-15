@@ -34,8 +34,10 @@ if [ -f Makefile ]; then
 elif [ -f .latexmkrc ]; then
   latexmk
 elif [ -f Cargo.toml ]; then
-    if [ "$mode" == "release" ] || [ "$mode" == "debug" ]; then
-        cargo build --${mode}
+    if [ "$mode" == "release" ]; then
+        cargo build --release
+    elif [ "$mode" == "debug" ]; then
+        cargo build
     elif [ "$mode" == "check" ]; then
         cargo fmt --check && cargo clippy --all-targets --all-features -- -D warnings
     elif [ "$mode" == "test" ]; then
