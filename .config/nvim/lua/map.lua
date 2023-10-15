@@ -52,6 +52,7 @@ wk.register({
         t = {
             name = "Toggle mode",
             b = { "<cmd>ToggleBlame<cr>", "Toggle git blame" },
+            w = { "<cmd>StripWhitespace<cr>", "Strip trailing whitespaces" }
         },
     },
 

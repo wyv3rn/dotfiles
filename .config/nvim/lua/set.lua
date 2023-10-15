@@ -20,3 +20,5 @@ vim.opt.expandtab = true
 -- Undo
 vim.opt.undofile = true
 
+-- Default g flag in substitutions
+vim.opt.gdefault = true
