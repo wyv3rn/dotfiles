@@ -23,6 +23,4 @@ require("set")
 -- Key mapping
 require("map")
 
--- TODO git blame
--- TODO latex (?)
--- TODO check for cool stuff in old vim config
+-- TODO git blame, current Plugin not working -> fugitive anyway?
