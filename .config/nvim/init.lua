@@ -23,9 +23,6 @@ require("set")
 -- Key mapping
 require("map")
 
--- TODO highlight and remove trailing whitespaces
--- TODO easymotions
--- TODO goto hpp/cpp
 -- TODO git blame
--- TODO latex
+-- TODO latex (?)
 -- TODO check for cool stuff in old vim config

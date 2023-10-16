@@ -22,6 +22,7 @@ vim.keymap.set('v', '<leader>cc', ":CommentToggle<cr>", { desc = 'Toggle comment
 -- Configure the rest with WhichKey
 local wk = require("which-key")
 local telescope = require("telescope.builtin")
+local harpoon_ui = require("harpoon.ui")
 
 wk.register({
     -- Space mode
@@ -33,26 +34,37 @@ wk.register({
         f = { telescope.find_files, "Find files" },
         b = { telescope.buffers, "Find buffers" },
         s = { telescope.lsp_dynamic_workspace_symbols, "Find symbols in workspace" },
-        h = { "<cmd>lua vim.lsp.buf.hover()<cr>", "Show symbol information in hover" },
         ["/"] = { telescope.live_grep, "Live grep" },
         ["*"] = { telescope.grep_string, "Grep string under cursor" },
         ["<leader>"] = { "<cmd>nohlsearch<cr>", "Clear everything!" },
+
+        -- harpoon
+        n = { "<cmd>lua require('harpoon.ui').nav_file(1)<cr>", "Harpoon One" },
+        r = { "<cmd>lua require('harpoon.ui').nav_file(2)<cr>", "Harpoon Two" },
+        t = { "<cmd>lua require('harpoon.ui').nav_file(3)<cr>", "Harpoon Three" },
+        d = { "<cmd>lua require('harpoon.ui').nav_file(4)<cr>", "Harpoon Four" },
 
         -- Code mode
         c = {
             name = "Code mode",
             f = { "<cmd>lua vim.lsp.buf.format()<cr><cmd>update<cr>", "Format buffer" },
-            s = { "<cmd>lua vim.lsp.buf.signature_help()<cr>", "Show signature information in hover" },
+            h = { "<cmd>lua vim.lsp.buf.hover()<cr>", "Show symbol information in hover" },
             a = { "<cmd>lua vim.lsp.buf.code_action()<cr>", "Perform code action" },
             c = { "<cmd>CommentToggle<cr>", "Toggle comment" },
             r = { "<cmd>lua vim.lsp.buf.rename()<cr>", "Rename symbol under cursor" },
         },
 
         -- Toggle mode
-        t = {
+        T = {
             name = "Toggle mode",
             b = { "<cmd>ToggleBlame<cr>", "Toggle git blame" },
             w = { "<cmd>StripWhitespace<cr>", "Strip trailing whitespaces" }
+        },
+
+        --  More harpoon
+        h = {
+            h = { harpoon_ui.toggle_quick_menu, "Harpoon menu" },
+            a = { require("harpoon.mark").add_file, "Add current file" },
         },
     },
 
