@@ -1,3 +1,4 @@
+-- TODO use more vim.cmd and function () ... end instead of "<cmd>....<cr>"
 -- System clipboard
 vim.keymap.set({ 'v' }, '<C-c><C-c>', '"+y')
 vim.keymap.set({ 'n', 'v' }, '<C-c><C-v>', '"+p')
@@ -69,7 +70,8 @@ wk.register({
         -- Toggle mode
         T = {
             name = "Toggle mode",
-            w = { "<cmd>StripWhitespace<cr>", "Strip trailing whitespaces" }
+            w = { "<cmd>StripWhitespace<cr>", "Strip trailing whitespaces" },
+            u = { vim.cmd.UndotreeToggle, "Toggle undo tree" },
         },
 
         -- Git
