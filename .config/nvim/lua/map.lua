@@ -1,7 +1,10 @@
 -- TODO use more vim.cmd and function () ... end instead of "<cmd>....<cr>"
 -- System clipboard
-vim.keymap.set({ 'v' }, '<C-c><C-c>', '"+y')
-vim.keymap.set({ 'n', 'v' }, '<C-c><C-v>', '"+p')
+vim.keymap.set({ 'v' }, '<leader>y', '"+y', { desc = "Yank to system clipboard" })
+vim.keymap.set({ 'n', 'v' }, '<leader>p', '"+p', { desc = "Past from system clipboard" })
+
+-- Repeated pasting in visual mode
+vim.keymap.set({ 'x' }, 'p', '"_dP', { desc = "Fearless paste in visual mode" })
 
 -- Update and goto last file
 vim.keymap.set({ 'n' }, '<tab>', '<cmd>update<cr><cmd>edit #<cr>')
@@ -41,12 +44,12 @@ wk.register({
     -- Space mode
     ["<leader>"] = {
         name = "Space mode",
-        u = { "<cmd>update<cr>", "Write file iff modified" },
         x = { "<cmd>edit $MYVIMRC<cr>", "Open neovim config" },
         X = { "<cmd>update<cr><cmd>source $MYVIMRC<cr>", "Reload neovim config" },
         f = { telescope.find_files, "Find files" },
         b = { telescope.buffers, "Find buffers" },
         s = { telescope.lsp_dynamic_workspace_symbols, "Find symbols in workspace" },
+        u = { vim.cmd.UndotreeToggle, "Toggle undo tree" },
         ["/"] = { telescope.live_grep, "Live grep" },
         ["*"] = { telescope.grep_string, "Grep string under cursor" },
         ["<leader>"] = { "<cmd>nohlsearch<cr>", "Clear everything!" },
@@ -71,7 +74,6 @@ wk.register({
         T = {
             name = "Toggle mode",
             w = { "<cmd>StripWhitespace<cr>", "Strip trailing whitespaces" },
-            u = { vim.cmd.UndotreeToggle, "Toggle undo tree" },
         },
 
         -- Git
