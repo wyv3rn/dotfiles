@@ -23,6 +23,18 @@ vim.keymap.set('v', '<leader>cc', ":CommentToggle<cr>", { desc = 'Toggle comment
 local wk = require("which-key")
 local telescope = require("telescope.builtin")
 local harpoon_ui = require("harpoon.ui")
+local terminal = require("toggleterm.terminal").Terminal
+local lazygit = terminal:new({
+    cmd = "lazygit",
+    hidden = true,
+    direction = "float",
+})
+
+local lazygit_dotfiles = terminal:new({
+    cmd = "lazygit --git-dir ~/.dotfiles.git/ --work-tree ~/",
+    hidden = true,
+    direction = "float"
+})
 
 wk.register({
     -- Space mode
@@ -57,8 +69,15 @@ wk.register({
         -- Toggle mode
         T = {
             name = "Toggle mode",
-            b = { "<cmd>ToggleBlame<cr>", "Toggle git blame" },
             w = { "<cmd>StripWhitespace<cr>", "Strip trailing whitespaces" }
+        },
+
+        -- Git
+        g = {
+            name = "Git mode",
+            g = { function() lazygit:toggle() end, "Toggle lazygit terminal" },
+            d = { function() lazygit_dotfiles:toggle() end, "Toggle lazygit terminal for dotfiles" },
+            b = { "<cmd>ToggleBlame<cr>", "Toggle git blame" },
         },
 
         --  More harpoon
