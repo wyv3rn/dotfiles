@@ -9,6 +9,7 @@ return {
             { 'hrsh7th/nvim-cmp' },
             { 'hrsh7th/cmp-nvim-lsp' },
             { 'L3MON4D3/LuaSnip' },
+            { 'barreiroleo/ltex_extra.nvim' },
         },
         config = function()
             local lsp_zero = require('lsp-zero')
@@ -103,6 +104,21 @@ return {
                     end, { 'i', 's' }),
                 },
             })
+
+            -- Configure ltex-ls
+            local dict_dir = vim.fn.expand("~") .. "/devops/dictionary/"
+            require('ltex_extra').setup {
+                path = dict_dir,
+                load_langs = { "en-US", "de-DE" },
+                server_opts = {
+                    settings = {
+                        ltex = {
+                            -- Example, see full lust of options here: https://valentjn.github.io/ltex/settings.html
+                            -- dictionary = { ["de-DE"] = { "korrekt" } }
+                        }
+                    }
+                }
+            }
         end
     },
 }
