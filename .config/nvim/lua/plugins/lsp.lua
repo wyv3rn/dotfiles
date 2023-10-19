@@ -12,6 +12,7 @@ return {
         },
         config = function()
             local lsp_zero = require('lsp-zero')
+            lsp_zero.extend_lspconfig()
 
             -- Install lsp servers with mason
             require('mason').setup({})
