@@ -12,6 +12,10 @@ vim.keymap.set({ 'n' }, '<tab>', '<cmd>update<cr><cmd>edit #<cr>')
 -- Jumps
 vim.keymap.set('n', '<C-t>', '<C-o>')
 
+-- Better half-page scrolling
+vim.keymap.set('n', '<C-d>', '<C-d>zz')
+vim.keymap.set('n', '<C-u>', '<C-u>zz')
+
 -- Compiling
 vim.keymap.set('n', '<F4>', '<cmd>update<cr><cmd>!sh hemux-last<cr><cr>')
 vim.keymap.set('n', '<F8>', '<cmd>update<cr><cmd>!sh hemux autobuild --mode check<cr><cr>')
@@ -52,6 +56,7 @@ wk.register({
         u = { vim.cmd.UndotreeToggle, "Toggle undo tree" },
         ["/"] = { telescope.live_grep, "Live grep" },
         ["*"] = { telescope.grep_string, "Grep string under cursor" },
+        ["?"] = { telescope.help_tags, "Find help" },
         ["<leader>"] = { "<cmd>nohlsearch<cr>", "Clear everything!" },
 
         -- harpoon
@@ -94,10 +99,11 @@ wk.register({
     -- GoTo mode
     g = {
         name = "GoTo mode",
-        d = { telescope.lsp_definitions, "GoTo definition" },
-        r = { telescope.lsp_references, "GoTo references" },
-        t = { telescope.lsp_type_definitions, "GoTo type definition" },
-        i = { telescope.lsp_implementations, "GoTo implementation" },
+        d = { telescope.lsp_definitions, "Go to definition" },
+        r = { telescope.lsp_references, "Go to references" },
+        t = { telescope.lsp_type_definitions, "Go to type definition" },
+        i = { telescope.lsp_implementations, "Go to implementation" },
+        h = { vim.cmd.GotoHeaderSwitch, "Go to header" },
     },
 
     -- Prev/next
