@@ -86,7 +86,7 @@ wk.register({
             name = "Git mode",
             g = { function() lazygit:toggle() end, "Toggle lazygit terminal" },
             d = { function() lazygit_dotfiles:toggle() end, "Toggle lazygit terminal for dotfiles" },
-            b = { "<cmd>ToggleBlame<cr>", "Toggle git blame" },
+            b = { "<cmd>ToggleBlame virtual<cr>", "Toggle git blame" },
         },
 
         --  More harpoon
