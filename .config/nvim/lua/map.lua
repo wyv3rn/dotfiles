@@ -100,10 +100,15 @@ wk.register({
     g = {
         name = "GoTo mode",
         d = { telescope.lsp_definitions, "Go to definition" },
+        D = { telescope.lsp_type_definitions, "Go to type definition" },
         r = { telescope.lsp_references, "Go to references" },
-        t = { telescope.lsp_type_definitions, "Go to type definition" },
         i = { telescope.lsp_implementations, "Go to implementation" },
         h = { vim.cmd.GotoHeaderSwitch, "Go to header" },
+        w = { "<C-w><C-p>", "Go to previous window" },
+        ["<Left>"] = { "<C-w>h", "Go to left window" },
+        ["<Right>"] = { "<C-w>l", "Go to right window" },
+        ["<Up>"] = { "<C-w>k", "Go to upper window" },
+        ["<Down>"] = { "<C-w>j", "Go to lower window" },
     },
 
     -- Prev/next
