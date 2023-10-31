@@ -6,11 +6,9 @@ vim.keymap.set({ 'n', 'v' }, '<leader>p', '"+p', { desc = "Past from system clip
 -- Repeated pasting in visual mode
 vim.keymap.set({ 'x' }, 'p', '"_dP', { desc = "Fearless paste in visual mode" })
 
--- Update and goto last file
-vim.keymap.set({ 'n' }, '<tab>', '<cmd>update<cr><cmd>edit #<cr>')
-
 -- Jumps
-vim.keymap.set('n', '<C-t>', '<C-o>')
+vim.keymap.set('n', '<C-i>', '<C-i>zz')
+vim.keymap.set('n', '<C-t>', '<C-o>zz')
 
 -- Better half-page scrolling
 vim.keymap.set('n', '<C-d>', '<C-d>zz')
@@ -57,6 +55,7 @@ wk.register({
         ["/"] = { telescope.live_grep, "Live grep" },
         ["*"] = { telescope.grep_string, "Grep string under cursor" },
         ["?"] = { telescope.help_tags, "Find help" },
+        ["<Tab>"] = { "<cmd>update<cr><cmd>edit #<cr>", "Go to last file" },
         ["<leader>"] = { "<cmd>nohlsearch<cr>", "Clear everything!" },
 
         -- harpoon
