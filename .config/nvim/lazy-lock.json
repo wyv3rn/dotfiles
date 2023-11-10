@@ -1,7 +1,7 @@
 {
   "LuaSnip": { "branch": "master", "commit": "a4de64570b9620875c8ea04175cd07ed8e32ac99" },
   "Vim-Goto-Header": { "branch": "master", "commit": "247694ede014ed4326a44998b05d49cb14b91b7c" },
-  "blame.nvim": { "branch": "main", "commit": "562661972085a273914c8f702b11924f8aa573ea" },
+  "blame.nvim": { "branch": "fix-cwd", "commit": "144ef26b3ef9524a0e84b56fc9c770d9c7ebcd1b" },
   "cmp-nvim-lsp": { "branch": "main", "commit": "44b16d11215dce86f253ce0c30949813c0a90765" },
   "harpoon": { "branch": "master", "commit": "c1aebbad9e3d13f20bedb8f2ce8b3a94e39e424a" },
   "lazy.nvim": { "branch": "main", "commit": "96584866b9c5e998cbae300594d0ccfd0c464627" },
