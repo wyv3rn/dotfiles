@@ -408,6 +408,8 @@ globalkeys = awful.util.table.join(
     -- Menubar
     awful.key({ modkey }, "space", function() menubar.show() end,
               {description = "show the menubar", group = "launcher"}),
+    awful.key({ modkey }, "e", function() menubar.show() end,
+              {description = "show the menubar", group = "launcher"}),
 
 	-- open file with dmenu
     awful.key({ modkey, "Shift" }, "space", function()
