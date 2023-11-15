@@ -411,18 +411,6 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey }, "e", function() menubar.show() end,
               {description = "show the menubar", group = "launcher"}),
 
-	-- open file with dmenu
-    awful.key({ modkey, "Shift" }, "space", function()
-        local f_reader = io.popen( "cat ~/.dmenufm_cache | dmenu -b -i -nb '".. beautiful.bg_normal .."' -nf '".. beautiful.fg_normal .."' -sb '#955'")
-        local file = assert(f_reader:read('*a'))
-        f_reader:close()
-        if file == "" then return end
-        awful.util.spawn("xdg-open /home/dschatz/" .. file)
-    end),
-
-    -- custom file launcher
-    awful.key({ modkey, "Shift" }, "space", function () awful.util.spawn("file-launcher") end),
-
     -- custom ghci terminal
     awful.key({ modkey, "Shift" }, "Return", function () awful.util.spawn("ghci-terminal") end),
 
@@ -458,7 +446,7 @@ globalkeys = awful.util.table.join(
 )
 
 clientkeys = awful.util.table.join(
-    awful.key({ modkey,           }, "f",
+    awful.key({ modkey, "Shift"   }, "f",
         function (c)
             c.fullscreen = not c.fullscreen
             c:raise()
@@ -466,7 +454,7 @@ clientkeys = awful.util.table.join(
         {description = "toggle fullscreen", group = "client"}),
     awful.key({ modkey,           }, "q",      function (c) c:kill()                         end,
               {description = "close", group = "client"}),
-    awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ,
+    awful.key({ modkey,           }, "f",  awful.client.floating.toggle                     ,
               {description = "toggle floating", group = "client"}),
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end,
               {description = "move to master", group = "client"}),
