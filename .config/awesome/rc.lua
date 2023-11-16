@@ -319,7 +319,7 @@ globalkeys = awful.util.table.join(
         end,
         {description = "focus next by index", group = "client"}
     ),
-    awful.key({ modkey,           }, "y",
+    awful.key({ modkey,           }, "n",
         function ()
             awful.client.focus.byidx( 1)
         end,
@@ -410,6 +410,8 @@ globalkeys = awful.util.table.join(
               {description = "show the menubar", group = "launcher"}),
     awful.key({ modkey }, "e", function() menubar.show() end,
               {description = "show the menubar", group = "launcher"}),
+    awful.key({ }, "Super_L", function() menubar.show() end,
+              {description = "show the menubar", group = "launcher"}),
 
     -- custom ghci terminal
     awful.key({ modkey, "Shift" }, "Return", function () awful.util.spawn("ghci-terminal") end),
@@ -462,7 +464,7 @@ clientkeys = awful.util.table.join(
               {description = "move to screen", group = "client"}),
     awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end,
               {description = "toggle keep on top", group = "client"}),
-    awful.key({ modkey,           }, "n",
+    awful.key({ modkey, "Shift",          }, "n",
         function (c)
             -- The client currently has the input focus, so it cannot be
             -- minimized, since minimized clients can't have the focus.
