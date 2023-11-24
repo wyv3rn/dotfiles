@@ -19,3 +19,6 @@ vim.opt.expandtab = true
 
 -- Default g flag in substitutions
 vim.opt.gdefault = true
+
+-- Default to LaTeX flavor
+vim.g.tex_flavor = 'latex'
