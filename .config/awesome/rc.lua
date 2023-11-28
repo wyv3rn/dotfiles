@@ -355,7 +355,7 @@ globalkeys = awful.util.table.join(
               {description = "jump to urgent client", group = "client"}),
     awful.key({ modkey            }, "Tab",
         function ()
-            switcher.switch( 1, "Alt_L", "Tab", "ISO_Left_Tab")
+            switcher.switch( 1, "Super_L", "Tab", "ISO_Left_Tab")
         end),
         --function ()
         --awful.client.focus.history.previous()
