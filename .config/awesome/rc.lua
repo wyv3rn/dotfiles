@@ -107,7 +107,7 @@ editor_cmd = "alacritty -e " .. editor
 -- If you do not like this or do not have such a key,
 -- I suggest you to remap Mod4 to another key using xmodmap or other tools.
 -- However, you can use another modifier like Mod1, but it may interact with others.
-modkey = "Mod1"
+modkey = "Mod4"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
@@ -409,8 +409,6 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey }, "space", function() menubar.show() end,
               {description = "show the menubar", group = "launcher"}),
     awful.key({ modkey }, "e", function() menubar.show() end,
-              {description = "show the menubar", group = "launcher"}),
-    awful.key({ }, "Super_L", function() menubar.show() end,
               {description = "show the menubar", group = "launcher"}),
 
     -- custom ghci terminal
