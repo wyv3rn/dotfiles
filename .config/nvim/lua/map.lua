@@ -1,3 +1,7 @@
+-- More leaders! (Note: does not seem to work with vim.keymap.set)
+vim.cmd("nmap <cr> <leader>")
+vim.cmd("vmap <cr> <leader>")
+
 -- TODO use more vim.cmd and function () ... end instead of "<cmd>....<cr>"
 -- System clipboard
 vim.keymap.set({ 'v' }, '<leader>y', '"+y', { desc = "Yank to system clipboard" })
