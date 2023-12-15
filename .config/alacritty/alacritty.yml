@@ -1,6 +1,9 @@
 env:
   TERM: xterm-256color
 
+key_bindings:
+  - { key: Tab, mods: Control, chars: "\x1B[27;5;9~" }
+
 font:
   size: 11
   normal:
