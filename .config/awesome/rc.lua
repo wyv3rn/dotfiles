@@ -345,12 +345,6 @@ globalkeys = awful.util.table.join(
               {description = "focus the next screen", group = "screen"}),
     awful.key({ modkey,           }, "i", function () awful.screen.focus_relative(-1) end,
               {description = "focus the previous screen", group = "screen"}),
-    awful.key({ modkey,           }, "8", function () awful.screen.focus(1) end,
-              {description = "focus on left screen ", group = "screen"}),
-    awful.key({ modkey,           }, "9", function () awful.screen.focus(1) end,
-              {description = "focus on left screen", group = "screen"}),
-    awful.key({ modkey,           }, "0", function () awful.screen.focus(2) end,
-              {description = "focus on right screen", group = "screen"}),
     awful.key({ modkey,           }, "u", awful.client.urgent.jumpto,
               {description = "jump to urgent client", group = "client"}),
     awful.key({ modkey            }, "Tab",
@@ -479,8 +473,8 @@ clientkeys = awful.util.table.join(
 
 -- Bind all key numbers to tags.
 -- Be careful: we use keycodes to make it works on any keyboard layout.
--- This should map on the top row of your keyboard, usually 1 to 9.
-for i = 1, 9 do
+-- This should map on the top row of your keyboard, usually 1 to 7.
+for i = 1, 7 do
     globalkeys = awful.util.table.join(globalkeys,
         -- View tag only.
         awful.key({ modkey }, "#" .. i + 9,
