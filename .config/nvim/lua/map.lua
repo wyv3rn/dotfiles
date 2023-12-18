@@ -19,11 +19,11 @@ vim.keymap.set('n', '<C-d>', '<C-d>zz')
 vim.keymap.set('n', '<C-u>', '<C-u>zz')
 
 -- Compiling
-vim.keymap.set('n', '<F4>', '<cmd>update<cr><cmd>!sh hemux-last<cr><cr>')
-vim.keymap.set('n', '<F8>', '<cmd>update<cr><cmd>!sh hemux autobuild --mode check<cr><cr>')
-vim.keymap.set('n', '<F9>', '<cmd>update<cr><cmd>!sh hemux autobuild --mode release<cr><cr>')
-vim.keymap.set('n', '<F10>', '<cmd>update<cr><cmd>!sh hemux autobuild --mode debug<cr><cr>')
-vim.keymap.set('n', '<F11>', '<cmd>update<cr><cmd>!sh hemux autobuild --mode test<cr><cr>')
+vim.keymap.set('n', '<F4>', '<cmd>update<cr><cmd>!hemux-last<cr><cr>')
+vim.keymap.set('n', '<F8>', '<cmd>update<cr><cmd>!hemux autobuild --mode check<cr><cr>')
+vim.keymap.set('n', '<F9>', '<cmd>update<cr><cmd>!hemux autobuild --mode release<cr><cr>')
+vim.keymap.set('n', '<F10>', '<cmd>update<cr><cmd>!hemux autobuild --mode debug<cr><cr>')
+vim.keymap.set('n', '<F11>', '<cmd>update<cr><cmd>!hemux autobuild --mode test<cr><cr>')
 
 -- Toggle comments in visual mode (normal mode -> WhichKey)
 -- TODO can we make this during WhichKey register?
