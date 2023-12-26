@@ -23,6 +23,8 @@ borg create                    	    \
     --exclude-caches                \
     --exclude '/home/*/.cache/*'    \
     --exclude '/home/*/mnt'         \
+    --exclude '/home/*/nefos'       \
+    --exclude '/home/*/.nefos'      \
     --exclude '/dev/*'              \
     --exclude '/proc/*'             \
     --exclude '/sys/*'              \
