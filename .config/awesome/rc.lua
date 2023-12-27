@@ -432,11 +432,11 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey }, "End", function () awful.util.spawn("playerctl next") end),
     awful.key({ modkey }, "Insert", function () awful.util.spawn("playerctl play-pause") end),
 
-    -- toggle wibox
-    awful.key({ modkey }, "F11", function () mouse.screen.mywibox.visible = not mouse.screen.mywibox.visible end),
+    -- Set correct keyboard layout for the Voyager
+    awful.key({ modkey }, "F1", function () awful.util.spawn("set-voyager-layout") end),
 
-    -- VGA Adapter mirroring
-    awful.key({ modkey }, "F7", function () awful.util.spawn("mirror-displays HDMI-2 eDP-1") end)
+    -- toggle wibox
+    awful.key({ modkey }, "F11", function () mouse.screen.mywibox.visible = not mouse.screen.mywibox.visible end)
 )
 
 clientkeys = awful.util.table.join(
