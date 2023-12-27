@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+sshfs nefos:vault /mnt/nefos-vault -o idmap=user
+gocryptfs -extpass pass -extpass nefos/pwd /mnt/nefos-vault /mnt/nefos
