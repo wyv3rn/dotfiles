@@ -1,0 +1,22 @@
+import = ["~/.config/alacritty/catppuccin/catppuccin-frappe.toml"]
+
+[colors.cursor]
+cursor = "#ffffff"
+
+[cursor.style]
+blinking = "Never"
+
+[env]
+TERM = "xterm-256color"
+
+[font]
+size = 9
+
+[font.normal]
+family = "Dejavu Sans Mono"
+style = "regular"
+
+[[keyboard.bindings]]
+chars = "\u001B[27;5;9~"
+key = "Tab"
+mods = "Control"
