@@ -13,7 +13,7 @@ fi
 alacritty_font_size=10
 case $1 in
     120)
-        alacritty_font_size=7
+        alacritty_font_size=10
         ;;
     144)
         alacritty_font_size=12
