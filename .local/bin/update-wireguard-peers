@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+if [ $# -lt 1 ]; then
+    echo "Usage: update-wireguard-peers src-config [dst-config]"
+    exit -1
+fi
+
+src=$1
+dst="/etc/wireguard/wg0.conf"
+
+if [ $# -ge 2 ]; then
+    dst=$2
+fi
+
+sudo sed -i '/^\[Peer\]$/Q' ${dst}
+cat ${src} | sudo tee -a ${dst}
