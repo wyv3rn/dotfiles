@@ -16,7 +16,7 @@ case $1 in
         alacritty_font_size=7
         ;;
     144)
-        alacritty_font_size=11
+        alacritty_font_size=12
         ;;
     168)
         alacritty_font_size=9
