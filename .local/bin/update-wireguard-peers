@@ -1,16 +1,18 @@
 #!/usr/bin/env bash
 
 if [ $# -lt 1 ]; then
-    echo "Usage: update-wireguard-peers src-config [dst-config]"
+    echo "Usage: update-wireguard-peers src-config [interface (default = wg0)]"
     exit -1
 fi
 
 src=$1
-dst="/etc/wireguard/wg0.conf"
-
+iface="wg0"
 if [ $# -ge 2 ]; then
-    dst=$2
+    iface=$2
 fi
+dst="/etc/wireguard/${iface}.conf"
+
 
 sudo sed -i '/^\[Peer\]$/Q' ${dst}
 cat ${src} | sudo tee -a ${dst}
+sudo systemctl restart wg-quick@${iface}.service
