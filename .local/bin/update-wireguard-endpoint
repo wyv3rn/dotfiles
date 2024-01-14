@@ -8,6 +8,7 @@ fi
 cfg=$1
 
 hostname=`hostname`
-ip=`hostname -i | ''tr ' ' '\n' | grep -v '10\.0\.0\..*' | head -n1`
+ip=`ip a | grep -o 'inet [0-9\.]\+' | awk '{print $2}' | grep -v '^\(10\|127\|172\)'`
 sed -i "/${hostname}/I{n;d;}" $cfg
 sed -i "/${hostname}/IaEndpoint = ${ip}:51820" $cfg
+sync
