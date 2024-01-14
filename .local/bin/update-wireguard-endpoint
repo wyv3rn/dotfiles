@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+if [ $# -lt 1 ]; then
+    echo "Usage: update-wireguard-endpoint config"
+    exit -1
+fi
+
+cfg=$1
+
+hostname=`hostname`
+ip=`hostname -i | ''tr ' ' '\n' | grep -v '10\.0\.0\..*' | head -n1`
+sed -i "/${hostname}/I{n;d;}" $cfg
+sed -i "/${hostname}/IaEndpoint = ${ip}:51820" $cfg
