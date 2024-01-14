@@ -9,6 +9,6 @@ cfg=$1
 
 hostname=`hostname`
 ip=`ip a | grep -o 'inet [0-9\.]\+' | awk '{print $2}' | grep -v '^\(10\|127\|172\)'`
-sed -i "/${hostname}/I{n;d;}" $cfg
-sed -i "/${hostname}/IaEndpoint = ${ip}:51820" $cfg
+sed -i "/PublicKey = ${hostname}/I{n;d;}" $cfg
+sed -i "/PublicKey = ${hostname}/IaEndpoint = ${ip}:51820" $cfg
 sync
