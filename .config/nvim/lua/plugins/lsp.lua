@@ -14,6 +14,7 @@ return {
         config = function()
             local lsp_zero = require('lsp-zero')
             lsp_zero.extend_lspconfig()
+            local lsp_config = require('lspconfig')
 
             -- Install lsp servers with mason
             require('mason').setup({})
@@ -119,6 +120,17 @@ return {
                     }
                 }
             }
+
+            -- Configure rust-analyzer to use clippy
+            lsp_config.rust_analyzer.setup({
+                settings = {
+                    ["rust-analyzer"] = {
+                        check = {
+                            command = "clippy",
+                        }
+                    }
+                }
+            })
         end
     },
 }
