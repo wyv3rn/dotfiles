@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-setxkbmap -device `xinput | sed -nr 's/.*ZSA Technology Labs Voyager\s+id=([0-9]+).*/\1/p'` -option "" de nodeadkeys
+setxkbmap -device `xinput | sed -nr 's/.*ZSA Technology Labs Voyager\s+id=([0-9]+).*/\1/p'` -option "" -option "compose:prsc" de nodeadkeys
