@@ -20,8 +20,6 @@ export TEXMFHOME=$HOME/.texmf
 export GIT_ASKPASS=pass-telematik-git-token
 export CARGO_NET_GIT_FETCH_WITH_CLI=true
 
-export PATH=~/.config/emacs/bin:$PATH
-
 alias x="startx-dpi"
 alias sync-root="sudo rsync -aAXHS --stats --exclude={/dev/\*,/proc/\*,/sys/\*,/tmp/\*,/run/\*,/mnt/\*,/media/\*,/lost+found,/home/\*/.gvfs} /"
 alias dotf="/usr/bin/git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME"
