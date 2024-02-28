@@ -30,9 +30,11 @@ set -- "${pos_args[@]}"
 clear
 
 if [ -f Makefile ]; then
-  make
+    make
 elif [ -f .latexmkrc ]; then
-  latexmk
+    latexmk
+elif [ -f build.py ]; then
+    ./build.py --mode "$mode"
 elif [ -f Cargo.toml ]; then
     if [ "$mode" == "release" ]; then
         cargo build --release
@@ -44,6 +46,6 @@ elif [ -f Cargo.toml ]; then
         cargo test
     fi
 else
-  echo "Do not know how to build your project, giving up"
-  exit -1
+    echo "Do not know how to build your project, giving up"
+    exit -1
 fi
