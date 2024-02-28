@@ -5,7 +5,7 @@ vim.cmd("vmap <cr> <leader>")
 -- TODO use more vim.cmd and function () ... end instead of "<cmd>....<cr>"
 -- System clipboard
 vim.keymap.set({ 'v' }, '<leader>y', '"+y', { desc = "Yank to system clipboard" })
-vim.keymap.set({ 'n', 'v' }, '<leader>p', '"+p', { desc = "Past from system clipboard" })
+vim.keymap.set({ 'n', 'v' }, '<leader>p', '"+p', { desc = "Paste from system clipboard" })
 
 -- Repeated pasting in visual mode
 vim.keymap.set({ 'x' }, 'p', '"_dP', { desc = "Fearless paste in visual mode" })
