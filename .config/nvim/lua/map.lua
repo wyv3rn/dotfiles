@@ -106,7 +106,7 @@ wk.register({
         D = { telescope.lsp_type_definitions, "Go to type definition" },
         r = { telescope.lsp_references, "Go to references" },
         i = { telescope.lsp_implementations, "Go to implementation" },
-        h = { vim.cmd.GotoHeaderSwitch, "Go to header" },
+        h = { "<cmd>ClangdSwitchSourceHeader<cr>", "Go to header/source file" },
         w = { "<C-w><C-p>", "Go to previous window" },
         ["<Left>"] = { "<C-w>h", "Go to left window" },
         ["<Right>"] = { "<C-w>l", "Go to right window" },
