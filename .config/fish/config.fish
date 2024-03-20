@@ -7,7 +7,7 @@ if status is-interactive
     bind \cg kill-bigword
 
     if type -q keychain
-        keychain --noask --ignore-missing --eval id_rsa id_ed25519 | source
+        keychain --quiet --noask --ignore-missing --eval id_rsa id_ed25519 | source
     end
 
     if type -q zoxide
