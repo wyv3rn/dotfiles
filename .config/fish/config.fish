@@ -6,6 +6,10 @@ if status is-interactive
     bind \ch backward-kill-bigword
     bind \cg kill-bigword
 
+    if type -q keychain
+        keychain --ignore-missing --eval id_rsa id_ed25519 | source
+    end
+
     if type -q zoxide
         zoxide init fish --cmd cd | source
     end
