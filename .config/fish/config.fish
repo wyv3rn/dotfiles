@@ -10,6 +10,10 @@ if status is-interactive
         keychain --quiet --noask --ignore-missing --eval id_rsa id_ed25519 | source
     end
 
+    if type -q ~/.homebrew/bin/brew
+        ~/.homebrew/bin/brew shellenv fish | source
+    end
+
     if type -q zoxide
         zoxide init fish --cmd cd | source
     end
