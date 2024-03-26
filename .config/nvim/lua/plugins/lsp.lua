@@ -16,13 +16,16 @@ return {
             lsp_zero.extend_lspconfig()
             local lsp_config = require('lspconfig')
 
-            -- Install lsp servers with mason
+            -- Default: Install lsp servers with Mason
             require('mason').setup({})
             require('mason-lspconfig').setup({
                 handlers = {
                     lsp_zero.default_setup,
                 },
             })
+
+            -- Use system clangd instead of Mason one, because it does not work on Mac silicon
+            lsp_config.clangd.setup{}
 
             -- Configure autocomplete
             vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
@@ -121,7 +124,7 @@ return {
                 }
             }
 
-            -- Configure rust-analyzer to use clippy
+            -- Use system version of rust-analyzer and configure it to use clippy
             lsp_config.rust_analyzer.setup({
                 settings = {
                     ["rust-analyzer"] = {
