@@ -15,13 +15,13 @@ end
 
 -- Open or activate specific applications by key combination
 local apps = {
-    ["Alacritty"] = "R",
+    ["Alacritty"] = "T",
     ["Firefox"] = "N",
     ["Thunderbird"] = "D",
     ["Spotify"] = "Y",
     ["Sublime Merge"] = "G",
     ["draw.io"] = "I",
-    ["Preview"] = "T",
+    ["Preview"] = "R",
     ["Zotero"] = "Z",
 }
 
