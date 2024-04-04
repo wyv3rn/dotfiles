@@ -8,21 +8,21 @@ local theme = {}
 
 theme.font          = "Dejavu Sans Mono Bold 9"
 
-theme.bg_normal     = "#30344633"
-theme.bg_focus      = "#30344633"
-theme.bg_urgent     = "#e7828499"
-theme.bg_minimize   = "#30344633"
+theme.bg_normal     = "#303446cc"
+theme.bg_focus      = "#303446cc"
+theme.bg_urgent     = "#e78284cc"
+theme.bg_minimize   = "#303446cc"
 theme.bg_systray    = theme.bg_normal
 
-theme.fg_normal     = "#999999"
+theme.fg_normal     = "#ffffff"
 theme.fg_focus      = "#ffffff"
 theme.fg_urgent     = "#ffffff"
 theme.fg_minimize   = "#666666"
 
-theme.useless_gap   = 0
-theme.border_width  = 1
-theme.border_normal = "#000000"
-theme.border_focus  = "#535d6c"
+theme.useless_gap   = 5
+theme.border_width  = 2
+theme.border_normal = "#00000000"
+theme.border_focus  = "#f5e0dc"
 theme.border_marked = "#91231c"
 
 -- There are other variable sets
@@ -87,8 +87,6 @@ theme.titlebar_maximized_button_normal_inactive = "/usr/share/awesome/themes/def
 theme.titlebar_maximized_button_focus_inactive  = "/usr/share/awesome/themes/default/titlebar/maximized_focus_inactive.png"
 theme.titlebar_maximized_button_normal_active = "/usr/share/awesome/themes/default/titlebar/maximized_normal_active.png"
 theme.titlebar_maximized_button_focus_active  = "/usr/share/awesome/themes/default/titlebar/maximized_focus_active.png"
-
-theme.wallpaper = "~/.config/awesome/themes/catppuccin/wallpaper/tetris.png"
 
 -- You can use your own layout icons like this:
 theme.layout_fairh = "/usr/share/awesome/themes/default/layouts/fairhw.png"

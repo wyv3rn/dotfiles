@@ -17,7 +17,6 @@ require("helper")
 -- 3rd party imports
 local volume_ctrl = require("widgets/volume-control")
 local calendar = require("widgets/calendar")
-local email_widget = require("widgets/awesome-wm-widgets/email-widget")
 local switcher = require("widgets/awesome-switcher-macstyle")
 switcher.settings.preview_box_delay = 250
 switcher.settings.cycle_raise_client = false
@@ -59,13 +58,6 @@ if battery0 then
     battery_sep = vert_sep
 end
 
--- mail = email_widget {
---     count_cmd = [[bash -c "offlineimap -o -1 -l ~/.imap.log > /dev/null 2>&1; notmuch count tag:unread"]],
---     interval = 30,
---     read_cmd = [[bash -c "notmuch show tag:unread | grep -E '(Subject: .*)|From.*' | sed -E 's/^Subject: //; s/From: (.*)/[\1]/'"]],
---     display_width = 800
--- }
-
 volumecfg = volume_ctrl({})
 
 -- TODO clean up stuff below
@@ -102,31 +94,14 @@ terminal = "alacritty"
 editor = os.getenv("EDITOR") or "nvim"
 editor_cmd = "alacritty -e " .. editor
 
--- Default modkey.
--- Usually, Mod4 is the key with a logo between Control and Alt.
--- If you do not like this or do not have such a key,
--- I suggest you to remap Mod4 to another key using xmodmap or other tools.
--- However, you can use another modifier like Mod1, but it may interact with others.
+-- Default modkey. For reference: Mod4 = OS key, Mod1 = Alt
 modkey = "Mod4"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
-    awful.layout.suit.floating,
-    awful.layout.suit.max,
     awful.layout.suit.tile.left,
     awful.layout.suit.tile,
-    -- awful.layout.suit.magnifier,
-    -- awful.layout.suit.tile.bottom,
-    -- awful.layout.suit.tile.top,
-    -- awful.layout.suit.fair,
-    -- awful.layout.suit.fair.horizontal,
-    -- awful.layout.suit.spiral,
-    -- awful.layout.suit.spiral.dwindle,
-    -- awful.layout.suit.max.fullscreen,
-    -- awful.layout.suit.corner.nw,
-    -- awful.layout.suit.corner.ne,
-    -- awful.layout.suit.corner.sw,
-    -- awful.layout.suit.corner.se,
+    awful.layout.suit.max,
 }
 
 -- {{{ Helper functions
@@ -218,25 +193,7 @@ local tasklist_buttons = awful.util.table.join(
                                               awful.client.focus.byidx(-1)
                                           end))
 
-local function set_wallpaper(s)
-    -- Wallpaper
-    if beautiful.wallpaper then
-        local wallpaper = beautiful.wallpaper
-        -- If wallpaper is a function, call it with the screen
-        if type(wallpaper) == "function" then
-            wallpaper = wallpaper(s)
-        end
-        gears.wallpaper.maximized(wallpaper, s, true)
-    end
-end
-
--- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
-screen.connect_signal("property::geometry", set_wallpaper)
-
 awful.screen.connect_for_each_screen(function(s)
-    -- Wallpaper
-    set_wallpaper(s)
-
     -- Each screen has its own tag table.
     awful.tag({ "a", "w", "e", "s", "o", "m", "e" }, s, awful.layout.layouts[1])
 
@@ -273,9 +230,6 @@ awful.screen.connect_for_each_screen(function(s)
             layout = wibox.layout.fixed.horizontal,
             wibox.widget.systray(),
             vert_sep,
-            -- mail.icon,
-            -- mail.count,
-            -- vert_sep,
             volumecfg.widget,
             vert_sep,
             battery0_widget,
@@ -432,6 +386,7 @@ local applications = {
 }
 
 for app, key in pairs(applications) do
+    -- TODO awful.spawn.with_shell is probably generally better than awful.util.spawn used everywhere else (does not trigger the "waiting" mouse pointer)
     globalkeys = awful.util.table.join(globalkeys, awful.key({ modkey }, key, function() awful.spawn.with_shell("mwm focus-or-spawn " .. app) end))
 end
 
@@ -446,7 +401,7 @@ clientkeys = awful.util.table.join(
               {description = "close", group = "client"}),
     awful.key({ modkey,           }, "f",  awful.client.floating.toggle,
               {description = "toggle floating", group = "client"}),
-    awful.key({ modkey,           }, "m",  function(c) awful.placement.maximize(c, {honor_workarea=true}) end,
+    awful.key({ modkey, "Shift"   }, "m",  function(c) awful.placement.maximize(c, {honor_workarea=true}) end,
               {description = "maximize size", group = "client"}),
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end,
               {description = "move to master", group = "client"}),
@@ -459,7 +414,7 @@ clientkeys = awful.util.table.join(
             c.minimized = true
         end ,
         {description = "minimize", group = "client"}),
-    awful.key({ modkey, "Shift" }, "m",
+    awful.key({ modkey, }, "m",
         function (c)
             c.maximized = not c.maximized
             c:raise()
@@ -571,15 +526,6 @@ awful.rules.rules = {
           "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
         }
       }, properties = { floating = true }},
-
-    -- Add titlebars to normal clients and dialogs
-    { rule_any = {type = { "normal", "dialog" }
-      }, properties = { titlebars_enabled = false }
-    },
-
-    -- Example: Set Firefox to always map on the tag named "2" on screen 1.
-    -- { rule = { class = "Firefox" },
-    --   properties = { screen = 1, tag = "2" } },
 }
 -- }}}
 
