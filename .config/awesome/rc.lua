@@ -111,11 +111,11 @@ modkey = "Mod4"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
-    -- awful.layout.suit.floating,
+    awful.layout.suit.floating,
     awful.layout.suit.max,
     awful.layout.suit.tile.left,
     awful.layout.suit.tile,
-    awful.layout.suit.magnifier,
+    -- awful.layout.suit.magnifier,
     -- awful.layout.suit.tile.bottom,
     -- awful.layout.suit.tile.top,
     -- awful.layout.suit.fair,
@@ -319,12 +319,6 @@ globalkeys = awful.util.table.join(
         end,
         {description = "focus next by index", group = "client"}
     ),
-    awful.key({ modkey,           }, "n",
-        function ()
-            awful.client.focus.byidx( 1)
-        end,
-        {description = "focus next by index", group = "client"}
-    ),
     awful.key({ modkey,           }, "k",
         function ()
             awful.client.focus.byidx(-1)
@@ -351,13 +345,6 @@ globalkeys = awful.util.table.join(
         function ()
             switcher.switch( 1, "Super_L", "Tab", "ISO_Left_Tab")
         end),
-        --function ()
-        --awful.client.focus.history.previous()
-        --  if client.focus then
-        --      client.focus:raise()
-        --  end
-        --end,
-        --{description = "go back", group = "client"}),
 
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
@@ -396,7 +383,7 @@ globalkeys = awful.util.table.join(
               {description = "restore minimized", group = "client"}),
 
     -- Prompt
-    awful.key({ modkey },            "r",     function () awful.screen.focused().mypromptbox:run() end,
+    awful.key({ modkey, "Shift" },            "r",     function () awful.screen.focused().mypromptbox:run() end,
               {description = "run prompt", group = "launcher"}),
 
     -- Menubar
@@ -407,9 +394,6 @@ globalkeys = awful.util.table.join(
 
     -- custom ghci terminal
     awful.key({ modkey, "Shift" }, "Return", function () awful.util.spawn("ghci-terminal") end),
-
-    -- neomutt in its own terminal
-    awful.key({ modkey, "Shift" }, "m", function () awful.util.spawn("gmutt") end),
 
     -- lock screen
     awful.key({ modkey, "Control"   }, ".", function () awful.util.spawn("xscreensaver-command -lock") end),
@@ -439,6 +423,18 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey }, "F11", function () mouse.screen.mywibox.visible = not mouse.screen.mywibox.visible end)
 )
 
+-- focus or spawn applications via keybinding
+local applications = {
+    ["alacritty"] = "t",
+    ["firefox"] = "n",
+    ["zathura"] = "r",
+    ["thunderbird"] = "d",
+}
+
+for app, key in pairs(applications) do
+    globalkeys = awful.util.table.join(globalkeys, awful.key({ modkey }, key, function() awful.spawn.with_shell("mwm focus-or-spawn " .. app) end))
+end
+
 clientkeys = awful.util.table.join(
     awful.key({ modkey, "Shift"   }, "f",
         function (c)
@@ -448,14 +444,14 @@ clientkeys = awful.util.table.join(
         {description = "toggle fullscreen", group = "client"}),
     awful.key({ modkey,           }, "q",      function (c) c:kill()                         end,
               {description = "close", group = "client"}),
-    awful.key({ modkey,           }, "f",  awful.client.floating.toggle                     ,
+    awful.key({ modkey,           }, "f",  awful.client.floating.toggle,
               {description = "toggle floating", group = "client"}),
+    awful.key({ modkey,           }, "m",  function(c) awful.placement.maximize(c, {honor_workarea=true}) end,
+              {description = "maximize size", group = "client"}),
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end,
               {description = "move to master", group = "client"}),
     awful.key({ modkey,           }, "o",      function (c) c:move_to_screen()               end,
               {description = "move to screen", group = "client"}),
-    awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end,
-              {description = "toggle keep on top", group = "client"}),
     awful.key({ modkey, "Shift",          }, "n",
         function (c)
             -- The client currently has the input focus, so it cannot be
@@ -463,7 +459,7 @@ clientkeys = awful.util.table.join(
             c.minimized = true
         end ,
         {description = "minimize", group = "client"}),
-    awful.key({ modkey,           }, "m",
+    awful.key({ modkey, "Shift" }, "m",
         function (c)
             c.maximized = not c.maximized
             c:raise()

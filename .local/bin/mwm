@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+focus-or-spawn() {
+    winid=`wmctrl -lx | awk -v program=$1 'tolower($3) ~ tolower(program) {print $1}' | head -n1`
+    if [ -n "$winid" ]; then
+        wmctrl -i -a $winid
+    else
+        launch $1
+    fi
+}
+
+case $1 in
+    focus-or-spawn)
+        shift
+        focus-or-spawn "$@"
+        ;;
+    *)
+        echo "Unsupported command $1"
+        exit -1
+esac
+
