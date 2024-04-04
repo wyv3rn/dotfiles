@@ -52,7 +52,7 @@ theme.taglist_spacing       = 1
 theme.menu_submenu_icon = "/usr/share/awesome/themes/default/submenu.png"
 theme.menu_height = dpi // (192 / 30)
 theme.menu_width  = dpi // (192 / 225)
-theme.menu_bg_normal = "#30344666"
+theme.menu_bg_normal = "#303446FF"
 
 theme.hotkeys_bg = "#303446"
 
