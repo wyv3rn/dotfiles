@@ -21,7 +21,7 @@ local apps = {
     ["Spotify"] = "Y",
     ["Sublime Merge"] = "G",
     ["draw.io"] = "I",
-    ["Preview"] = "R",
+    ["sioyek"] = "R",
     ["Zotero"] = "Z",
 }
 
