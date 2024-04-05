@@ -9,21 +9,21 @@ local theme = {}
 -- General stuff
 theme.font          = "Dejavu Sans Mono Bold 9"
 
-theme.bg_normal     = "#303446cc"
-theme.bg_focus      = "#303446cc"
-theme.bg_urgent     = "#e78284cc"
-theme.bg_minimize   = "#303446cc"
+theme.bg_normal     = "#303446"
+theme.bg_focus      = "#303446"
+theme.bg_urgent     = "#e78284"
+theme.bg_minimize   = "#303446"
 theme.bg_systray    = theme.bg_normal
 
-theme.fg_normal     = "#ffffff"
-theme.fg_focus      = "#ffffff"
-theme.fg_urgent     = "#ffffff"
-theme.fg_minimize   = "#666666"
+theme.fg_normal     = "#eff1f5"
+theme.fg_focus      = "#eff1f5"
+theme.fg_urgent     = "#eff1f5"
+theme.fg_minimize   = "#949cbb"
 
 -- Borders
 theme.useless_gap   = 0
 theme.border_width  = 1
-theme.border_normal = "#00000000"
+theme.border_normal = "#000000"
 theme.border_focus  = "#8c8fa1"
 theme.border_marked = "#fe640b"
 
