@@ -9,10 +9,10 @@ local theme = {}
 -- General stuff
 theme.font          = "Dejavu Sans Mono Bold 9"
 
-theme.bg_normal     = "#303446"
-theme.bg_focus      = "#303446"
+theme.bg_normal     = "#191927"
+theme.bg_focus      = "#191927"
 theme.bg_urgent     = "#e78284"
-theme.bg_minimize   = "#303446"
+theme.bg_minimize   = "#191927"
 theme.bg_systray    = theme.bg_normal
 
 theme.fg_normal     = "#eff1f5"
