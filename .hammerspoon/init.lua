@@ -22,7 +22,7 @@ local apps = {
     ["Sublime Merge"] = "G",
     ["draw.io"] = "I",
     ["sioyek"] = "R",
-    ["Zotero"] = "Z",
+    ["Zotero"] = "B",
 }
 
 for app, key in pairs(apps) do
