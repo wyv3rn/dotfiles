@@ -12,22 +12,73 @@ local function rebind(modifiers, character, fallback_modifier, fun)
     end)
 end
 
--- Helper for snap left/right
-local function snap(fraction, direction)
-    local win = hs.window.focusedWindow()
+-- Helpers for snap left/right and resizing
+local function snap(win, fraction, direction)
     local f = win:frame()
     local screen = win:screen()
     local max = screen:frame()
 
+    f.y = max.y
+    f.h = max.h
     if direction == "left" then
+        f.w = math.floor(max.w * fraction)
         f.x = max.x
     else
-        f.x = max.x + max.w * (1.0 - fraction)
+        f.w = math.ceil(max.w * fraction)
+        f.x = max.x + max.w - f.w
     end
-    f.y = max.y
-    f.w = max.w * fraction
-    f.h = max.h
+
     win:setFrame(f)
+end
+
+local function snap_focused(fraction, direction)
+    local win = hs.window.focusedWindow()
+    snap(win, fraction, direction)
+end
+
+local function is_snapped(win, direction)
+    local f = win:frame()
+    local screen = win:screen()
+    local max = screen:frame()
+
+    if f.y ~= max.y or f.h ~= max.h or f.w == max.w then
+        return false
+    end
+
+    if direction == "left" then
+        return f.x == max.x
+    else
+        return f.x == max.x + max.w - f.w
+    end
+end
+
+local function snap_fraction(win)
+    local f = win:frame()
+    local screen = win:screen()
+    local max = screen:frame()
+    return math.floor(f.w / max.w * 100 + 0.5) / 100
+end
+
+local function shift_snaps(fraction_step, direction)
+    local focused_screen_id = hs.window.focusedWindow():screen():id()
+    local space_filter = hs.window.filter.defaultCurrentSpace
+    for _, win in ipairs(space_filter:getWindows()) do
+        if win:screen():id() == focused_screen_id then
+            if is_snapped(win, "left") then
+                if direction == "left" then
+                    snap(win, snap_fraction(win) - fraction_step, "left")
+                else
+                    snap(win, snap_fraction(win) + fraction_step, "left")
+                end
+            elseif is_snapped(win, "right") then
+                if direction == "left" then
+                    snap(win, snap_fraction(win) + fraction_step, "right")
+                else
+                    snap(win, snap_fraction(win) - fraction_step, "right")
+                end
+            end
+        end
+    end
 end
 
 -- Open or activate specific applications by key combination
@@ -56,25 +107,26 @@ end)
 
 -- Maximize
 hs.hotkey.bind({ "cmd" }, "M", function()
-    snap(1.0, "left")
+    snap_focused(1.0, "left")
 end)
 
 -- Snap to left
 hs.hotkey.bind({ "cmd", "shift" }, "H", function()
-    snap(0.5, "left")
-end)
-
-hs.hotkey.bind({ "cmd", "shift", "ctrl" }, "H", function()
-    snap(0.62, "left")
+    snap_focused(0.5, "left")
 end)
 
 -- Snap to right
 hs.hotkey.bind({ "cmd", "shift" }, "L", function()
-    snap(0.5, "right")
+    snap_focused(0.5, "right")
 end)
 
-hs.hotkey.bind({ "cmd", "shift", "ctrl" }, "L", function()
-    snap(0.38, "right")
+-- Resize both left and right snaps at the same time
+hs.hotkey.bind({ "cmd", }, "H", function()
+    shift_snaps(0.05, "left")
+end)
+
+hs.hotkey.bind({ "cmd", }, "L", function()
+    shift_snaps(0.05, "right")
 end)
 
 -- Config reload
