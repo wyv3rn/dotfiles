@@ -1,5 +1,4 @@
 -- Helper for rebinding with a fallback
-
 local function rebind(modifiers, character, fallback_modifier, fun)
     hs.hotkey.bind(modifiers, character, fun)
 
@@ -11,6 +10,24 @@ local function rebind(modifiers, character, fallback_modifier, fun)
     hs.hotkey.bind(fallback_modifiers, character, function()
         hs.eventtap.keyStroke(modifiers, character, 0, hs.application.frontmostApplication())
     end)
+end
+
+-- Helper for snap left/right
+local function snap(fraction, direction)
+    local win = hs.window.focusedWindow()
+    local f = win:frame()
+    local screen = win:screen()
+    local max = screen:frame()
+
+    if direction == "left" then
+        f.x = max.x
+    else
+        f.x = max.x + max.w * (1.0 - fraction)
+    end
+    f.y = max.y
+    f.w = max.w * fraction
+    f.h = max.h
+    win:setFrame(f)
 end
 
 -- Open or activate specific applications by key combination
@@ -39,44 +56,25 @@ end)
 
 -- Maximize
 hs.hotkey.bind({ "cmd" }, "M", function()
-    local win = hs.window.focusedWindow()
-    local f = win:frame()
-    local screen = win:screen()
-    local max = screen:frame()
-
-    f.x = max.x
-    f.y = max.y
-    f.w = max.w
-    f.h = max.h
-    win:setFrame(f)
+    snap(1.0, "left")
 end)
 
 -- Snap to left
 hs.hotkey.bind({ "cmd", "shift" }, "H", function()
-    local win = hs.window.focusedWindow()
-    local f = win:frame()
-    local screen = win:screen()
-    local max = screen:frame()
+    snap(0.5, "left")
+end)
 
-    f.x = max.x
-    f.y = max.y
-    f.w = max.w / 2
-    f.h = max.h
-    win:setFrame(f)
+hs.hotkey.bind({ "cmd", "shift", "ctrl" }, "H", function()
+    snap(0.62, "left")
 end)
 
 -- Snap to right
 hs.hotkey.bind({ "cmd", "shift" }, "L", function()
-    local win = hs.window.focusedWindow()
-    local f = win:frame()
-    local screen = win:screen()
-    local max = screen:frame()
+    snap(0.5, "right")
+end)
 
-    f.x = max.x + max.w / 2
-    f.y = max.y
-    f.w = max.w / 2
-    f.h = max.h
-    win:setFrame(f)
+hs.hotkey.bind({ "cmd", "shift", "ctrl" }, "L", function()
+    snap(0.38, "right")
 end)
 
 -- Config reload
