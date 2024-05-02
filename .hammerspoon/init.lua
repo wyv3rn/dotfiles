@@ -86,11 +86,7 @@ local apps = {
     ["Alacritty"] = "T",
     ["Firefox"] = "N",
     ["Thunderbird"] = "D",
-    ["Spotify"] = "Y",
-    ["Sublime Merge"] = "G",
-    ["draw.io"] = "I",
     ["Preview"] = "R",
-    ["Zotero"] = "B",
 }
 
 for app, key in pairs(apps) do
