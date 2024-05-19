@@ -50,7 +50,7 @@ return {
                     documentation = cmp.config.window.bordered()
                 },
                 formatting = {
-                    fields = { 'menu', 'abbr', 'kind' },
+                    fields = { 'abbr', 'menu', 'kind' },
                 },
                 mapping = {
                     ['<Up>'] = cmp.mapping.select_prev_item(select_opts),
