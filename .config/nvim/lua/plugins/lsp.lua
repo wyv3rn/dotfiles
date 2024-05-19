@@ -93,17 +93,9 @@ return {
                         end
                     end, { 'i', 's' }),
 
-                    ['<Tab>'] = cmp.mapping(function(fallback)
-                        local col = vim.fn.col('.') - 1
-                        local entries = cmp.get_entries()
-                        if #entries > 0 and (#entries == 1 or entries[1].exact) then
+                    ['<Tab>'] = cmp.mapping(function()
+                        if #cmp.get_entries() > 0 then
                             cmp.confirm(confirm_opts)
-                        elseif cmp.visible() then
-                            cmp.select_next_item(select_opts)
-                        elseif col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
-                            fallback()
-                        else
-                            cmp.complete()
                         end
                     end, { 'i', 's' }),
                 },
