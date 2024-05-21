@@ -93,9 +93,11 @@ return {
                         end
                     end, { 'i', 's' }),
 
-                    ['<Tab>'] = cmp.mapping(function()
-                        if #cmp.get_entries() > 0 then
+                    ['<Tab>'] = cmp.mapping(function(fallback)
+                        if cmp.visible() and #cmp.get_entries() > 0 then
                             cmp.confirm(confirm_opts)
+                        else
+                            fallback()
                         end
                     end, { 'i', 's' }),
                 },
