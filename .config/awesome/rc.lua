@@ -380,7 +380,7 @@ globalkeys = awful.util.table.join(
 -- focus or spawn applications via keybinding
 local applications = {
     ["alacritty"] = "t",
-    ["firefox"] = "n",
+    ["brave"] = "n",
     ["zathura"] = "r",
     ["thunderbird"] = "d",
 }
