@@ -84,7 +84,7 @@ end
 -- Open or activate specific applications by key combination
 local apps = {
     ["Alacritty"] = "T",
-    ["Firefox"] = "N",
+    ["Brave Browser"] = "N",
     ["Thunderbird"] = "D",
     ["Preview"] = "R",
 }
