@@ -33,8 +33,6 @@ if [ -f Makefile ]; then
     make
 elif [ -f .latexmkrc ]; then
     latexmk
-elif [ -f build.py ]; then
-    ./build.py --mode "$mode"
 elif [ -f Cargo.toml ]; then
     if [ "$mode" == "release" ]; then
         cargo build --release
@@ -45,6 +43,8 @@ elif [ -f Cargo.toml ]; then
     elif [ "$mode" == "test" ]; then
         cargo test
     fi
+elif [ -f build.py ]; then
+    ./build.py --mode "$mode"
 else
     echo "Do not know how to build your project, giving up"
     exit -1
