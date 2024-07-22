@@ -1,0 +1,30 @@
+[
+  {
+    "label": "autobuild check",
+    "command": "autobuild --mode check",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always"
+  },
+  {
+    "label": "autobuild release",
+    "command": "autobuild --mode release",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always"
+  },
+  {
+    "label": "autobuild debug",
+    "command": "autobuild --mode debug",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always"
+  },
+  {
+    "label": "autobuild test",
+    "command": "autobuild --mode test",
+    "use_new_terminal": false,
+    "allow_concurrent_runs": false,
+    "reveal": "always"
+  }
+]

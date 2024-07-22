@@ -1,0 +1,67 @@
+[
+  {
+    "context": "Workspace || Editor || Terminal",
+    "bindings": {
+      "f8": ["task::Spawn", { "task_name": "autobuild check" }],
+      "f9": ["task::Spawn", { "task_name": "autobuild release" }],
+      "f10": ["task::Spawn", { "task_name": "autobuild debug" }],
+      "f11": ["task::Spawn", { "task_name": "autobuild test" }],
+      "f12": "task::Spawn",
+      "ctrl-y": "terminal_panel::ToggleFocus",
+      "ctrl-tab": "terminal_panel::ToggleFocus",
+      "ctrl-a z": "workspace::ToggleZoom"
+    }
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      "alt-t": ["workspace::SendKeystrokes", "-"],
+      "alt-f": null,
+      "alt-h": null,
+      "alt-z": null,
+      "alt-d": null,
+      "alt-l": null,
+      "alt-n": null,
+      "alt-b": null,
+      "alt-v": null,
+      "ctrl-t": "pane::GoBack"
+    }
+  },
+  {
+    "context": "Editor && vim_mode == normal",
+    "bindings": {
+      "g r": "editor::FindAllReferences",
+      "space f": "file_finder::Toggle",
+      "enter f": "file_finder::Toggle",
+      "space c c": "editor::ToggleComments",
+      "enter c c": "editor::ToggleComments",
+      "space c f": "editor::Format",
+      "enter c f": "editor::Format",
+      "space c a": "editor::ToggleCodeActions",
+      "enter c a": "editor::ToggleCodeActions",
+      "space c h": "editor::Hover",
+      "enter c h": "editor::Hover",
+      "space tab": "pane::ActivateLastItem",
+      "enter tab": "pane::ActivateLastItem",
+      "space t t": "workspace::ToggleRightDock",
+      "enter t t": "workspace::ToggleRightDock",
+      "space space": ["workspace::SendKeystrokes", "escape"]
+    }
+  },
+  {
+    "context": "Terminal",
+    "bindings": {
+      "alt-t": ["workspace::SendKeystrokes", "-"],
+      "ctrl-f": ["workspace::SendKeystrokes", "right"],
+      "ctrl-l": "terminal::Clear",
+      "ctrl-b": ["workspace::SendKeystrokes", "shift-left"],
+      "ctrl-h": ["workspace::SendKeystrokes", "alt-backspace"],
+      "ctrl-n": ["workspace::SendKeystrokes", "home"],
+      "ctrl-e": ["workspace::SendKeystrokes", "end"],
+      "ctrl-g": ["workspace::SendKeystrokes", "ctrl-q"],
+      "ctrl-k": ["workspace::SendKeystrokes", "ctrl-s"],
+      "ctrl-u": ["workspace::SendKeystrokes", "ctrl-j"],
+      "ctrl-r": ["workspace::SendKeystrokes", "ctrl-p"]
+    }
+  }
+]
