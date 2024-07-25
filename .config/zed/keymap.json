@@ -65,16 +65,16 @@
     "context": "Terminal",
     "bindings": {
       "alt-t": ["workspace::SendKeystrokes", "-"],
-      "ctrl-f": ["workspace::SendKeystrokes", "right"],
       "ctrl-l": "terminal::Clear",
       "ctrl-b": ["workspace::SendKeystrokes", "shift-left"],
       "ctrl-h": ["workspace::SendKeystrokes", "alt-backspace"],
       "ctrl-n": ["workspace::SendKeystrokes", "home"],
       "ctrl-e": ["workspace::SendKeystrokes", "end"],
-      "ctrl-g": ["workspace::SendKeystrokes", "ctrl-q"],
-      "ctrl-k": ["workspace::SendKeystrokes", "ctrl-s"],
-      "ctrl-u": ["workspace::SendKeystrokes", "ctrl-j"],
-      "ctrl-r": ["workspace::SendKeystrokes", "ctrl-p"]
+      "ctrl-f": ["workspace::SendKeystrokes", "alt-f"],
+      "ctrl-g": ["workspace::SendKeystrokes", "alt-g"],
+      "ctrl-k": ["workspace::SendKeystrokes", "alt-k"],
+      "ctrl-u": ["workspace::SendKeystrokes", "alt-u"],
+      "ctrl-r": ["workspace::SendKeystrokes", "alt-r"]
     }
   }
 ]

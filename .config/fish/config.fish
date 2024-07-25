@@ -6,11 +6,12 @@ if status is-interactive
     bind \ch backward-kill-bigword
     bind \cg kill-bigword
 
-    # some double-bindings as a hotfix for Zed
-    bind \cq kill-bigword # \cg
-    bind \cs kill-line # \ck
-    bind \cj backward-kill-line # \cu
-    bind \cp history-pager # \cr
+    # some double-bindings as a hotfix for Zed with Voyager
+    bind \ef forward-bigword accept-autosuggestion
+    bind \eg kill-bigword # \cg
+    bind \ek kill-line # \ck
+    bind \eu backward-kill-line # \cu
+    bind \er history-pager # \cr
 
     if type -q keychain
         keychain --quiet --noask --ignore-missing --eval id_rsa id_ed25519 | source

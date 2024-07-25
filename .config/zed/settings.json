@@ -13,6 +13,9 @@
   "relative_line_numbers": true,
   "format_on_save": "off",
   "ensure_final_newline_on_save": false,
+  "terminal": {
+    "option_as_meta": true
+  },
   "outline_panel": {
     "dock": "right"
   },
