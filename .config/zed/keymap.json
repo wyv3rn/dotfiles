@@ -41,11 +41,24 @@
       "enter c a": "editor::ToggleCodeActions",
       "space c h": "editor::Hover",
       "enter c h": "editor::Hover",
+      "space c r": "editor::Rename",
+      "enter c r": "editor::Rename",
+      "space p": "editor::Paste",
+      "enter p": "editor::Paste",
       "space tab": "pane::ActivateLastItem",
       "enter tab": "pane::ActivateLastItem",
       "space t t": "workspace::ToggleRightDock",
       "enter t t": "workspace::ToggleRightDock",
       "space space": ["workspace::SendKeystrokes", "escape"]
+    }
+  },
+  {
+    "context": "Editor && vim_mode == visual",
+    "bindings": {
+      "space c c": "editor::ToggleComments",
+      "enter c c": "editor::ToggleComments",
+      "space y": "editor::Copy",
+      "enter y": "editor::Copy"
     }
   },
   {

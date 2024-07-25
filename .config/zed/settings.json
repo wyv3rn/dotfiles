@@ -9,6 +9,7 @@
   "vim": {
     "use_system_clipboard": "never"
   },
+  "current_line_highlight": "none",
   "relative_line_numbers": true,
   "format_on_save": "off",
   "ensure_final_newline_on_save": false,

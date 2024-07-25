@@ -382,7 +382,7 @@ local applications = {
     ["alacritty"] = "t",
     ["brave"] = "n",
     ["zathura"] = "r",
-    ["thunderbird"] = "d",
+    ["zeditor"] = "d",
 }
 
 for app, key in pairs(applications) do
