@@ -85,7 +85,7 @@ end
 local apps = {
     ["Alacritty"] = "T",
     ["Brave Browser"] = "N",
-    ["Thunderbird"] = "D",
+    ["Zed"] = "D",
     ["Preview"] = "R",
 }
 
