@@ -49,6 +49,8 @@
       "enter tab": "pane::ActivateLastItem",
       "space t t": "workspace::ToggleRightDock",
       "enter t t": "workspace::ToggleRightDock",
+      "space c r": "editor::Rename",
+      "enter c r": "editor::Rename",
       "space space": ["workspace::SendKeystrokes", "escape"]
     }
   },
