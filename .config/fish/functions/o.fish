@@ -3,6 +3,6 @@ function o --wraps=open --description 'alias o open'
         case Darwin
             open $argv
         case '*'
-            xdg-open $argv
+            py-open $argv
     end
 end
