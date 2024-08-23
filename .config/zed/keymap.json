@@ -5,11 +5,12 @@
       "f8": ["task::Spawn", { "task_name": "autobuild check" }],
       "f9": ["task::Spawn", { "task_name": "autobuild release" }],
       "f10": ["task::Spawn", { "task_name": "autobuild debug" }],
-      "f11": ["task::Spawn", { "task_name": "autobuild test" }],
+      "f11": ["task::Spawn", { "task_name": "cargo test function" }],
       "f12": "task::Spawn",
       "ctrl-y": "terminal_panel::ToggleFocus",
       "ctrl-tab": "terminal_panel::ToggleFocus",
-      "ctrl-a z": "workspace::ToggleZoom"
+      "ctrl-a z": "workspace::ToggleZoom",
+      "ctrl-w": "pane::CloseActiveItem"
     }
   },
   {
@@ -41,16 +42,16 @@
       "enter c a": "editor::ToggleCodeActions",
       "space c h": "editor::Hover",
       "enter c h": "editor::Hover",
+      "space c d": "diagnostics::Deploy",
+      "enter c d": "diagnostics::Deploy",
       "space c r": "editor::Rename",
       "enter c r": "editor::Rename",
       "space p": "editor::Paste",
       "enter p": "editor::Paste",
-      "space tab": "pane::ActivateLastItem",
-      "enter tab": "pane::ActivateLastItem",
+      "space tab": "pane::AlternateFile",
+      "enter tab": "pane::AlternateFile",
       "space t t": "workspace::ToggleRightDock",
       "enter t t": "workspace::ToggleRightDock",
-      "space c r": "editor::Rename",
-      "enter c r": "editor::Rename",
       "space space": ["workspace::SendKeystrokes", "escape"]
     }
   },

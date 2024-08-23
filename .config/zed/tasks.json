@@ -26,5 +26,11 @@
     "use_new_terminal": false,
     "allow_concurrent_runs": false,
     "reveal": "always"
+  },
+  {
+    "label": "cargo test function",
+    "command": "cargo",
+    "args": ["test", "$ZED_SYMBOL"],
+    "tags": ["rust-test"]
   }
 ]
