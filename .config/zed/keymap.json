@@ -66,6 +66,7 @@
   {
     "context": "Terminal",
     "bindings": {
+      "ctrl-w": "pane::CloseActiveItem",
       "alt-t": ["workspace::SendKeystrokes", "-"],
       "ctrl-l": "terminal::Clear",
       "ctrl-b": ["workspace::SendKeystrokes", "shift-left"],

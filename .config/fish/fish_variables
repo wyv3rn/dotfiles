@@ -1,5 +1,6 @@
 # This file contains fish universal variable definitions.
 # VERSION: 3.0
+SETUVAR --export EDITOR:/usr/bin/vim
 SETUVAR --export GIT_ASKPASS:pass\x2dtelematik\x2dgit\x2dtoken
 SETUVAR --export SUDO_EDITOR:/usr/bin/vim
 SETUVAR __fish_initialized:3400
