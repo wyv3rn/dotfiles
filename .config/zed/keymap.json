@@ -24,13 +24,13 @@
       "alt-l": null,
       "alt-n": null,
       "alt-b": null,
-      "alt-v": null,
-      "ctrl-t": "pane::GoBack"
+      "alt-v": null
     }
   },
   {
     "context": "Editor && vim_mode == normal",
     "bindings": {
+      "ctrl-t": "pane::GoBack",
       "g r": "editor::FindAllReferences",
       "space f": "file_finder::Toggle",
       "enter f": "file_finder::Toggle",
