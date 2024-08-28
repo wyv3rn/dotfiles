@@ -46,6 +46,17 @@
           "command": "clippy"
         }
       }
+    },
+    "ltex": {
+      "settings": {
+        "ltex": {
+          "checkFrequency": "save",
+          "language": "en-US",
+          "dictionary": {
+            "en-US": [":~/devops/dictionary/ltex.dictionary.en-US.txt"]
+          }
+        }
+      }
     }
   }
 }
