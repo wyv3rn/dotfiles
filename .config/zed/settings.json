@@ -13,6 +13,7 @@
   "vim": {
     "use_system_clipboard": "never"
   },
+  "soft_wrap": "editor_width",
   "current_line_highlight": "none",
   "relative_line_numbers": true,
   "format_on_save": "off",
@@ -37,6 +38,9 @@
           "arguments": ["-"]
         }
       }
+    },
+    "LaTeX": {
+      "language_servers": ["texlab", "ltex", "..."]
     }
   },
   "lsp": {
