@@ -10,6 +10,7 @@
       "ctrl-y": "terminal_panel::ToggleFocus",
       "ctrl-tab": "terminal_panel::ToggleFocus",
       "ctrl-a z": "workspace::ToggleZoom",
+      "ctrl-a r": ["projects::OpenRecent", { "create_new_window": false }],
       "ctrl-w": "pane::CloseActiveItem"
     }
   },
