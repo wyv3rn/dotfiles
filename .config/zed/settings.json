@@ -13,6 +13,10 @@
   "vim": {
     "use_system_clipboard": "never"
   },
+  "search": {
+    "case_sensitive": false,
+    "regex": true
+  },
   "soft_wrap": "editor_width",
   "current_line_highlight": "none",
   "relative_line_numbers": true,
