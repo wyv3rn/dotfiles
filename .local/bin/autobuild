@@ -29,10 +29,14 @@ set -- "${pos_args[@]}"
 # TODO switch whether we should clear or not
 clear
 
+tex_file_count=`ls | grep -o "\S*\.tex" | wc -w`
+
 if [ -f Makefile ]; then
     make
 elif [ -f .latexmkrc ]; then
     latexmk
+elif [ "$tex_file_count" == "1" ]; then
+    latexmk -pdf `ls | grep -o "\S*\.tex"`
 elif [ -f Cargo.toml ]; then
     if [ "$mode" == "release" ]; then
         cargo build --release
