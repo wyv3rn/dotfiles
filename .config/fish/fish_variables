@@ -3,6 +3,7 @@
 SETUVAR --export EDITOR:/usr/bin/vim
 SETUVAR --export GIT_ASKPASS:pass\x2dtelematik\x2dgit\x2dtoken
 SETUVAR --export SUDO_EDITOR:/usr/bin/vim
+SETUVAR --export TEXMFHOME:/home/dschatz/\x2etexmf
 SETUVAR __fish_initialized:3400
 SETUVAR fish_color_autosuggestion:brblack
 SETUVAR fish_color_cancel:\x2dr
