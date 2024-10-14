@@ -32,6 +32,7 @@
     "context": "Editor && vim_mode == normal",
     "bindings": {
       "ctrl-t": "pane::GoBack",
+      "g h": "editor::SwitchSourceHeader",
       "g r": "editor::FindAllReferences",
       "space f": "file_finder::Toggle",
       "enter f": "file_finder::Toggle",
