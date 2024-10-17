@@ -17,6 +17,9 @@
   "search": {
     "regex": true
   },
+  "tab_bar": {
+    "show": false
+  },
   "soft_wrap": "editor_width",
   "current_line_highlight": "none",
   "relative_line_numbers": true,
@@ -33,6 +36,9 @@
   },
   "project_panel": {
     "dock": "right"
+  },
+  "auto_install_extensions": {
+    "html": false
   },
   "languages": {
     "Python": {

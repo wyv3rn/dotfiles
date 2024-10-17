@@ -36,6 +36,8 @@
       "g r": "editor::FindAllReferences",
       "space f": "file_finder::Toggle",
       "enter f": "file_finder::Toggle",
+      "space b": "tab_switcher::Toggle",
+      "enter b": "tab_switcher::Toggle",
       "space c c": "editor::ToggleComments",
       "enter c c": "editor::ToggleComments",
       "space c f": "editor::Format",
