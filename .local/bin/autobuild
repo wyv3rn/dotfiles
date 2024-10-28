@@ -48,7 +48,7 @@ elif [ -f Cargo.toml ]; then
         cargo test
     fi
 elif [ -f build.py ]; then
-    ./build.py --mode "$mode"
+    python3 build.py --mode "$mode" --compiler clang
 else
     echo "Do not know how to build your project, giving up"
     exit -1
