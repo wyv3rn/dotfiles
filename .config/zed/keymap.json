@@ -18,6 +18,7 @@
     "context": "Editor && vim_mode == insert",
     "bindings": {
       "alt-t": ["workspace::SendKeystrokes", "-"],
+      "alt-q": ["workspace::SendKeystrokes", "@"],
       "alt-f": null,
       "alt-h": null,
       "alt-z": null,

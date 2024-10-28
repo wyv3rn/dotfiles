@@ -86,7 +86,6 @@ local apps = {
     ["Alacritty"] = "T",
     ["Brave Browser"] = "N",
     ["Zed"] = "D",
-    ["Preview"] = "R",
 }
 
 for app, key in pairs(apps) do
