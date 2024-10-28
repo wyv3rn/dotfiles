@@ -15,7 +15,8 @@
     "use_smartcase_find": true
   },
   "search": {
-    "regex": true
+    "regex": true,
+    "case_sensitive": false
   },
   "tab_bar": {
     "show": false
@@ -48,6 +49,9 @@
           "arguments": ["-"]
         }
       }
+    },
+    "TypeScript": {
+      "tab_size": 4
     },
     "LaTeX": {
       "language_servers": ["texlab", "ltex", "..."]
