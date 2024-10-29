@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 mode="release"
+cppcompiler="clang"
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -10,6 +11,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         --mode)
             mode="$2"
+            shift
+            ;;
+        --compiler)
+            compiler="$2"
             shift
             ;;
         -*|--*)
@@ -31,6 +36,11 @@ clear
 
 tex_file_count=`ls | grep -o "\S*\.tex" | wc -w`
 
+if [ -f .venv/bin/activate ]; then
+    source .venv/bin/activate
+fi
+
+
 if [ -f Makefile ]; then
     make
 elif [ -f .latexmkrc ]; then
@@ -48,7 +58,33 @@ elif [ -f Cargo.toml ]; then
         cargo test
     fi
 elif [ -f build.py ]; then
-    python3 build.py --mode "$mode" --compiler clang
+    if [ "$mode" == "check" ]; then
+        dirs=`jq '.checks | .[]' -r .autobuild.json 2>/dev/null || echo $(basename $(pwd))`
+        for dir in $dirs; do
+            echo "autobuild: Checking directory ${dir}"
+            python3 build/styleChecks/checkHeader.py $dir &&
+            build/styleChecks/checkAllConventions.sh $dir &&
+            python3 build/styleChecks/cppCheck.py --system-cppcheck $dir
+        done
+    elif [ "$mode" == "test" ]; then
+        test_targets=`jq '.testTargets | .[]' -r .autobuild.json 2>/dev/null || echo "$(basename $(pwd))"-tests`
+        for target in $test_targets; do
+            echo "autobuild: Building test target ${target}"
+            python3 build.py $target --compiler $cppcompiler
+        done
+
+        tests=`jq '.tests | .[]' -r .autobuild.json 2>/dev/null || echo "test-$(basename $(pwd))"`
+        for test in $tests; do
+            echo "autobuild: Running test ${test}"
+            cross/test-debug-${cppcompiler}/binaries/bin/$test
+        done
+    else
+        targets=`jq '.targets | .[]' -r .autobuild.json 2>/dev/null || echo "$(basename $(pwd))"`
+        for target in $targets; do
+            echo "autobuild: Building target ${target}"
+            python3 build.py $target --mode $mode --compiler $cppcompiler
+        done
+    fi
 else
     echo "Do not know how to build your project, giving up"
     exit -1
