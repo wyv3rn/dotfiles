@@ -27,7 +27,12 @@
   "format_on_save": "off",
   "ensure_final_newline_on_save": false,
   "terminal": {
-    "option_as_meta": false
+    "option_as_meta": false,
+    "detect_venv": {
+      "on": {
+        "activate_script": "fish"
+      }
+    }
   },
   "outline_panel": {
     "dock": "right"

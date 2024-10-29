@@ -5,12 +5,17 @@
       "f8": ["task::Spawn", { "task_name": "autobuild check" }],
       "f9": ["task::Spawn", { "task_name": "autobuild release" }],
       "f10": ["task::Spawn", { "task_name": "autobuild debug" }],
-      "f11": ["task::Spawn", { "task_name": "cargo test function" }],
-      "f12": "task::Spawn",
+      "f11": ["task::Spawn", { "task_name": "autobuild test" }],
+      "f12": ["task::Spawn", { "task_name": "cargo test function" }],
       "ctrl-y": "terminal_panel::ToggleFocus",
       "ctrl-tab": "terminal_panel::ToggleFocus",
       "ctrl-a z": "workspace::ToggleZoom",
       "ctrl-a r": ["projects::OpenRecent", { "create_new_window": false }],
+      "ctrl-a c": "workspace::NewTerminal",
+      "ctrl-a h": ["workspace::ActivatePaneInDirection", "Left"],
+      "ctrl-a j": ["workspace::ActivatePaneInDirection", "Down"],
+      "ctrl-a k": ["workspace::ActivatePaneInDirection", "Up"],
+      "ctrl-a l": ["workspace::ActivatePaneInDirection", "Right"],
       "ctrl-w": "pane::CloseActiveItem"
     }
   },
@@ -74,7 +79,6 @@
   {
     "context": "Terminal",
     "bindings": {
-      "ctrl-w": "pane::CloseActiveItem",
       "alt-t": ["workspace::SendKeystrokes", "-"],
       "ctrl-l": "terminal::Clear",
       "ctrl-b": ["workspace::SendKeystrokes", "shift-left"],
