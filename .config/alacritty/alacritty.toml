@@ -20,3 +20,6 @@ style = "regular"
 chars = "\u001B[27;5;9~"
 key = "Tab"
 mods = "Control"
+
+[general]
+import = ["~/.config/alacritty/catppuccin/catppuccin-frappe.toml"]
