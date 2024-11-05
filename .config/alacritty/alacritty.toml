@@ -1,5 +1,3 @@
-import = ["~/.config/alacritty/catppuccin/catppuccin-frappe.toml"]
-
 [colors.cursor]
 cursor = "#ffffff"
 
