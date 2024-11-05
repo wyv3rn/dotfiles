@@ -3,6 +3,24 @@
 mode="release"
 cppcompiler="clang"
 
+move_msg_files () {
+    dir=$1
+    for msg in `find ${dir} -iname "*.msg"`; do
+        base=`dirname $msg`/`basename -- $msg .msg`
+        hpp="${base}.hpp"
+        cpp="${base}.cpp"
+        hpp_tmp="${hpp}.tmp"
+        cpp_tmp="${cpp}.tmp"
+        if [ -f $hpp ]; then
+            mv $hpp $hpp_tmp
+            mv $cpp $cpp_tmp
+        elif [ -f $hpp_tmp ]; then
+            mv $hpp_tmp $hpp
+            mv $cpp_tmp $cpp
+        fi
+    done
+}
+
 while [[ $# -gt 0 ]]; do
     case $1 in
         -h|--help)
@@ -62,9 +80,11 @@ elif [ -f build.py ]; then
         dirs=`jq '.checks | .[]' -r .autobuild.json 2>/dev/null || echo $(basename $(pwd))`
         for dir in $dirs; do
             echo "autobuild: Checking directory ${dir}"
+            move_msg_files $dir
             python3 build/styleChecks/checkHeader.py $dir &&
             build/styleChecks/checkAllConventions.sh $dir &&
             python3 build/styleChecks/cppCheck.py --system-cppcheck $dir
+            move_msg_files $dir
         done
     elif [ "$mode" == "test" ]; then
         test_targets=`jq '.testTargets | .[]' -r .autobuild.json 2>/dev/null || echo "$(basename $(pwd))"-tests`
