@@ -40,6 +40,8 @@
       "ctrl-t": "pane::GoBack",
       "g h": "editor::SwitchSourceHeader",
       "g r": "editor::FindAllReferences",
+      "space u": "workspace::SaveAll",
+      "enter u": "workspace::SaveAll",
       "space f": "file_finder::Toggle",
       "enter f": "file_finder::Toggle",
       "space b": "tab_switcher::Toggle",
