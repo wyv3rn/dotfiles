@@ -1,9 +1,18 @@
 #!/usr/bin/env bash
 
+# general params
+do_clear=1
 mode="release"
 cppcompiler="clang"
+dryrun=""
+
+# deploy params
 host=""
-do_clear=1
+
+# runsim params
+sim_config="General"
+sim_scale_J=1
+sim_R=32
 
 move_msg_files () {
     dir=$1
@@ -37,8 +46,23 @@ while [[ $# -gt 0 ]]; do
             compiler="$2"
             shift
             ;;
+        --dry-run)
+            dryrun="--dry-run"
+            ;;
         --host)
             host="$2"
+            shift
+            ;;
+        -c|--config)
+            sim_config="$2"
+            shift
+            ;;
+        --scaleJ)
+            sim_scale_J="$2"
+            shift
+            ;;
+        -R)
+            sim_R="$2"
             shift
             ;;
         --no-clear)
@@ -126,6 +150,13 @@ elif [ -f build.py ]; then
         done
         echo "Starting build on ${host}"
         ssh $host "cd autobuild/${cwd}; autobuild --mode release --compiler ${cppcompiler} --no-clear"
+    elif [ "$mode" == "runsim" ]; then
+        ini="${cwd}/sim/config.ini"
+        ini_count=`find . -name "config.ini" | wc -l`
+        if [ "ini_count" == "1" ]; then
+            ini=`find . -name "config.ini"`
+        fi
+        run-sim-remote --cwd "autobuild/${cwd}" -b "binaries/bin/${cwd}" -f $ini -c $sim_config -R $sim_R --scale-J $sim_scale_J $dryrun
     else
         targets=`jq '.targets | .[]' -r .autobuild.json 2>/dev/null || echo $cwd`
         for target in $targets; do
