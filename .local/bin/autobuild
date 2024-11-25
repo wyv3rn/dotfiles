@@ -6,7 +6,7 @@ mode="release"
 cppcompiler="clang"
 dryrun=""
 
-# deploy params
+# deploy and result params
 host=""
 
 # runsim params
@@ -157,6 +157,14 @@ elif [ -f build.py ]; then
             ini=`find . -name "config.ini"`
         fi
         run-sim-remote --cwd "autobuild/${cwd}" -b "binaries/bin/${cwd}" -f $ini -c $sim_config -R $sim_R --scale-J $sim_scale_J $dryrun
+    elif [ "$mode" == "results" ]; then
+        if [ "$host" == "" ]; then
+            echo "No host specified for fetching results"
+            exit -1
+        fi
+        ssh $host "cd autobuild/${cwd}; binaries/bin/opp_scavetool export -o results/${sim_config}/results.json results/${sim_config}/*.vec results/${sim_config}/*.sca"
+        mkdir -p results/${sim_config}
+        scp ${host}:autobuild/${cwd}/results/${sim_config}/results.json results/${sim_config}/results.json
     else
         targets=`jq '.targets | .[]' -r .autobuild.json 2>/dev/null || echo $cwd`
         for target in $targets; do
