@@ -2,6 +2,8 @@
 
 mode="release"
 cppcompiler="clang"
+host=""
+do_clear=1
 
 move_msg_files () {
     dir=$1
@@ -35,6 +37,13 @@ while [[ $# -gt 0 ]]; do
             compiler="$2"
             shift
             ;;
+        --host)
+            host="$2"
+            shift
+            ;;
+        --no-clear)
+            do_clear=0
+            ;;
         -*|--*)
             echo "Unknown option $1"
             exit -1
@@ -49,8 +58,10 @@ done
 set -- "${pos_args[@]}"
 set -e
 
-# TODO switch whether we should clear or not
-clear
+if [ $do_clear -eq 1 ]; then
+    clear
+fi
+
 
 tex_file_count=`ls | grep -o "\S*\.tex" | wc -w`
 
@@ -74,10 +85,14 @@ elif [ -f Cargo.toml ]; then
         cargo fmt --check && cargo clippy --all-targets --all-features -- -D warnings
     elif [ "$mode" == "test" ]; then
         cargo test
+    else
+        echo "Unsupported mode ${mode} for Rust projects"
+        exit -1
     fi
 elif [ -f build.py ]; then
+    cwd=$(basename $(pwd))
     if [ "$mode" == "check" ]; then
-        dirs=`jq '.checks | .[]' -r .autobuild.json 2>/dev/null || echo $(basename $(pwd))`
+        dirs=`jq '.checks | .[]' -r .autobuild.json 2>/dev/null || echo $cwd`
         for dir in $dirs; do
             echo "autobuild: Checking directory ${dir}"
             move_msg_files $dir
@@ -87,19 +102,32 @@ elif [ -f build.py ]; then
             move_msg_files $dir
         done
     elif [ "$mode" == "test" ]; then
-        test_targets=`jq '.testTargets | .[]' -r .autobuild.json 2>/dev/null || echo "$(basename $(pwd))"-tests`
+        test_targets=`jq '.testTargets | .[]' -r .autobuild.json 2>/dev/null || echo "$cwd"-tests`
         for target in $test_targets; do
             echo "autobuild: Building test target ${target}"
             python3 build.py $target --compiler $cppcompiler
         done
 
-        tests=`jq '.tests | .[]' -r .autobuild.json 2>/dev/null || echo "test-$(basename $(pwd))"`
+        tests=`jq '.tests | .[]' -r .autobuild.json 2>/dev/null || echo "test-${cwd}"`
         for test in $tests; do
             echo "autobuild: Running test ${test}"
             cross/test-debug-${cppcompiler}/binaries/bin/$test
         done
+    elif [ "$mode" == "deploy" ]; then
+        if [ "$host" == "" ]; then
+            echo "No host specified for deploying"
+            exit -1
+        fi
+        rsync="rsync --mkpath -aHAX --delete"
+        dst="${host}:autobuild/${cwd}/"
+        for entry in `ls --ignore={"bootstrap","binaries","cross","compile_commands.json","results"}`; do
+            echo "Syncing ${entry}"
+            $rsync $entry $dst
+        done
+        echo "Starting build on ${host}"
+        ssh $host "cd autobuild/${cwd}; autobuild --mode release --compiler ${cppcompiler} --no-clear"
     else
-        targets=`jq '.targets | .[]' -r .autobuild.json 2>/dev/null || echo "$(basename $(pwd))"`
+        targets=`jq '.targets | .[]' -r .autobuild.json 2>/dev/null || echo $cwd`
         for target in $targets; do
             echo "autobuild: Building target ${target}"
             python3 build.py $target --mode $mode --compiler $cppcompiler
