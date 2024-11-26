@@ -28,11 +28,11 @@ scale=$(bc <<< "scale=2;$1/96.0")
 gdk_scale=$(bc <<< "scale=2;$scale/1.14")
 echo "Scale: $scale (compared to 96 DPI)"
 
-sed -i".sed" "s/\(Xft\.dpi:\s*\)[0-9]\+/\1$1/" ~/.Xdefaults
 sed -i".sed" "s/\(xrandr --dpi \)[0-9]\+/\1$1/" ~/.xprofile
 sed -i".sed" "s/\(GDK_DPI_SCALE=\)[0-9\.]\+/\1$gdk_scale/" ~/.xprofile
 sed -i".sed" "s/\(local dpi = \)[0-9]\+/\1$1/" ~/.config/awesome/themes/default/theme.lua
 sed -i".sed" "s/\(local dpi = \)[0-9]\+/\1$1/" ~/.config/awesome/themes/catppuccin/theme.lua
-sed -i".sed" "s/\(\"dpi_scale\": \)[0-9\.]\+/\1$scale/" ~/.config/sublime-text-3/Packages/User/Preferences.sublime-settings
 sed -i".sed" "s/\(--force-device-scale-factor=\)[0-9\.]\+/\1$scale/" ~/.local/share/applications/spotify.desktop
+sed -i".sed" "s/\(--force-device-scale-factor=\)[0-9\.]\+/\1$gdk_scale/" ~/.config/brave-flags.conf
+sed -i".sed" "s/\(--force-device-scale-factor=\)[0-9\.]\+/\1$gdk_scale/" ~/.config/chromium-flags.conf
 sed -i".sed" "s/\(size = \)[0-9]\+/\1$alacritty_font_size/" ~/.config/alacritty/alacritty.toml
