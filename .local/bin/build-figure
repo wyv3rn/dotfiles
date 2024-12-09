@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+if [ $# -ne 1 ]; then
+    echo "Expected exactly one input"
+    exit -1
+fi
+
+abs_path=`realpath $1`
+poetry -C ~/devops/evalLib run build-fig $abs_path
