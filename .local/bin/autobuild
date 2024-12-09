@@ -113,6 +113,21 @@ elif [ -f Cargo.toml ]; then
         echo "Unsupported mode ${mode} for Rust projects"
         exit -1
     fi
+elif [ -f main.roc ]; then
+    if [ "$mode" == "check" ]; then
+        roc check
+    elif [ "$mode" == "debug" ]; then
+        roc build
+    elif [ "$mode" == "release" ]; then
+        roc build --optimize
+    elif [ "$mode" == "test" ]; then
+        roc test
+    elif [ "$mode" == "run" ]; then
+        roc dev
+    else
+        echo "Unsupported mode ${mode} for Roc projects"
+        exit -1
+    fi
 elif [ -f build.py ]; then
     cwd=$(basename $(pwd))
     if [ "$mode" == "check" ]; then
@@ -144,7 +159,7 @@ elif [ -f build.py ]; then
         fi
         rsync="rsync --mkpath -aHAX --delete"
         dst="${host}:autobuild/${cwd}/"
-        for entry in `ls --ignore={"bootstrap","binaries","cross","compile_commands.json","results"}`; do
+        for entry in `ls | grep -vE "bootstrap|binaries|cross|compile_commands.json|results"}`; do
             echo "Syncing ${entry}"
             $rsync $entry $dst
         done
