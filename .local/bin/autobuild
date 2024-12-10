@@ -159,7 +159,7 @@ elif [ -f build.py ]; then
         fi
         rsync="rsync --mkpath -aHAX --delete"
         dst="${host}:autobuild/${cwd}/"
-        for entry in `ls | grep -vE "bootstrap|binaries|cross|compile_commands.json|results"}`; do
+        for entry in `ls | grep -vE "bootstrap|binaries|cross|compile_commands.json|results"`; do
             echo "Syncing ${entry}"
             $rsync $entry $dst
         done
