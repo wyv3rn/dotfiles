@@ -26,7 +26,7 @@ vim.keymap.set('n', '<F10>', '<cmd>update<cr><cmd>!hemux autobuild --mode debug<
 vim.keymap.set('n', '<F11>', '<cmd>update<cr><cmd>!hemux autobuild --mode test<cr><cr>')
 
 -- Toggle comments in visual mode (normal mode -> WhichKey)
--- TODO can we make this during WhichKey register?
+-- TODO can we make this work with WhichKey?
 vim.keymap.set('v', '<leader>cc', ":CommentToggle<cr>", { desc = 'Toggle comments' })
 
 -- Configure the rest with WhichKey
@@ -46,80 +46,51 @@ local lazygit_dotfiles = terminal:new({
     direction = "float"
 })
 
-wk.register({
-    -- Space mode
-    ["<leader>"] = {
-        name = "Space mode",
-        x = { "<cmd>edit $MYVIMRC<cr>", "Open neovim config" },
-        X = { "<cmd>update<cr><cmd>source $MYVIMRC<cr>", "Reload neovim config" },
-        f = { telescope.find_files, "Find files" },
-        b = { telescope.buffers, "Find buffers" },
-        s = { telescope.lsp_dynamic_workspace_symbols, "Find symbols in workspace" },
-        u = { vim.cmd.UndotreeToggle, "Toggle undo tree" },
-        ["/"] = { telescope.live_grep, "Live grep" },
-        ["*"] = { telescope.grep_string, "Grep string under cursor" },
-        ["?"] = { telescope.help_tags, "Find help" },
-        ["<Tab>"] = { "<cmd>update<cr><cmd>edit #<cr>", "Go to last file" },
-        ["<leader>"] = { "<cmd>nohlsearch<cr>", "Clear everything!" },
+wk.add(
+    {
+        { "<leader>",         group = "Space mode" },
+        { "<leader>f",        telescope.find_files,                               desc = "Find files" },
+        { "<leader>*",        telescope.grep_string,                              desc = "Grep string under cursor" },
+        { "<leader>/",        telescope.live_grep,                                desc = "Live grep" },
+        { "<leader><Tab>",    "<cmd>update<cr><cmd>edit #<cr>",                   desc = "Go to last file" },
+        { "<leader><leader>", "<cmd>nohlsearch<cr>",                              desc = "Clear everything!" },
+        { "<leader>?",        telescope.help_tags,                                desc = "Find help" },
+        { "<leader>X",        "<cmd>update<cr><cmd>source $MYVIMRC<cr>",          desc = "Reload neovim config" },
+        { "<leader>b",        telescope.buffers,                                  desc = "Find buffers" },
+        { "<leader>u",        vim.cmd.UndotreeToggle,                             desc = "Toggle undo tree" },
+        { "<leader>x",        "<cmd>edit $MYVIMRC<cr>",                           desc = "Open neovim config" },
 
-        -- harpoon
-        n = { "<cmd>lua require('harpoon.ui').nav_file(1)<cr>", "Harpoon One" },
-        r = { "<cmd>lua require('harpoon.ui').nav_file(2)<cr>", "Harpoon Two" },
-        t = { "<cmd>lua require('harpoon.ui').nav_file(3)<cr>", "Harpoon Three" },
-        d = { "<cmd>lua require('harpoon.ui').nav_file(4)<cr>", "Harpoon Four" },
+        { "<leader>c",        group = "Code mode" },
+        { "<leader>ca",       "<cmd>lua vim.lsp.buf.code_action()<cr>",           desc = "Perform code action" },
+        { "<leader>cf",       "<cmd>lua vim.lsp.buf.format()<cr><cmd>update<cr>", desc = "Format buffer" },
+        { "<leader>ch",       "<cmd>lua vim.lsp.buf.hover()<cr>",                 desc = "Show symbol information in hover" },
+        { "<leader>cr",       "<cmd>lua vim.lsp.buf.rename()<cr>",                desc = "Rename symbol under cursor" },
+        { "<leader>cc",       "<cmd>CommentToggle<cr>",                           desc = "Toggle comment" },
 
-        -- Code mode
-        c = {
-            name = "Code mode",
-            f = { "<cmd>lua vim.lsp.buf.format()<cr><cmd>update<cr>", "Format buffer" },
-            h = { "<cmd>lua vim.lsp.buf.hover()<cr>", "Show symbol information in hover" },
-            a = { "<cmd>lua vim.lsp.buf.code_action()<cr>", "Perform code action" },
-            c = { "<cmd>CommentToggle<cr>", "Toggle comment" },
-            r = { "<cmd>lua vim.lsp.buf.rename()<cr>", "Rename symbol under cursor" },
-        },
+        { "<leader>g",        group = "Git mode" },
+        { "<leader>gb",       "<cmd>ToggleBlame virtual<cr>",                     desc = "Toggle git blame" },
+        { "<leader>gg",       function() lazygit:toggle() end,                    desc = "Toggle lazygit terminal" },
+        { "<leader>gd",       function() lazygit_dotfiles:toggle() end,           desc = "Toggle lazygit terminal for dotfiles" },
 
-        -- Toggle mode
-        T = {
-            name = "Toggle mode",
-            w = { "<cmd>StripWhitespace<cr>", "Strip trailing whitespaces" },
-        },
+        { "g",                group = "GoTo mode" },
+        { "g<Down>",          "<C-w>j",                                           desc = "Go to lower window" },
+        { "g<Left>",          "<C-w>h",                                           desc = "Go to left window" },
+        { "g<Right>",         "<C-w>l",                                           desc = "Go to right window" },
+        { "g<Up>",            "<C-w>k",                                           desc = "Go to upper window" },
+        { "gd",               telescope.lsp_definitions,                          desc = "Go to definition" },
+        { "gD",               telescope.lsp_type_definitions,                     desc = "Go to type definition" },
+        { "gh",               "<cmd>ClangdSwitchSourceHeader<cr>",                desc = "Go to header/source file" },
+        { "gi",               telescope.lsp_implementations,                      desc = "Go to implementation" },
+        { "gr",               telescope.lsp_references,                           desc = "Go to references" },
+        { "gw",               "<C-w><C-p>",                                       desc = "Go to previous window" },
+        { "gs",               telescope.lsp_document_symbols,                     desc = "Find symbols in buffer" },
+        { "gS",               telescope.lsp_workspace_symbols,                    desc = "Find symbols in workspace" },
 
-        -- Git
-        g = {
-            name = "Git mode",
-            g = { function() lazygit:toggle() end, "Toggle lazygit terminal" },
-            d = { function() lazygit_dotfiles:toggle() end, "Toggle lazygit terminal for dotfiles" },
-            b = { "<cmd>ToggleBlame virtual<cr>", "Toggle git blame" },
-        },
+        { "<leader>T",        group = "Toggle mode" },
+        { "<leader>Tw",       "<cmd>StripWhitespace<cr>",                         desc = "Strip trailing whitespaces" },
 
-        --  More harpoon
-        h = {
-            h = { harpoon_ui.toggle_quick_menu, "Harpoon menu" },
-            a = { require("harpoon.mark").add_file, "Add current file" },
-        },
-    },
 
-    -- GoTo mode
-    g = {
-        name = "GoTo mode",
-        d = { telescope.lsp_definitions, "Go to definition" },
-        D = { telescope.lsp_type_definitions, "Go to type definition" },
-        r = { telescope.lsp_references, "Go to references" },
-        i = { telescope.lsp_implementations, "Go to implementation" },
-        h = { "<cmd>ClangdSwitchSourceHeader<cr>", "Go to header/source file" },
-        w = { "<C-w><C-p>", "Go to previous window" },
-        ["<Left>"] = { "<C-w>h", "Go to left window" },
-        ["<Right>"] = { "<C-w>l", "Go to right window" },
-        ["<Up>"] = { "<C-w>k", "Go to upper window" },
-        ["<Down>"] = { "<C-w>j", "Go to lower window" },
-    },
-
-    -- Prev/next
-    ["]"] = {
-        d = { "<cmd>lua vim.diagnostic.goto_next()<cr>", "GoTo next diagnostic" },
-    },
-
-    ["["] = {
-        d = { "<cmd>lua vim.diagnostic.goto_prev()<cr>", "GoTo prev diagnostic" },
+        { "[d",               "<cmd>lua vim.diagnostic.goto_prev()<cr>",          desc = "GoTo prev diagnostic" },
+        { "]d",               "<cmd>lua vim.diagnostic.goto_next()<cr>",          desc = "GoTo next diagnostic" },
     }
-})
+)
