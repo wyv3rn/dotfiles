@@ -6,7 +6,7 @@
       "f9": ["task::Spawn", { "task_name": "autobuild release" }],
       "f10": ["task::Spawn", { "task_name": "autobuild debug" }],
       "f11": ["task::Spawn", { "task_name": "autobuild test" }],
-      "f12": ["task::Spawn", { "task_name": "cargo test function" }],
+      "f12": ["task::Spawn", { "task_name": "autobuild run" }],
       "ctrl-y": "terminal_panel::ToggleFocus",
       "ctrl-tab": "terminal_panel::ToggleFocus",
       "ctrl-a z": "workspace::ToggleZoom",
@@ -23,7 +23,7 @@
     "context": "Editor && vim_mode == insert",
     "bindings": {
       "alt-t": ["workspace::SendKeystrokes", "-"],
-      "alt-q": ["workspace::SendKeystrokes", "@"],
+      // "alt-q": ["workspace::SendKeystrokes", "@"],
       "alt-f": null,
       "alt-h": null,
       "alt-z": null,
