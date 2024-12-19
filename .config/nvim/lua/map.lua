@@ -84,7 +84,7 @@ wk.add(
         { "gr",               telescope.lsp_references,                           desc = "Go to references" },
         { "gw",               "<C-w><C-p>",                                       desc = "Go to previous window" },
         { "gs",               telescope.lsp_document_symbols,                     desc = "Find symbols in buffer" },
-        { "gS",               telescope.lsp_workspace_symbols,                    desc = "Find symbols in workspace" },
+        { "gS",               telescope.lsp_dynamic_workspace_symbols,            desc = "Find symbols in workspace" },
 
         { "<leader>T",        group = "Toggle mode" },
         { "<leader>Tw",       "<cmd>StripWhitespace<cr>",                         desc = "Strip trailing whitespaces" },
@@ -92,5 +92,7 @@ wk.add(
 
         { "[d",               "<cmd>lua vim.diagnostic.goto_prev()<cr>",          desc = "GoTo prev diagnostic" },
         { "]d",               "<cmd>lua vim.diagnostic.goto_next()<cr>",          desc = "GoTo next diagnostic" },
+        { "[c",               "<cmd>cprev<cr>",                                   desc = "GoTo prev quickfix" },
+        { "]c",               "<cmd>cnext<cr>",                                   desc = "GoTo next quickfix" },
     }
 )
