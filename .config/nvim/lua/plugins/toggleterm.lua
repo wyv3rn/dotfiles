@@ -1,3 +1,3 @@
 return {
-    "akinsho/toggleterm.nvim"
+   "akinsho/toggleterm.nvim"
 }
