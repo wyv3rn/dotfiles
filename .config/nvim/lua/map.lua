@@ -25,6 +25,9 @@ vim.keymap.set('n', '<F9>', '<cmd>update<cr><cmd>!hemux autobuild --mode release
 vim.keymap.set('n', '<F10>', '<cmd>update<cr><cmd>!hemux autobuild --mode debug<cr><cr>')
 vim.keymap.set('n', '<F11>', '<cmd>update<cr><cmd>!hemux autobuild --mode test<cr><cr>')
 
+-- Builtin terminal
+vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
+
 -- Toggle comments in visual mode (normal mode -> WhichKey)
 -- TODO can we make this work with WhichKey?
 vim.keymap.set('v', '<leader>cc', ":CommentToggle<cr>", { desc = 'Toggle comments' })
@@ -33,6 +36,13 @@ vim.keymap.set('v', '<leader>cc', ":CommentToggle<cr>", { desc = 'Toggle comment
 local wk = require("which-key")
 local telescope = require("telescope.builtin")
 local terminal = require("toggleterm.terminal").Terminal
+local oil = require("oil")
+
+local srcatch_term = terminal:new({
+   hidden = true,
+   direction = "float",
+})
+
 local lazygit = terminal:new({
    cmd = "lazygit",
    hidden = true,
@@ -53,10 +63,10 @@ wk.add({
    { "<leader><Tab>",    "<cmd>update<cr><cmd>edit #<cr>",                   desc = "Go to last file" },
    { "<leader><leader>", "<cmd>nohlsearch<cr>",                              desc = "Clear everything!" },
    { "<leader>?",        telescope.help_tags,                                desc = "Find help" },
-   { "<leader>X",        "<cmd>update<cr><cmd>source $MYVIMRC<cr>",          desc = "Reload neovim config" },
    { "<leader>b",        telescope.buffers,                                  desc = "Find buffers" },
    { "<leader>u",        vim.cmd.UndotreeToggle,                             desc = "Toggle undo tree" },
-   { "<leader>x",        "<cmd>edit $MYVIMRC<cr>",                           desc = "Open neovim config" },
+   { "<leader>-",        oil.open_float,                                     desc = "Open Oil in directory of current buffer" },
+   { "<leader>_",        function() oil.open_float(vim.uv.cwd()) end,        desc = "Open Oil in cwd" },
 
    { "<leader>c",        group = "Code mode" },
    { "<leader>ca",       vim.lsp.buf.code_action,                            desc = "Perform code action" },
@@ -84,8 +94,9 @@ wk.add({
    { "gs",               telescope.lsp_document_symbols,                     desc = "Find symbols in buffer" },
    { "gS",               telescope.lsp_dynamic_workspace_symbols,            desc = "Find symbols in workspace" },
 
-   { "<leader>T",        group = "Toggle mode" },
-   { "<leader>Tw",       "<cmd>StripWhitespace<cr>",                         desc = "Strip trailing whitespaces" },
+   { "<leader>t",        group = "Toggle mode" },
+   { "<leader>tt",       function() srcatch_term:toggle() end,               desc = "Toggle floating scratch terminal" },
+   { "<leader>tw",       "<cmd>StripWhitespace<cr>",                         desc = "Strip trailing whitespaces" },
 
 
    { "[d",               vim.diagnostic.goto_prev,                           desc = "GoTo prev diagnostic" },
