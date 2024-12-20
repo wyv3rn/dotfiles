@@ -32,7 +32,6 @@ vim.keymap.set('v', '<leader>cc', ":CommentToggle<cr>", { desc = 'Toggle comment
 -- Configure the rest with WhichKey
 local wk = require("which-key")
 local telescope = require("telescope.builtin")
-local harpoon_ui = require("harpoon.ui")
 local terminal = require("toggleterm.terminal").Terminal
 local lazygit = terminal:new({
     cmd = "lazygit",
