@@ -60,10 +60,10 @@ wk.add(
         { "<leader>x",        "<cmd>edit $MYVIMRC<cr>",                           desc = "Open neovim config" },
 
         { "<leader>c",        group = "Code mode" },
-        { "<leader>ca",       "<cmd>lua vim.lsp.buf.code_action()<cr>",           desc = "Perform code action" },
+        { "<leader>ca",       vim.lsp.buf.code_action,                            desc = "Perform code action" },
         { "<leader>cf",       "<cmd>lua vim.lsp.buf.format()<cr><cmd>update<cr>", desc = "Format buffer" },
-        { "<leader>ch",       "<cmd>lua vim.lsp.buf.hover()<cr>",                 desc = "Show symbol information in hover" },
-        { "<leader>cr",       "<cmd>lua vim.lsp.buf.rename()<cr>",                desc = "Rename symbol under cursor" },
+        { "<leader>ch",       vim.lsp.buf.hover,                                  desc = "Show symbol information in hover" },
+        { "<leader>cr",       vim.lsp.buf.rename,                                 desc = "Rename symbol under cursor" },
         { "<leader>cc",       "<cmd>CommentToggle<cr>",                           desc = "Toggle comment" },
 
         { "<leader>g",        group = "Git mode" },
@@ -89,8 +89,8 @@ wk.add(
         { "<leader>Tw",       "<cmd>StripWhitespace<cr>",                         desc = "Strip trailing whitespaces" },
 
 
-        { "[d",               "<cmd>lua vim.diagnostic.goto_prev()<cr>",          desc = "GoTo prev diagnostic" },
-        { "]d",               "<cmd>lua vim.diagnostic.goto_next()<cr>",          desc = "GoTo next diagnostic" },
+        { "[d",               vim.diagnostic.goto_prev,                           desc = "GoTo prev diagnostic" },
+        { "]d",               vim.diagnostic.goto_next,                           desc = "GoTo next diagnostic" },
         { "[c",               "<cmd>cprev<cr>",                                   desc = "GoTo prev quickfix" },
         { "]c",               "<cmd>cnext<cr>",                                   desc = "GoTo next quickfix" },
     }

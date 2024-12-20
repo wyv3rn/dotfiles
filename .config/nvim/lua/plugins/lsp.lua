@@ -25,7 +25,7 @@ return {
             })
 
             -- Use system clangd instead of Mason one, because it does not work on Mac silicon
-            lsp_config.clangd.setup{}
+            lsp_config.clangd.setup({})
 
             -- Configure autocomplete
             vim.opt.completeopt = { 'menu', 'menuone', 'noselect' }
@@ -105,7 +105,7 @@ return {
 
             -- Configure ltex-ls
             local dict_dir = vim.fn.expand("~") .. "/devops/dictionary/"
-            require('ltex_extra').setup {
+            require('ltex_extra').setup({
                 path = dict_dir,
                 load_langs = { "en-US", "de-DE" },
                 server_opts = {
@@ -116,7 +116,7 @@ return {
                         }
                     }
                 }
-            }
+            })
 
             -- Use system version of rust-analyzer and configure it to use clippy
             lsp_config.rust_analyzer.setup({
