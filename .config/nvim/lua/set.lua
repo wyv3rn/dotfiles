@@ -17,8 +17,11 @@ vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 
+-- Compiling
+vim.opt.makeprg = "autobuild"
+
 -- Default g flag in substitutions
 vim.opt.gdefault = true
 
 -- Default to LaTeX flavor
-vim.g.tex_flavor = 'latex'
+vim.g.tex_flavor = "latex"
