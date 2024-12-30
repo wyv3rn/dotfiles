@@ -1,0 +1,13 @@
+theme = catppuccin-frappe
+
+shell-integration-features = no-cursor
+
+keybind = ctrl+y=goto_split:next
+keybind = ctrl+up=goto_split:top
+keybind = ctrl+down=goto_split:bottom
+keybind = ctrl+left=goto_split:left
+keybind = ctrl+right=goto_split:right
+
+keybind = ctrl+a>1=goto_tab:1
+keybind = ctrl+a>2=goto_tab:2
+keybind = ctrl+a>3=goto_tab:3

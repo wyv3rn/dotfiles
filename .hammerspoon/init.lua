@@ -83,9 +83,8 @@ end
 
 -- Open or activate specific applications by key combination
 local apps = {
-    ["Alacritty"] = "T",
+    ["Ghostty"] = "T",
     ["Brave Browser"] = "N",
-    ["Zed"] = "D",
 }
 
 for app, key in pairs(apps) do
