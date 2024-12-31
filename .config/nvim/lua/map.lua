@@ -37,10 +37,17 @@ local telescope = require("telescope.builtin")
 local terminal = require("toggleterm.terminal").Terminal
 local oil = require("oil")
 
-local srcatch_term = terminal:new({
+local scratch_term = terminal:new({
    hidden = true,
    direction = "float",
 })
+
+local calc_term = terminal:new({
+   cmd = "ghci",
+   hidden = true,
+   direction = "float",
+})
+
 
 local lazygit = terminal:new({
    cmd = "lazygit",
@@ -95,7 +102,8 @@ wk.add({
    { "gD",               telescope.diagnostics,                              desc = "Find diagnostics" },
 
    { "<leader>t",        group = "Toggle mode" },
-   { "<leader>tt",       function() srcatch_term:toggle() end,               desc = "Toggle floating scratch terminal" },
+   { "<leader>tt",       function() scratch_term:toggle() end,               desc = "Toggle floating scratch terminal" },
+   { "<leader>tc",       function() calc_term:toggle() end,                  desc = "Toggle floating calculator terminal" },
    { "<leader>tw",       "<cmd>StripWhitespace<cr>",                         desc = "Strip trailing whitespaces" },
 
 
