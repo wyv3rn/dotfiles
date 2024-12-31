@@ -24,8 +24,18 @@ return {
             },
          })
 
+         -- Register autocomplete with all installed language servers
+         local complete_caps = require("blink.cmp").get_lsp_capabilities()
+         for _, ls in ipairs(mason_cfg.get_installed_servers()) do
+            lsp_config[ls].setup({
+               capabilities = complete_caps
+            })
+         end
+
          -- Use system clangd instead of Mason one, because it does not work on Mac silicon
-         lsp_config.clangd.setup({})
+         lsp_config.clangd.setup({
+            capabilities = complete_caps,
+         })
 
          -- Configure ltex-ls
          local dict_dir = vim.fn.expand("~") .. "/devops/dictionary/"
@@ -33,6 +43,7 @@ return {
             path = dict_dir,
             load_langs = { "en-US", "de-DE" },
             server_opts = {
+               capabilities = complete_caps,
                settings = {
                   ltex = {
                      -- Example, see full lust of options here: https://valentjn.github.io/ltex/settings.html
@@ -44,6 +55,7 @@ return {
 
          -- Use system version of rust-analyzer and configure it to use clippy
          lsp_config.rust_analyzer.setup({
+            capabilities = complete_caps,
             settings = {
                ["rust-analyzer"] = {
                   check = {
@@ -52,14 +64,6 @@ return {
                }
             }
          })
-
-         -- Register autocomplete with language servers
-         local capabilities = require("blink.cmp").get_lsp_capabilities()
-         for _, ls in ipairs(mason_cfg.get_installed_servers()) do
-            lsp_config[ls].setup({
-               capabilities = capabilities
-            })
-         end
       end
    },
 }
