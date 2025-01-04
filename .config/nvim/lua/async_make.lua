@@ -2,7 +2,13 @@
 
 local M = {}
 
-function M.make(cmd)
+function M.make(cmd, opts)
+   opts = opts or {}
+   local autosave = opts.autosave or true
+   if autosave then
+      vim.cmd("update")
+   end
+
    print("Running " .. cmd .. " in background")
    local lines = { "" }
    local errorformat = vim.o.errorformat
