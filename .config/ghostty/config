@@ -6,6 +6,9 @@ adw-toolbar-style = flat
 
 shell-integration-features = no-cursor
 
+keybind = cmd+c=copy_to_clipboard
+keybind = cmd+v=paste_from_clipboard
+
 keybind = cmd+shift+t=new_tab
 keybind = ctrl+physical:one=goto_tab:1
 keybind = ctrl+physical:two=goto_tab:2
