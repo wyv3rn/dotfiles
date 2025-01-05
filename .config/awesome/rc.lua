@@ -90,9 +90,9 @@ end
 
 
 -- This is used later as the default terminal and editor to run.
-terminal = "alacritty"
+terminal = "ghostty"
 editor = os.getenv("EDITOR") or "nvim"
-editor_cmd = "alacritty -e " .. editor
+editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey. For reference: Mod4 = OS key, Mod1 = Alt
 modkey = "Mod4"
@@ -379,10 +379,9 @@ globalkeys = awful.util.table.join(
 
 -- focus or spawn applications via keybinding
 local applications = {
-    ["alacritty"] = "t",
+    [terminal] = "t",
     ["brave"] = "n",
     ["zathura"] = "r",
-    ["zed"] = "d",
 }
 
 for app, key in pairs(applications) do

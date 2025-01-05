@@ -1,16 +1,26 @@
+term = xterm-256color
+
 theme = catppuccin-frappe
+gtk-titlebar = false
+adw-toolbar-style = flat
 
 shell-integration-features = no-cursor
 
-keybind = ctrl+tab=goto_split:next
-keybind = ctrl+y=goto_split:next
-keybind = ctrl+up=goto_split:top
-keybind = ctrl+down=goto_split:bottom
-keybind = ctrl+left=goto_split:left
-keybind = ctrl+right=goto_split:right
-
+keybind = cmd+shift+t=new_tab
 keybind = ctrl+physical:one=goto_tab:1
 keybind = ctrl+physical:two=goto_tab:2
 keybind = ctrl+physical:three=goto_tab:3
 keybind = ctrl+physical:four=goto_tab:4
 keybind = ctrl+physical:five=goto_tab:5
+
+keybind = cmd+d=new_split:down
+keybind = cmd+shift+d=new_split:right
+keybind = ctrl+tab=goto_split:next
+keybind = ctrl+y=goto_split:next
+keybind = cmd+y=goto_split:next
+keybind = ctrl+up=goto_split:top
+keybind = ctrl+down=goto_split:bottom
+keybind = ctrl+left=goto_split:left
+keybind = ctrl+right=goto_split:right
+
+keybind = cmd+shift+comma=reload_config
