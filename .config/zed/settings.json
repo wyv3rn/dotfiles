@@ -55,6 +55,9 @@
         }
       }
     },
+    "JavaScript": {
+      "tab_size": 4
+    },
     "TypeScript": {
       "tab_size": 4
     },
