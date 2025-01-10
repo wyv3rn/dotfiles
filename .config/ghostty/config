@@ -16,6 +16,10 @@ keybind = ctrl+physical:five=goto_tab:5
 
 keybind = cmd+d=new_split:down
 keybind = cmd+shift+d=new_split:right
+keybind = cmd+shift+equal=equalize_splits
+keybind = cmd+shift+up=resize_split:up,50
+keybind = cmd+shift+down=resize_split:down,50
+
 keybind = ctrl+tab=goto_split:next
 keybind = ctrl+y=goto_split:next
 keybind = cmd+y=goto_split:next
