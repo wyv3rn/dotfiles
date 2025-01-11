@@ -8,11 +8,7 @@ blinking = "Never"
 TERM = "xterm-256color"
 
 [font]
-size = 9
-
-[font.normal]
-family = "Dejavu Sans Mono"
-style = "regular"
+size = 12
 
 [[keyboard.bindings]]
 chars = "\u001B[27;5;9~"
