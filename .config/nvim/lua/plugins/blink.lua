@@ -21,6 +21,13 @@ return {
             "snippet_backward",
             "fallback",
          },
+         ["<CR>"] = {
+            "select_and_accept",
+            "fallback",
+         },
+         cmdline = {
+            preset = 'super-tab',
+         }
       },
 
       appearance = {
