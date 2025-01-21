@@ -95,7 +95,7 @@ fi
 
 
 if [ -f Makefile ]; then
-    make
+    make MODE=$mode
 elif [ -f .latexmkrc ]; then
     latexmk
 elif [ "$tex_file_count" == "1" ]; then
