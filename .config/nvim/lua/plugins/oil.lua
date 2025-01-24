@@ -3,6 +3,9 @@ return {
    opts = {
       float = {
          padding = 3,
+      },
+      view_options = {
+         show_hidden = true,
       }
    },
    -- Optional dependencies
