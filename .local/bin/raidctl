@@ -27,7 +27,9 @@ if [ "$1" == "on" ]; then
     pass raid | sudo cryptsetup luksOpen $DEV $MAP -
     sudo mount /dev/mapper/$MAP $MNT
     sudo systemctl restart apache2.service
+    sudo systemctl restart smbd.service nmbd.service
 elif [ "$1" == "off" ]; then
+    sudo systemctl stop smbd.service nmbd.service
     sudo umount $MNT || exit 1
     sudo cryptsetup luksClose $MAP || exit 1
     sudo udisksctl power-off -b $DEV || echo "Power off failed"
