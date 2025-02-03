@@ -28,6 +28,9 @@ keybind = ctrl+down=goto_split:bottom
 keybind = ctrl+left=goto_split:left
 keybind = ctrl+right=goto_split:right
 
+keybind = super+page_up=scroll_page_up
+keybind = super+page_down=scroll_page_down
+
 keybind = cmd+semicolon=reload_config
 
 config-file = ?local-config
