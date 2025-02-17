@@ -2,8 +2,6 @@ theme = catppuccin-frappe
 gtk-titlebar = false
 adw-toolbar-style = flat
 
-shell-integration-features = no-cursor
-
 keybind = cmd+c=copy_to_clipboard
 keybind = cmd+v=paste_from_clipboard
 
