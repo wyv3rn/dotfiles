@@ -14,10 +14,26 @@ scale=$(bc <<< "scale=2;$1/96.0")
 gdk_scale=$(bc <<< "scale=2;$scale/1.14")
 echo "Scale: $scale (compared to 96 DPI)"
 
+# General stuff
 sed -i".sed" "s/\(xrandr --dpi \)[0-9]\+/\1$1/" ~/.xprofile
 sed -i".sed" "s/\(GDK_DPI_SCALE=\)[0-9\.]\+/\1$gdk_scale/" ~/.xprofile
+
+# Awesome WM
 sed -i".sed" "s/\(local dpi = \)[0-9]\+/\1$1/" ~/.config/awesome/themes/default/theme.lua
 sed -i".sed" "s/\(local dpi = \)[0-9]\+/\1$1/" ~/.config/awesome/themes/catppuccin/theme.lua
-sed -i".sed" "s/\(--force-device-scale-factor=\)[0-9\.]\+/\1$scale/" ~/.local/share/applications/spotify.desktop
+
+# Chromium based apps
 sed -i".sed" "s/\(--force-device-scale-factor=\)[0-9\.]\+/\1$gdk_scale/" ~/.config/brave-flags.conf
 sed -i".sed" "s/\(--force-device-scale-factor=\)[0-9\.]\+/\1$gdk_scale/" ~/.config/chromium-flags.conf
+
+# Electron apps
+electron_scale=$scale
+for electron_app in signal-desktop spotify drawio; do
+    desktop_file=${electron_app}.desktop
+    src=/usr/share/applications/${desktop_file}
+    dst=~/.local/share/applications/${desktop_file}
+    if [ -f $src ]; then
+        cp $src $dst
+        sed -i"" "s/\(Exec=.*${electron_app}\)/\1 --force-device-scale-factor=${electron_scale}/" $dst
+    fi
+done
