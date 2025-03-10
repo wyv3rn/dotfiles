@@ -27,13 +27,14 @@ sed -i".sed" "s/\(--force-device-scale-factor=\)[0-9\.]\+/\1$gdk_scale/" ~/.conf
 sed -i".sed" "s/\(--force-device-scale-factor=\)[0-9\.]\+/\1$gdk_scale/" ~/.config/chromium-flags.conf
 
 # Electron apps
-electron_scale=$scale
+electron_scale=$gdk_scale
 for electron_app in signal-desktop spotify drawio; do
     desktop_file=${electron_app}.desktop
     src=/usr/share/applications/${desktop_file}
     dst=~/.local/share/applications/${desktop_file}
     if [ -f $src ]; then
         cp $src $dst
-        sed -i"" "s/\(Exec=.*${electron_app}\)/\1 --force-device-scale-factor=${electron_scale}/" $dst
+        sed -i"" "s/\(^Exec=.*${electron_app}\)/\1 --force-device-scale-factor=${electron_scale}/" $dst
+        sed -i"" "s/\(^Name=.*\)/\1 (DPI)/" $dst
     fi
 done
