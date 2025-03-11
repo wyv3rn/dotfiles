@@ -67,7 +67,7 @@ wk.add({
    { "<leader>f",        telescope.find_files,                               desc = "Find files" },
    { "<leader>*",        telescope.grep_string,                              desc = "Grep string under cursor" },
    { "<leader>/",        telescope.live_grep,                                desc = "Live grep" },
-   { "<leader><Tab>",    "<cmd>update<cr><cmd>edit #<cr>",                   desc = "Go to last file" },
+   { "<leader><Tab>",    "<cmd>update<cr><cmd>edit #<cr>",                   desc = "Go to last buffer" },
    { "<leader><leader>", "<cmd>nohlsearch<cr>",                              desc = "Clear everything!" },
    { "<leader>?",        telescope.help_tags,                                desc = "Find help" },
    { "<leader>b",        telescope.buffers,                                  desc = "Find buffers" },
@@ -112,4 +112,6 @@ wk.add({
    { "]d",               vim.diagnostic.goto_next,                           desc = "GoTo next diagnostic" },
    { "[c",               "<cmd>cprev<cr>",                                   desc = "GoTo prev quickfix" },
    { "]c",               "<cmd>cnext<cr>",                                   desc = "GoTo next quickfix" },
+   { "[b",               "<cmd>update<cr><cmd>bprev<cr>",                    desc = "Go to previous buffer" },
+   { "]b",               "<cmd>update<cr><cmd>bnext<cr>",                    desc = "Go to next buffer" },
 })
