@@ -58,6 +58,9 @@ return {
             capabilities = complete_caps,
             settings = {
                ["rust-analyzer"] = {
+                  cargo = {
+                     allFeatures = true,
+                  },
                   check = {
                      command = "clippy",
                   }
