@@ -20,10 +20,10 @@ vim.keymap.set('n', '<C-u>', '<C-u>zz')
 
 -- Compiling
 local async_make = require("async_make")
-vim.keymap.set("n", "<F8>", function() async_make.make("autobuild --mode check", { autosave = true }) end)
-vim.keymap.set("n", "<F9>", function() async_make.make("autobuild --mode release", { autosave = true }) end)
-vim.keymap.set("n", "<F10>", function() async_make.make("autobuild --mode debug", { autosave = true }) end)
-vim.keymap.set("n", "<F11>", function() async_make.make("autobuild --mode test", { autosave = true }) end)
+vim.keymap.set("n", "<F8>", function() async_make.make("autobuild --no-tty --mode check", { autosave = true }) end)
+vim.keymap.set("n", "<F9>", function() async_make.make("autobuild --no-tty --mode release", { autosave = true }) end)
+vim.keymap.set("n", "<F10>", function() async_make.make("autobuild --no-tty --mode debug", { autosave = true }) end)
+vim.keymap.set("n", "<F11>", function() async_make.make("autobuild --no-tty --mode test", { autosave = true }) end)
 
 -- Builtin terminal
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')

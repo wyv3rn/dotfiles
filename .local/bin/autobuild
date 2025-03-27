@@ -2,6 +2,7 @@
 
 # general params
 do_clear=1
+color=1
 mode="release"
 cppcompiler="clang"
 dryrun=""
@@ -68,6 +69,10 @@ while [[ $# -gt 0 ]]; do
         --no-clear)
             do_clear=0
             ;;
+        --no-tty)
+            do_clear=0
+            color=0
+            ;;
         -*|--*)
             echo "Unknown option $1"
             exit -1
@@ -101,12 +106,17 @@ elif [ -f .latexmkrc ]; then
 elif [ "$tex_file_count" == "1" ]; then
     latexmk -pdf `ls | grep -o "\S*\.tex"`
 elif [ -f Cargo.toml ]; then
+    if [ $color -eq 1 ]; then
+        color_switch="--color auto"
+    else
+        color_switch="--color never"
+    fi
     if [ "$mode" == "release" ]; then
         cargo build --release
     elif [ "$mode" == "debug" ]; then
         cargo build
     elif [ "$mode" == "check" ]; then
-        cargo fmt --check && cargo clippy --all-targets --all-features -- -D warnings
+        cargo fmt --check -- $color_switch && cargo clippy $color_switch --all-targets --all-features -- -D warnings
     elif [ "$mode" == "test" ]; then
         cargo test
     else
