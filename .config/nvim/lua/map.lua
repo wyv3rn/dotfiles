@@ -62,6 +62,9 @@ local lazygit_dotfiles = terminal:new({
    direction = "float"
 })
 
+local next_diagnostic = function() vim.diagnostic.jump({ count = 1, float = true }) end
+local prev_diagnostic = function() vim.diagnostic.jump({ count = -1, float = true }) end
+
 wk.add({
    { "<leader>",         group = "Space mode" },
    { "<leader>f",        telescope.find_files,                               desc = "Find files" },
@@ -108,8 +111,8 @@ wk.add({
    { "<leader>tw",       "<cmd>StripWhitespace<cr>",                         desc = "Strip trailing whitespaces" },
 
 
-   { "[d",               vim.diagnostic.goto_prev,                           desc = "GoTo prev diagnostic" },
-   { "]d",               vim.diagnostic.goto_next,                           desc = "GoTo next diagnostic" },
+   { "[d",               prev_diagnostic,                                    desc = "GoTo prev diagnostic" },
+   { "]d",               next_diagnostic,                                    desc = "GoTo next diagnostic" },
    { "[c",               "<cmd>cprev<cr>",                                   desc = "GoTo prev quickfix" },
    { "]c",               "<cmd>cnext<cr>",                                   desc = "GoTo next quickfix" },
    { "[b",               "<cmd>update<cr><cmd>bprev<cr>",                    desc = "Go to previous buffer" },
