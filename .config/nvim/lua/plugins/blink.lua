@@ -21,11 +21,12 @@ return {
             "snippet_backward",
             "fallback",
          },
-         cmdline = {
-            preset = 'super-tab',
+      },
+      cmdline = {
+         keymap = {
+            preset = 'super-tab'
          }
       },
-
       appearance = {
          -- Sets the fallback highlight groups to nvim-cmp's highlight groups
          -- Useful for when your theme doesn't support blink.cmp
