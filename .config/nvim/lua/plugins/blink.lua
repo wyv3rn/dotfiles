@@ -24,7 +24,9 @@ return {
       },
       cmdline = {
          keymap = {
-            preset = 'super-tab'
+            preset = "cmdline",
+            ["<Down>"] = { "select_next", "fallback" },
+            ["<Up>"] = { "select_prev", "fallback" },
          }
       },
       appearance = {
