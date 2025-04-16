@@ -62,12 +62,13 @@ local next_diagnostic = function() vim.diagnostic.jump({ count = 1, float = true
 local prev_diagnostic = function() vim.diagnostic.jump({ count = -1, float = true }) end
 
 wk.add({
+   { "<Esc><Esc>",       "<cmd>nohlsearch<cr>",                              desc = "Clear everything!" },
+
    { "<leader>",         group = "Space mode" },
    { "<leader>f",        telescope.find_files,                               desc = "Find files" },
    { "<leader>*",        telescope.grep_string,                              desc = "Grep string under cursor" },
    { "<leader>/",        telescope.live_grep,                                desc = "Live grep" },
    { "<leader><Tab>",    "<cmd>update<cr><cmd>edit #<cr>",                   desc = "Go to last buffer" },
-   { "<leader><Esc>",    "<cmd>nohlsearch<cr>",                              desc = "Clear everything!" },
    { "<leader>?",        telescope.help_tags,                                desc = "Find help" },
    { "<leader>b",        telescope.buffers,                                  desc = "Find buffers" },
    { "<leader>u",        vim.cmd.UndotreeToggle,                             desc = "Toggle undo tree" },
