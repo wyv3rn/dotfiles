@@ -28,10 +28,6 @@ vim.keymap.set("n", "<F11>", function() async_make.make("autobuild --no-tty --mo
 -- Builtin terminal
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
 
--- Toggle comments in visual mode (normal mode -> WhichKey)
--- TODO can we make this work with WhichKey?
-vim.keymap.set('v', '<leader>cc', ":CommentToggle<cr>", { desc = 'Toggle comments' })
-
 -- Configure the rest with WhichKey
 local wk = require("which-key")
 local telescope = require("telescope.builtin")
@@ -71,19 +67,13 @@ wk.add({
    { "<leader>*",        telescope.grep_string,                              desc = "Grep string under cursor" },
    { "<leader>/",        telescope.live_grep,                                desc = "Live grep" },
    { "<leader><Tab>",    "<cmd>update<cr><cmd>edit #<cr>",                   desc = "Go to last buffer" },
-   { "<leader><leader>", "<cmd>nohlsearch<cr>",                              desc = "Clear everything!" },
+   { "<leader><Esc>",    "<cmd>nohlsearch<cr>",                              desc = "Clear everything!" },
    { "<leader>?",        telescope.help_tags,                                desc = "Find help" },
    { "<leader>b",        telescope.buffers,                                  desc = "Find buffers" },
    { "<leader>u",        vim.cmd.UndotreeToggle,                             desc = "Toggle undo tree" },
    { "<leader>-",        oil.open_float,                                     desc = "Open Oil in directory of current buffer" },
    { "<leader>_",        function() oil.open_float(vim.uv.cwd()) end,        desc = "Open Oil in cwd" },
-
-   { "<leader>c",        group = "Code mode" },
-   { "<leader>ca",       vim.lsp.buf.code_action,                            desc = "Perform code action" },
-   { "<leader>cf",       "<cmd>lua vim.lsp.buf.format()<cr><cmd>update<cr>", desc = "Format buffer" },
-   { "<leader>ch",       vim.lsp.buf.hover,                                  desc = "Show symbol information in hover" },
-   { "<leader>cr",       vim.lsp.buf.rename,                                 desc = "Rename symbol under cursor" },
-   { "<leader>cc",       "<cmd>CommentToggle<cr>",                           desc = "Toggle comment" },
+   { "<leader><leader>", "<cmd>lua vim.lsp.buf.format()<cr><cmd>update<cr>", desc = "Format buffer" },
 
    { "<leader>g",        group = "Git mode" },
    { "<leader>gb",       "<cmd>ToggleBlame virtual<cr>",                     desc = "Toggle git blame" },
@@ -99,11 +89,13 @@ wk.add({
    { "gy",               telescope.lsp_type_definitions,                     desc = "Go to type definition" },
    { "gh",               "<cmd>ClangdSwitchSourceHeader<cr>",                desc = "Go to header/source file" },
    { "gi",               telescope.lsp_implementations,                      desc = "Go to implementation" },
-   { "gr",               telescope.lsp_references,                           desc = "Go to references" },
+   { "grr",              telescope.lsp_references,                           desc = "Go to references" },
    { "gw",               "<C-w><C-p>",                                       desc = "Go to previous window" },
    { "gs",               telescope.lsp_document_symbols,                     desc = "Find symbols in buffer" },
    { "gS",               telescope.lsp_dynamic_workspace_symbols,            desc = "Find symbols in workspace" },
    { "gD",               telescope.diagnostics,                              desc = "Find diagnostics" },
+   { "ga",               vim.lsp.buf.code_action,                            desc = "Perform code action" },
+   { "g?",               vim.lsp.buf.hover,                                  desc = "Show symbol information in hover" },
 
    { "<leader>t",        group = "Toggle mode" },
    { "<leader>tt",       function() scratch_term:toggle() end,               desc = "Toggle floating scratch terminal" },
