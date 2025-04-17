@@ -62,9 +62,8 @@ local next_diagnostic = function() vim.diagnostic.jump({ count = 1, float = true
 local prev_diagnostic = function() vim.diagnostic.jump({ count = -1, float = true }) end
 
 wk.add({
-   { "<Esc><Esc>",       "<cmd>nohlsearch<cr>",                              desc = "Clear everything!" },
-
    { "<leader>",         group = "Space mode" },
+   { "<leader><Esc>",    "<cmd>nohlsearch<cr>",                              desc = "Clear everything!" },
    { "<leader>f",        telescope.find_files,                               desc = "Find files" },
    { "<leader>*",        telescope.grep_string,                              desc = "Grep string under cursor" },
    { "<leader>/",        telescope.live_grep,                                desc = "Live grep" },
@@ -74,6 +73,7 @@ wk.add({
    { "<leader>u",        vim.cmd.UndotreeToggle,                             desc = "Toggle undo tree" },
    { "<leader>-",        oil.open_float,                                     desc = "Open Oil in directory of current buffer" },
    { "<leader>_",        function() oil.open_float(vim.uv.cwd()) end,        desc = "Open Oil in cwd" },
+   { "<leader>h",        vim.lsp.buf.hover,                                  desc = "Show symbol information in hover" },
    { "<leader><leader>", "<cmd>lua vim.lsp.buf.format()<cr><cmd>update<cr>", desc = "Format buffer" },
 
    { "<leader>g",        group = "Git mode" },
@@ -96,7 +96,6 @@ wk.add({
    { "gS",               telescope.lsp_dynamic_workspace_symbols,            desc = "Find symbols in workspace" },
    { "gD",               telescope.diagnostics,                              desc = "Find diagnostics" },
    { "ga",               vim.lsp.buf.code_action,                            desc = "Perform code action" },
-   { "g?",               vim.lsp.buf.hover,                                  desc = "Show symbol information in hover" },
 
    { "<leader>t",        group = "Toggle mode" },
    { "<leader>tt",       function() scratch_term:toggle() end,               desc = "Toggle floating scratch terminal" },
