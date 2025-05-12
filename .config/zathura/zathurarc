@@ -1,6 +1,4 @@
-set dbus-service true
-set synctex true
-set synctex-editor-command "vim --servername vim --remote +%{line} %{input}"
+set selection-clipboard clipboard
 map { scroll half-up
 map } scroll half-down
 map [ navigate previous

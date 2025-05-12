@@ -1,8 +1,13 @@
 function o --wraps=open --description 'alias o open'
     switch (uname)
-        case Darwin
-            open $argv
+    case Darwin
+        switch $argv
+        case "*.pdf"
+            z $argv
         case '*'
-            py-open $argv
+            open $argv
+        end
+    case '*'
+        py-open $argv
     end
 end
