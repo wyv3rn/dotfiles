@@ -96,6 +96,7 @@ wk.add({
    { "gS",               telescope.lsp_dynamic_workspace_symbols,            desc = "Find symbols in workspace" },
    { "gD",               telescope.diagnostics,                              desc = "Find diagnostics" },
    { "ga",               vim.lsp.buf.code_action,                            desc = "Perform code action" },
+   { "gx",               "<cmd>tab copen<cr>",                               desc = "Open quickfix list in new tab" },
 
    { "<leader>t",        group = "Toggle mode" },
    { "<leader>tt",       function() scratch_term:toggle() end,               desc = "Toggle floating scratch terminal" },
