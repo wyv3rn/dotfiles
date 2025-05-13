@@ -67,6 +67,30 @@ return {
                }
             }
          })
+
+         -- Hammerspoon support
+         if vim.fn.executable('hs') == 1 then
+            print("huh?")
+            local hs_version = vim.fn.system('hs -c _VERSION'):gsub('[\n\r]', '')
+            local hs_path = vim.split(vim.fn.system('hs -c package.path'):gsub('[\n\r]', ''), ';')
+            lsp_config.lua_ls.setup({
+               capabilities = complete_caps,
+               settings = {
+                  Lua = {
+                     runtime = {
+                        version = hs_version,
+                        path = hs_path,
+                     },
+                     diagnostics = { globals = { 'hs' } },
+                     workspace = {
+                        library = {
+                           string.format('%s/.hammerspoon/Spoons/EmmyLua.spoon/annotations', os.getenv 'HOME'),
+                        },
+                     },
+                  },
+               },
+            })
+         end
       end
    },
 }
