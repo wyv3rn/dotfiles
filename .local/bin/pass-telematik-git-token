@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 case "$1" in
     Username*) whoami ;;
-    Password*) secret-tool lookup gitlab rw ;;
+    Password*) pass telematik/git/token ;;
 esac

@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-secret-tool lookup borg default
+pass borg/default
