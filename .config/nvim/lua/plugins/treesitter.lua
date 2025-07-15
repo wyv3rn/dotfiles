@@ -1,5 +1,8 @@
 return {
-   'nvim-treesitter/nvim-treesitter',
+   "nvim-treesitter/nvim-treesitter",
+   dependencies = {
+      "nvim-treesitter/nvim-treesitter-textobjects"
+   },
    build = ":TSUpdate",
    config = function()
       local treesitter = require("nvim-treesitter.configs")
@@ -25,6 +28,16 @@ return {
          },
          indent = {
             enable = true,
+         },
+         textobjects = {
+            select = {
+               enable = true,
+               lookahead = true,
+               keymaps = {
+                  ["af"] = { query = "@function.outer", desc = "function" },
+                  ["if"] = { query = "@function.inner", desc = "function" },
+               },
+            },
          }
       })
    end
