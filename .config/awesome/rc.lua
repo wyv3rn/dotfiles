@@ -1,5 +1,4 @@
 -- Standard awesome library
-local gears = require("gears")
 local awful = require("awful")
 require("awful.autofocus")
 -- Widget and layout library
@@ -31,10 +30,9 @@ beautiful.init(awful.util.getdir("config") .. "themes/catppuccin/theme.lua")
 local vert_sep = wibox.widget {
     widget = wibox.widget.separator,
     orientation = "vertical",
-    forced_width = 1,
+    forced_width = 20,
     color = "#aaaaaa",
     span_ratio = 0.7,
-    forced_width = 20,
     thickness = 1.5,
 }
 
@@ -58,7 +56,7 @@ if battery0 then
     battery_sep = vert_sep
 end
 
-volumecfg = volume_ctrl({})
+local volumecfg = volume_ctrl({})
 
 -- TODO clean up stuff below
 
@@ -102,6 +100,7 @@ awful.layout.layouts = {
     awful.layout.suit.tile.left,
     awful.layout.suit.tile,
     awful.layout.suit.max,
+    awful.layout.suit.floating,
 }
 
 -- {{{ Helper functions
@@ -492,7 +491,7 @@ awful.rules.rules = {
                      keys = clientkeys,
                      buttons = clientbuttons,
                      screen = awful.screen.preferred,
-                     placement = awful.placement.no_overlap+awful.placement.no_offscreen,
+                     placement = awful.placement.no_overlap+awful.placement.no_offscreen+awful.placement.centered,
                      size_hints_honor = false
      }
     },
