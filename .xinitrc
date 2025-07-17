@@ -34,9 +34,7 @@ fi
 # default stuff above; custom stuff below
 
 # disable builtin screensaver and powermanagment
-xset s off
-xset dpms 0 0 0
-xset -dpms
+xset s off -dpms
 
 # start xscreensaver
 xscreensaver -nosplash &
