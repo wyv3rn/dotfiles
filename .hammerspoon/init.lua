@@ -81,6 +81,18 @@ local function shift_snaps(fraction_step, direction)
    end
 end
 
+local function move_focused_to_space(space_idx)
+   local win = hs.window.focusedWindow()
+   local screen = win:screen()
+   local src_space = hs.spaces.activeSpaceOnScreen(screen)
+   local dst_space = hs.spaces.spacesForScreen(screen)[space_idx]
+   local result = hs.spaces.moveWindowToSpace(win, dst_space, true)
+   if result == true then
+      hs.alert.show("Moved window from space id = " ..
+         src_space .. " to space id = " .. dst_space)
+   end
+end
+
 -- Open or activate specific applications by key combination
 local apps = {
    ["Ghostty"] = "T",
@@ -122,6 +134,12 @@ end)
 hs.hotkey.bind({ "cmd", }, "L", function()
    shift_snaps(0.05, "right")
 end)
+
+for i = 1, 7 do
+   hs.hotkey.bind({ "cmd", "shift" }, tostring(i), function()
+      move_focused_to_space(i)
+   end)
+end
 
 -- Config reload
 hs.hotkey.bind({ "cmd", "alt", "ctrl" }, "R", function()
