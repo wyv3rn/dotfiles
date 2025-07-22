@@ -6,4 +6,4 @@ if [ $# -ne 1 ]; then
 fi
 
 abs_path=`realpath $1`
-poetry -C ~/devops/evalLib run build-fig $abs_path
+poetry -P ~/devops/evalLib run build-fig $abs_path
