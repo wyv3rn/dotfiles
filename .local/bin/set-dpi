@@ -5,22 +5,31 @@ if [ "$#" -ne 1 ]; then
     exit -1
 fi
 
+dpi=$1
 re='^[0-9]+$'
-if ! [[ $1 =~ $re ]] ; then
+if ! [[ $dpi =~ $re ]] ; then
    echo "Error: DPI is not a number" >&2; exit 1
 fi
 
-scale=$(bc <<< "scale=2;$1/96.0")
+scale=$(bc <<< "scale=2;$dpi/96.0")
 gdk_scale=$(bc <<< "scale=2;$scale/1.14")
 echo "Scale: $scale (compared to 96 DPI)"
 
 # General stuff
-sed -i".sed" "s/\(xrandr --dpi \)[0-9]\+/\1$1/" ~/.xprofile
-sed -i".sed" "s/\(GDK_DPI_SCALE=\)[0-9\.]\+/\1$gdk_scale/" ~/.xprofile
+if grep -q "xrandr --dpi" ~/.xprofile; then
+    sed -i".sed" "s/\(xrandr --dpi \)[0-9]\+/\1$dpi/" ~/.xprofile
+else
+    echo "xrandr --dpi $dpi" >> ~/.xprofile
+fi
+if grep -q "GDK_DPI_SCALE" ~/.xprofile; then
+    sed -i".sed" "s/\(GDK_DPI_SCALE=\)[0-9\.]\+/\1$gdk_scale/" ~/.xprofile
+else
+    echo "export GDK_DPI_SCALE=$gdk_scale" >> ~/.xprofile
+fi
 
 # Awesome WM
-sed -i".sed" "s/\(local dpi = \)[0-9]\+/\1$1/" ~/.config/awesome/themes/default/theme.lua
-sed -i".sed" "s/\(local dpi = \)[0-9]\+/\1$1/" ~/.config/awesome/themes/catppuccin/theme.lua
+sed -i".sed" "s/\(local dpi = \)[0-9]\+/\1$dpi/" ~/.config/awesome/themes/default/theme.lua
+sed -i".sed" "s/\(local dpi = \)[0-9]\+/\1$dpi/" ~/.config/awesome/themes/catppuccin/theme.lua
 
 # Chromium based browsers
 for browser in brave chromium; do
