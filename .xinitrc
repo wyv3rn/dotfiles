@@ -37,11 +37,11 @@ fi
 xset s off -dpms
 
 # start various demons in background if installed
-which xscreensaver && xscreensaver -nosplash &
-which nm-applet && nm-applet &
-which udiskie && udiskie &
-which keepassxc && keepassxc &
-which nitrogen && nitrogen --restore &
+command -v xscreensaver && xscreensaver -nosplash &
+command -v nm-applet && nm-applet &
+command -v udiskie && udiskie &
+command -v keepassxc && keepassxc &
+command -v nitrogen && nitrogen --restore &
 
 # source local config
 [ -f ~/.xprofile ] && . ~/.xprofile

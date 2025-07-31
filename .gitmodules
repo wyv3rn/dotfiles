@@ -4,9 +4,6 @@
 [submodule ".config/awesome/widgets/calendar"]
 	path = .config/awesome/widgets/calendar
 	url = https://github.com/deficient/calendar.git
-[submodule ".config/awesome/widgets/awesome-wm-widgets"]
-	path = .config/awesome/widgets/awesome-wm-widgets
-	url = https://github.com/wyv3rn/awesome-wm-widgets.git
 [submodule ".config/awesome/widgets/volume-control"]
 	path = .config/awesome/widgets/volume-control
 	url = https://github.com/coldfix/awesome.volume-control.git

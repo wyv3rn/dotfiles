@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+if command -v acpi >/dev/null 2>&1; then
+    acpi -b | awk \
+        'BEGIN { sum = 0; count = 0 }
+        /Battery/ {
+            number = substr($4, 0, index($4, "%") - 1);
+            sum += number;
+            count += 1;
+        }
+        END {
+            if(count > 0) {
+                print int(sum/count)"%";
+            } else {
+                print "N/A";
+            }
+        }'
+else
+    echo "N/A"
+fi

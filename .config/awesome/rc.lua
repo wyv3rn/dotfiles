@@ -13,18 +13,21 @@ local hotkeys_popup = require("awful.hotkeys_popup").widget
 -- our helper lib
 require("helper")
 
+-- init theme
+beautiful.init(awful.util.getdir("config") .. "themes/catppuccin/theme.lua")
+
 -- 3rd party imports
 local volume_ctrl = require("widgets/volume-control")
 local calendar = require("widgets/calendar")
+local mytextclock = wibox.widget.textclock(" %a %d %b, %H:%M:%S ", 1)
+calendar({}):attach(mytextclock)
+local battery_widget = require("widgets/battery")()
 local switcher = require("widgets/awesome-switcher-macstyle")
 switcher.settings.preview_box_delay = 250
 switcher.settings.cycle_raise_client = false
 switcher.settings.preview_box_title_font_size_factor = 1.3
 switcher.settings.preview_box_bg = "#ffffff99"
 switcher.settings.swap_with_master = false
-
--- init theme
-beautiful.init(awful.util.getdir("config") .. "themes/catppuccin/theme.lua")
 
 -- init simple separator for widgets
 local vert_sep = wibox.widget {
@@ -41,19 +44,6 @@ if get_hostname() == "beta" then
     backlight = "intel_backlight"
 elseif get_hostname() == "tau" then
     backlight = "amdgpu_bl0"
-end
-
--- TODO better battery handling
--- init 3rd party widgets
-if get_hostname() == "beta" or get_hostname() == "tau" then
-    require("init_bat")
-end
-
--- if init_bat was called, neither battery0 nor battery1 is nil
-if battery0 then
-    battery0_widget = battery0.widget
-    battery1_widget = battery1.widget
-    battery_sep = vert_sep
 end
 
 local volumecfg = volume_ctrl({})
@@ -97,9 +87,8 @@ modkey = "Mod4"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
-    awful.layout.suit.tile.left,
-    awful.layout.suit.tile,
     awful.layout.suit.max,
+    awful.layout.suit.tile.left,
     awful.layout.suit.floating,
 }
 
@@ -145,10 +134,6 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 -- }}}
 
 -- {{{ Wibar
--- Create a textclock widget
-mytextclock = wibox.widget.textclock(" %a %d %b, %H:%M:%S ", 1)
-calendar({}):attach(mytextclock)
-
 -- Create a wibox for each screen and add it
 local taglist_buttons = awful.util.table.join(
                     awful.button({ }, 1, function(t) t:view_only() end),
@@ -231,18 +216,12 @@ awful.screen.connect_for_each_screen(function(s)
             vert_sep,
             volumecfg.widget,
             vert_sep,
-            battery0_widget,
-            battery1_widget,
-            battery_sep,
+            battery_widget,
+            vert_sep,
             mytextclock,
             s.mylayoutbox,
         },
     }
-
-    -- s.mywibox.visible = false
-    -- tag:add_signal("property:selected", function(tag)
-    --     your_wibox.visible = tag.selected
-    -- end)
 
 end)
 -- }}}
@@ -380,7 +359,6 @@ globalkeys = awful.util.table.join(
 local applications = {
     [terminal] = "t",
     ["brave"] = "n",
-    ["zathura"] = "r",
 }
 
 for app, key in pairs(applications) do
