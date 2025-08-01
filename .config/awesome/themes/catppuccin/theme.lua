@@ -93,6 +93,6 @@ theme.layout_cornerne = "/usr/share/awesome/themes/default/layouts/cornernew.png
 theme.layout_cornersw = "/usr/share/awesome/themes/default/layouts/cornersww.png"
 theme.layout_cornerse = "/usr/share/awesome/themes/default/layouts/cornersew.png"
 
-theme.awesome_icon = "~/.config/awesome/themes/default/arch_icon_enhanced.png"
+theme.awesome_icon = "~/.config/awesome/themes/catppuccin/icons/arch_icon_enhanced.png"
 
 return theme

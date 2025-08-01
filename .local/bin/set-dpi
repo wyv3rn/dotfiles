@@ -28,8 +28,9 @@ else
 fi
 
 # Awesome WM
-sed -i".sed" "s/\(local dpi = \)[0-9]\+/\1$dpi/" ~/.config/awesome/themes/default/theme.lua
-sed -i".sed" "s/\(local dpi = \)[0-9]\+/\1$dpi/" ~/.config/awesome/themes/catppuccin/theme.lua
+for theme in $(find ~/.config/awesome/themes/ -name theme.lua); do
+    sed -i".sed" "s/\(local dpi = \)[0-9]\+/\1$dpi/" $theme
+done
 
 # Chromium based browsers
 for browser in brave chromium; do
