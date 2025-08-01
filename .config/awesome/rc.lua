@@ -10,8 +10,9 @@ local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
 
--- our helper lib
+-- our helpers
 require("helper")
+local cmd_to_txt = require("widgets/cmd-to-txt")
 
 -- init theme
 beautiful.init(awful.util.getdir("config") .. "themes/catppuccin/theme.lua")
@@ -21,7 +22,7 @@ local volume_ctrl = require("widgets/volume-control")
 local calendar = require("widgets/calendar")
 local mytextclock = wibox.widget.textclock(" %a %d %b, %H:%M:%S ", 1)
 calendar({}):attach(mytextclock)
-local battery_widget = require("widgets/battery")()
+local battery_widget = cmd_to_txt("avg-battery", 30)
 local switcher = require("widgets/awesome-switcher-macstyle")
 switcher.settings.preview_box_delay = 250
 switcher.settings.cycle_raise_client = false
