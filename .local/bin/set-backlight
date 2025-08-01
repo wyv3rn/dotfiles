@@ -32,4 +32,4 @@ if [ "$cmd" == "--dec" ]; then
     fi
 fi
 
-echo $value | sudo tee ${driver}/brightness
+echo $value > ${driver}/brightness
