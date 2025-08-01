@@ -2,9 +2,13 @@
 
 if command -v acpi >/dev/null 2>&1; then
     acpi -b | awk \
-        'BEGIN { sum = 0; count = 0 }
+        'BEGIN {
+            FS = ",";
+            sum = 0;
+            count = 0
+        }
         /Battery/ {
-            number = substr($4, 0, index($4, "%") - 1);
+            number = substr($2, 0, index($2, "%") - 1);
             sum += number;
             count += 1;
         }
