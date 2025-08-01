@@ -1,17 +1,25 @@
+-- Global to local to silence some LSP warnings down the road
+local awesome = awesome
+local client = client
+local root = root
+local mouse = mouse
+
 -- Standard awesome library
 local awful = require("awful")
 require("awful.autofocus")
+
 -- Widget and layout library
 local wibox = require("wibox")
+
 -- Theme handling library
 local beautiful = require("beautiful")
+
 -- Notification library
 local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
 
 -- our helpers
-require("helper")
 local cmd_to_txt = require("widgets/cmd-to-txt")
 
 -- init theme
@@ -19,6 +27,7 @@ beautiful.init(awful.util.getdir("config") .. "themes/catppuccin/theme.lua")
 
 -- 3rd party imports
 local volume_ctrl = require("widgets/volume-control")
+local volumecfg = volume_ctrl({})
 local calendar = require("widgets/calendar")
 local mytextclock = wibox.widget.textclock(" %a %d %b, %H:%M:%S ", 1)
 calendar({}):attach(mytextclock)
@@ -39,18 +48,6 @@ local vert_sep = wibox.widget {
    span_ratio = 0.7,
    thickness = 1.5,
 }
-
-local backlight = ""
-if get_hostname() == "beta" then
-   backlight = "intel_backlight"
-elseif get_hostname() == "tau" then
-   backlight = "amdgpu_bl0"
-end
-
-local volumecfg = volume_ctrl({})
-
--- TODO clean up stuff below
-
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -83,12 +80,13 @@ end
 
 
 -- This is used later as the default terminal and editor to run.
-terminal = "ghostty"
-editor = os.getenv("EDITOR") or "nvim"
-editor_cmd = terminal .. " -e " .. editor
+local terminal = "ghostty"
+local editor = os.getenv("EDITOR") or "nvim"
+local editor_cmd = terminal .. " -e " .. editor
+local browser = "brave"
 
 -- Default modkey. For reference: Mod4 = OS key, Mod1 = Alt
-modkey = "Mod4"
+local modkey = "Mod4"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
@@ -114,7 +112,7 @@ end
 
 -- {{{ Menu
 -- Create a launcher widget and a main menu
-myawesomemenu = {
+local myawesomemenu = {
    { "hotkeys",     function() return false, hotkeys_popup.show_help end },
    { "manual",      terminal .. " -e man awesome" },
    { "edit config", editor_cmd .. " " .. awesome.conffile },
@@ -122,7 +120,7 @@ myawesomemenu = {
    { "quit",        function() awesome.quit() end }
 }
 
-mymainmenu = awful.menu({
+local mymainmenu = awful.menu({
    items = { { "awesome", myawesomemenu,    beautiful.awesome_icon },
       { "open terminal", terminal },
       { "hibernate",     "systemctl hibernate" },
@@ -132,7 +130,7 @@ mymainmenu = awful.menu({
    }
 })
 
-mylauncher = awful.widget.launcher({
+local mylauncher = awful.widget.launcher({
    image = beautiful.awesome_icon,
    menu = mymainmenu
 })
@@ -242,7 +240,7 @@ root.buttons(awful.util.table.join(
 -- }}}
 
 -- {{{ Key bindings
-globalkeys = awful.util.table.join(
+local globalkeys = awful.util.table.join(
    awful.key({ modkey, }, "s", hotkeys_popup.show_help,
       { description = "show help", group = "awesome" }),
    awful.key({ modkey, }, "Left", awful.tag.viewprev,
@@ -343,8 +341,8 @@ globalkeys = awful.util.table.join(
    awful.key({}, "XF86AudioMicMute", function() awful.util.spawn("amixer set Capture toggle") end),
 
    -- brightness ctrl
-   awful.key({}, "XF86MonBrightnessDown", function() awful.util.spawn("set-backlight " .. backlight .. " 10 --dec") end),
-   awful.key({}, "XF86MonBrightnessUp", function() awful.util.spawn("set-backlight " .. backlight .. " 10 --inc") end),
+   awful.key({}, "XF86MonBrightnessDown", function() awful.util.spawn("set-backlight 10 --dec") end),
+   awful.key({}, "XF86MonBrightnessUp", function() awful.util.spawn("set-backlight 10 --inc") end),
 
    -- player ctrl (once for keyboards without XF86Audio* keys)
    awful.key({}, "XF86AudioPrev", function() awful.util.spawn("playerctl previous") end),
@@ -364,7 +362,7 @@ globalkeys = awful.util.table.join(
 -- focus or spawn applications via keybinding
 local applications = {
    [terminal] = "t",
-   ["brave"] = "n",
+   [browser] = "n",
 }
 
 for app, key in pairs(applications) do
@@ -373,7 +371,7 @@ for app, key in pairs(applications) do
       awful.key({ modkey }, key, function() awful.spawn.with_shell("mwm focus-or-spawn " .. app) end))
 end
 
-clientkeys = awful.util.table.join(
+local clientkeys = awful.util.table.join(
    awful.key({ modkey, "Shift" }, "f",
       function(c)
          c.fullscreen = not c.fullscreen
@@ -455,7 +453,7 @@ for i = 1, 7 do
    )
 end
 
-clientbuttons = awful.util.table.join(
+local clientbuttons = awful.util.table.join(
    awful.button({}, 1, function(c)
       client.focus = c; c:raise()
    end),
@@ -489,25 +487,16 @@ awful.rules.rules = {
    {
       rule_any = {
          instance = {
-            "DTA",   -- Firefox addon DownThemAll.
-            "copyq", -- Includes session name in class.
             "TermLauncher",
             "TermPython",
             "TermHaskell",
          },
          class = {
             "Arandr",
-            "Gpick",
-            "Kruler",
-            "MessageWin", -- kalarm.
-            "Sxiv",
             "Wpa_gui",
             "pinentry",
-            "veromix",
-            "xtightvncviewer",
             "Pcmanfm"
          },
-
          name = {
             "Event Tester", -- xev.
          },

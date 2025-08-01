@@ -10,8 +10,7 @@ local function new(cmd, timeout)
    local function textbattery_update_cb()
       awful.spawn.easy_async(cmd, function(stdout)
          w:set_markup(stdout)
-      end
-      )
+      end)
    end
    timer { timeout = timeout, call_now = true, autostart = true, callback = textbattery_update_cb }
    return w
