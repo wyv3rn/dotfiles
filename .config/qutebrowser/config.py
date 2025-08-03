@@ -1,10 +1,14 @@
+import platform
+import os
+from os.path import expanduser
+
 config.load_autoconfig(False)
 
 # general settings
 c.url.searchengines = {"DEFAULT": "search.brave.com/search?q={}"}
 c.url.start_pages = ["about:blank"]
 
-# key bindings
+### key bindings
 # reload config
 config.bind("<Space>x", "config-source")
 
@@ -33,3 +37,13 @@ config.bind("gT", "tab-prev")
 for i in range(1, 10):
     config.bind(f"g{i}", f"tab-focus {i}")
     config.bind(f"<Ctrl-{i}>", f"tab-focus {i}")
+### end of key bindings
+
+# set PATH on macos
+system = platform.system()
+if system == 'Darwin':
+    home_dir = expanduser('~')
+    path = os.environ['PATH']
+    path += os.pathsep + home_dir + "/.local/bin"
+    path += os.pathsep + "/opt/homebrew/bin"
+    os.environ['PATH'] = path
