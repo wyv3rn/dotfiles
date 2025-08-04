@@ -5,8 +5,12 @@ from os.path import expanduser
 config.load_autoconfig(False)
 
 # general settings
-c.url.searchengines = {"DEFAULT": "search.brave.com/search?q={}"}
+c.url.searchengines = {
+    "DEFAULT": "https://search.brave.com/search?q={}",
+    "di": "https://dict.cc/?s={}",
+}
 c.url.start_pages = ["about:blank"]
+c.colors.webpage.preferred_color_scheme = "dark"
 with config.pattern("*.prakinf.tu-ilmenau.de/*") as p:
     p.content.notifications.enabled = True
 
@@ -50,9 +54,9 @@ for i in range(1, 10):
 
 # set PATH on macos
 system = platform.system()
-if system == 'Darwin':
-    home_dir = expanduser('~')
-    path = os.environ['PATH']
+if system == "Darwin":
+    home_dir = expanduser("~")
+    path = os.environ["PATH"]
     path += os.pathsep + home_dir + "/.local/bin"
     path += os.pathsep + "/opt/homebrew/bin"
-    os.environ['PATH'] = path
+    os.environ["PATH"] = path
