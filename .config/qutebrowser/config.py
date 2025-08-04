@@ -7,10 +7,16 @@ config.load_autoconfig(False)
 # general settings
 c.url.searchengines = {"DEFAULT": "search.brave.com/search?q={}"}
 c.url.start_pages = ["about:blank"]
+with config.pattern("*.prakinf.tu-ilmenau.de/*") as p:
+    p.content.notifications.enabled = True
 
 ### key bindings
 # reload config
 config.bind("<Space>x", "config-source")
+
+# use enter as leader, too
+config.unbind("<Return>", mode="normal")
+config.bind("<Return><Return>", "selection-follow")
 
 # make some custom keybinds work for neo2 with Karabiner
 config.bind("<Alt-d>", "cmd-set-text :")
@@ -26,12 +32,15 @@ config.bind("<Ctrl-t>", "back")
 config.bind("<Ctrl-i>", "forward")
 
 # scrolling
+config.bind("{", "scroll-page 0 -0.5")
+config.bind("}", "scroll-page 0 0.5")
 config.bind("<Alt-a>", "scroll-page 0 -0.5")
 config.bind("<Alt-e>", "scroll-page 0 0.5")
 
 # tabs
 config.bind("gl", "tab-focus last")
 config.bind("<Space><Tab>", "tab-focus last")
+config.bind("<Return><Tab>", "tab-focus last")
 config.bind("gt", "tab-next")
 config.bind("gT", "tab-prev")
 for i in range(1, 10):

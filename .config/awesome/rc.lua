@@ -83,7 +83,7 @@ end
 local terminal = "ghostty"
 local editor = os.getenv("EDITOR") or "nvim"
 local editor_cmd = terminal .. " -e " .. editor
-local browser = "brave"
+local browser = "qutebrowser"
 
 -- Default modkey. For reference: Mod4 = OS key, Mod1 = Alt
 local modkey = "Mod4"
