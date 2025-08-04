@@ -2,12 +2,12 @@
 -- Catppuccin theme --
 ---------------------------
 
-local dpi = 144
+local dpi = 120
 
 local theme = {}
 
 -- General stuff
-theme.font          = "Dejavu Sans Mono Bold 9"
+theme.font          = "Dejavu Sans Mono Bold 10"
 
 theme.bg_normal     = "#191927"
 theme.bg_focus      = "#191927"
@@ -28,7 +28,7 @@ theme.border_focus  = "#8c8fa1"
 theme.border_marked = "#fe640b"
 
 -- Taglist
-theme.taglist_font          = "awesomewm-font 9"
+theme.taglist_font          = "awesomewm-font 10"
 theme.taglist_fg_focus      = "#8caaee"
 theme.taglist_fg_occupied   = "#e78284"
 theme.taglist_fg_urgent     = "#ffffff"
@@ -37,8 +37,8 @@ theme.taglist_spacing       = 1
 
 -- Menu
 theme.menu_submenu_icon = "/usr/share/awesome/themes/default/submenu.png"
-theme.menu_height = dpi // (192 / 30)
-theme.menu_width  = dpi // (192 / 225)
+theme.menu_height = math.floor(dpi / (192 / 30))
+theme.menu_width  = math.floor(dpi / (192 / 225))
 theme.menu_bg_normal = "#303446FF"
 
 -- Help!
