@@ -22,5 +22,3 @@ require("set")
 
 -- Key mapping
 require("map")
-
--- TODO git blame, current Plugin not working -> fugitive anyway?
