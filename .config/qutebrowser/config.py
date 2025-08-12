@@ -8,6 +8,7 @@ config.load_autoconfig(False)
 c.url.searchengines = {
     "DEFAULT": "https://search.brave.com/search?q={}",
     "di": "https://dict.cc/?s={}",
+    "gs": "https://scholar.google.com/scholar?q={}",
 }
 c.url.start_pages = ["about:blank"]
 c.colors.webpage.preferred_color_scheme = "dark"
@@ -51,6 +52,13 @@ config.bind("gT", "tab-prev")
 for i in range(1, 10):
     config.bind(f"g{i}", f"tab-focus {i}")
     config.bind(f"<Ctrl-{i}>", f"tab-focus {i}")
+
+# search primary selected text
+config.bind("sd", "open -t di {primary}")
+config.bind("ss", "open -t gs {primary}")
+
+# yank primary selected text to clipboard
+config.bind("ys", "yank selection")
 ### end of key bindings
 
 # set PATH on macos
