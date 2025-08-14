@@ -1,7 +1,29 @@
 #!/usr/bin/env nu
 
-# TODO make path configurable
+# TODO make these globals configurable
 let library = "~/.library" | path expand
+let viewer = "sioyek"
+let browser = "qutebrowser"
+
+def from_bib [path] {
+    cat $path | head -n-1 | tail -n+2 | sed 's/=/:/;s/^  //;s/,$//;s/{\(.*\)}/"\1"/' | from yaml
+}
+
+def "main open" [
+    item: string
+] {
+    let pdf_file = $"($library)/pdf/($item).pdf"
+    let bib_file = $"($library)/bib/($item).bib"
+    let bib = from_bib $bib_file
+
+    if ($pdf_file | path exists) {
+        nu -c $"($viewer) ($pdf_file)"
+    } else if ("url" in $bib) {
+        nu -c $"($browser) ($bib.url)"
+    } else if ("doi" in $bib) {
+        nu -c $"($browser) https://doi.org/($bib.doi)"
+    }
+}
 
 def "main export" [
     collection: string,
