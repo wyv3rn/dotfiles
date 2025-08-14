@@ -3,3 +3,7 @@ root = true
 [*.lua]
 indent_style = space
 indent_size = 3
+
+[*.bib]
+indent_style = space
+indent_size = 2

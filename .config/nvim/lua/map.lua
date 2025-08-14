@@ -3,12 +3,6 @@ vim.cmd("nmap <cr> <leader>")
 vim.cmd("vmap <cr> <leader>")
 
 -- TODO use more vim.cmd and function () ... end instead of "<cmd>....<cr>"
--- System clipboard
-vim.keymap.set({ 'v' }, '<leader>y', '"+y', { desc = "Yank to system clipboard" })
-vim.keymap.set({ 'n', 'v' }, '<leader>p', '"+p', { desc = "Paste from system clipboard" })
-
--- Repeated pasting in visual mode
-vim.keymap.set({ 'x' }, 'p', '"_dP', { desc = "Fearless paste in visual mode" })
 
 -- Jumps
 vim.keymap.set('n', '<C-i>', '<C-i>zz')
@@ -90,7 +84,7 @@ wk.add({
    { "gS",               telescope.lsp_dynamic_workspace_symbols,            desc = "Find symbols in workspace" },
    { "gD",               telescope.diagnostics,                              desc = "Find diagnostics" },
    { "ga",               vim.lsp.buf.code_action,                            desc = "Perform code action" },
-   { "gx",               "<cmd>tab copen<cr>",                               desc = "Open quickfix list in new tab" },
+   { "gq",               "<cmd>tab copen<cr>",                               desc = "Open quickfix list in new tab" },
 
    { "<leader>t",        group = "Toggle mode" },
    { "<leader>tt",       function() scratch_term:toggle() end,               desc = "Toggle floating scratch terminal" },
