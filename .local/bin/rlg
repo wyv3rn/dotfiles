@@ -1,0 +1,30 @@
+#!/usr/bin/env nu
+
+# TODO make path configurable
+let library = "~/.library" | path expand
+
+def "main export" [
+    collection: string,
+    --short
+] {
+    mut shorten_sed_cmd = ""
+    if $short {
+        let short_map = {
+            "Proceedings of the ": "",
+            "Proceedings on ": "",
+        }
+        let sed_list = $short_map | transpose from to | each { |e| $"s/($e.from)/($e.to)/" }
+        $shorten_sed_cmd = $sed_list | str join ";"
+    }
+    let collection = open $"($library)/collections/($collection).yml"
+    let dst = $collection | get dst
+    let bib_files = $collection | get src | each {
+        |e| $"($library)/bib/($e).bib"
+    }
+    awk 'FNR==1 && NR!=1 {print ""} {print}' ...$bib_files | sed $shorten_sed_cmd | save -f $dst
+}
+
+def main [] {
+    print "No subcommand given"
+}
+

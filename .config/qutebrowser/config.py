@@ -9,6 +9,7 @@ c.url.searchengines = {
     "DEFAULT": "https://search.brave.com/search?q={}",
     "di": "https://dict.cc/?s={}",
     "gs": "https://scholar.google.com/scholar?q={}",
+    "doi": "https://doi.org/{}",
 }
 c.url.start_pages = ["about:blank"]
 c.colors.webpage.preferred_color_scheme = "dark"
