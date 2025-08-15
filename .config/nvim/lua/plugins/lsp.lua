@@ -68,9 +68,17 @@ return {
             }
          })
 
+         -- Configure texlab
+         lsp_config.texlab.setup({
+            settings = {
+               texlab = {
+                  formatterLineLength = 1024,
+               }
+            }
+         })
+
          -- Hammerspoon support
          if vim.fn.executable('hs') == 1 then
-            print("huh?")
             local hs_version = vim.fn.system('hs -c _VERSION'):gsub('[\n\r]', '')
             local hs_path = vim.split(vim.fn.system('hs -c package.path'):gsub('[\n\r]', ''), ';')
             lsp_config.lua_ls.setup({
