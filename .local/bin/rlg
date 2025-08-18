@@ -57,7 +57,7 @@ def "main export" [
     }
     let collection = open $"($library)/collections/($collection).yml"
     let dst = $collection | get dst
-    let bib_files = $collection | get src | each {
+    let bib_files = $collection | get src | sort | each {
         |e| $"($library)/bib/($e).bib"
     }
     awk 'FNR==1 && NR!=1 {print ""} {print}' ...$bib_files | sed $shorten_sed_cmd | save -f $dst
