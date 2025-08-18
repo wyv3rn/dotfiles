@@ -15,9 +15,13 @@ if status is-interactive
     if type -q zoxide
         zoxide init fish --cmd cd | source
     end
-
-    # hotfix till fish 4.0
-    if string match -q -- '*ghostty*' $TERM
-        set -g fish_vi_force_cursor 1
-    end
 end
+
+# abbreviations
+function multicd
+    echo (string repeat -n (math (string length -- $argv[1]) - 1) ../)
+end
+abbr --add dotdot --regex '^\.\.+$' --command cd --function multicd
+
+function last_history_item; echo $history[1]; end
+abbr -a !! --position anywhere --function last_history_item
