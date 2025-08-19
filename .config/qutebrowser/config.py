@@ -14,16 +14,13 @@ c.url.searchengines = {
 c.url.start_pages = ["about:blank"]
 c.colors.webpage.preferred_color_scheme = "dark"
 c.tabs.last_close = "startpage"
+c.spellcheck.languages = ["de-DE", "en-US"]
 with config.pattern("*.prakinf.tu-ilmenau.de/*") as p:
     p.content.notifications.enabled = True
 
 ### key bindings
 # reload config
 config.bind("<Space>x", "config-source")
-
-# use enter as leader, too
-config.unbind("<Return>", mode="normal")
-config.bind("<Return><Return>", "selection-follow")
 
 # make some custom keybinds work for neo2 with Karabiner
 config.bind("<Alt-d>", "cmd-set-text :")
