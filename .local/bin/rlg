@@ -29,11 +29,12 @@ def "main show" [
 
 def "main open" [
     item: string
+    --doi
 ] {
     let pdf_file = $"($library)/pdf/($item).pdf"
     let bib = from_bib $item
 
-    if ($pdf_file | path exists) {
+    if (($pdf_file | path exists) and $doi != true) {
         nu -c $"($viewer) ($pdf_file)"
     } else if ("url" in $bib) {
         nu -c $"($browser) ($bib.url)"
