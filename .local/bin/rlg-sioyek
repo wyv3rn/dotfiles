@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+function sioyek_helper() {
+    file=$1
+    db_json=$2
+    db_sql=$3
+
+    # TODO convert json to db
+    sioyek --shared-database-path $db_sql $file
+    # TODO convert db to json
+}
+
+if [ $# -ne 3 ]; then
+    echo "Usage: rlg-sioyek file db_json_path db_sqlite_path"
+    exit -1
+fi
+export -f sioyek_helper
+params="$@"
+nohup bash -c "sioyek_helper ${params}" >/dev/null 2>&1 &

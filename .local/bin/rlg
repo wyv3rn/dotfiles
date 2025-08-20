@@ -2,7 +2,9 @@
 
 # TODO make these globals configurable
 let library = "~/.library" | path expand
-let viewer = "sioyek"
+let viewer = "rlg-sioyek"
+let db = $"($library)/sioyek.db"
+let db_json = $"($library)/sioyek.json"
 let browser = "qutebrowser"
 
 def from_bib [item] {
@@ -35,7 +37,7 @@ def "main open" [
     let bib = from_bib $item
 
     if (($pdf_file | path exists) and $doi != true) {
-        nu -c $"($viewer) ($pdf_file)"
+        nu -c $"($viewer) ($pdf_file) ($db_json) ($db)"
     } else if ("url" in $bib) {
         nu -c $"($browser) ($bib.url)"
     } else if ("doi" in $bib) {
