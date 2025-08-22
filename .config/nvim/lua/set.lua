@@ -20,5 +20,8 @@ vim.opt.expandtab = true
 -- Default g flag in substitutions
 vim.opt.gdefault = true
 
+-- Popup border
+vim.opt.winborder = "rounded"
+
 -- Default to LaTeX flavor
 vim.g.tex_flavor = "latex"

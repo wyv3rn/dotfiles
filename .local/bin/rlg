@@ -13,7 +13,7 @@ def from_bib [item] {
     if (($meta | get 1) != $item) {
         error make { msg: "Key of the item does not match, please go fix" }
     }
-    let body_record = cat $path | sed -n '/=/p' | sed 's/=/:/;s/^  //;s/,$//;s/{\(.*\)}/"\1"/' | from yaml
+    let body_record = cat $path | sed -n '/=/p' | sed 's/=/:/;s/^  //;s/,$//;s/{\(.*\)}/"\1"/;s/\\`//' | from yaml
     let type = $meta | get 0
     let record = {
         ...$body_record

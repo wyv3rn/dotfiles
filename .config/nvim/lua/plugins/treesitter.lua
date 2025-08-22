@@ -38,6 +38,8 @@ return {
                keymaps = {
                   ["af"] = { query = "@function.outer", desc = "function" },
                   ["if"] = { query = "@function.inner", desc = "function" },
+                  ["ac"] = { query = "@class.outer", desc = "class" },
+                  ["ic"] = { query = "@class.inner", desc = "class" },
                },
             },
          }
