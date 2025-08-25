@@ -1,17 +1,40 @@
 #!/usr/bin/env bash
 
 function sioyek_helper() {
-    file=$1
-    db_json=$2
-    db_sql=$3
+    PDF=$1
+    SCHEMA=$2
+    DB=$3
+    JSON=$4
 
-    # TODO convert json to db
-    sioyek --shared-database-path $db_sql $file
-    # TODO convert db to json
+    #  Convert state to db
+    rm "$DB" || true
+    sqlite3 "$DB" -cmd ".parameter set :jsonfile '$JSON'" < "$SCHEMA"
+
+    #  Run sioyek
+    sioyek --shared-database-path $DB $PDF
+
+    # Export SQLite -> JSON
+    {
+        echo '{'
+        first=1
+        for table in opened_books marks bookmarks highlights links; do
+            [ $first -eq 1 ] || echo ','
+            first=0
+            echo "\"$table\":"
+            array=$(sqlite3 -json "$DB" "SELECT * FROM $table;")
+            if [ -z "${array}"]; then
+                array="[]"
+            fi
+            echo $array
+        done
+        echo '}'
+    } > "$JSON"
+
+    rm "$DB" || true
 }
 
-if [ $# -ne 3 ]; then
-    echo "Usage: rlg-sioyek file db_json_path db_sqlite_path"
+if [ $# -ne 4 ]; then
+    echo "Usage: rlg-sioyek file schema_path db_sqlite_path db_json_path"
     exit -1
 fi
 export -f sioyek_helper
