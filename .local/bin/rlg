@@ -67,6 +67,12 @@ def "main export" [
     awk 'FNR==1 && NR!=1 {print ""} {print}' ...$bib_files | sed $shorten_sed_cmd | save -f $dst
 }
 
+def "main yank" [
+    item: string
+] {
+    cat $"($library)/bib/($item).bib" | xclip -selection clipboard
+}
+
 def main [] {
     print "No subcommand given"
 }
