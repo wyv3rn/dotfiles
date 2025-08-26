@@ -17,7 +17,7 @@ function sioyek_helper() {
     {
         echo '{'
         first=1
-        for table in opened_books marks bookmarks highlights links; do
+        for table in marks bookmarks highlights links; do
             [ $first -eq 1 ] || echo ','
             first=0
             echo "\"$table\":"
@@ -28,7 +28,7 @@ function sioyek_helper() {
             echo $array
         done
         echo '}'
-    } > "$JSON"
+    } | jq > "$JSON"
 
     rm "$DB" || true
 }
@@ -39,4 +39,4 @@ if [ $# -ne 4 ]; then
 fi
 export -f sioyek_helper
 params="$@"
-nohup bash -c "sioyek_helper ${params}" >/dev/null 2>&1 &
+bash -c "sioyek_helper ${params}" >/dev/null 2>&1 &
