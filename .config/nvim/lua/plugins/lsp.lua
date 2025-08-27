@@ -1,40 +1,35 @@
 return {
    {
-      'VonHeikemen/lsp-zero.nvim',
-      branch = 'v3.x',
+      "neovim/nvim-lspconfig",
       dependencies = {
-         { 'williamboman/mason.nvim' },
-         { 'williamboman/mason-lspconfig.nvim' },
-         { 'neovim/nvim-lspconfig' },
-         { 'barreiroleo/ltex_extra.nvim' },
-         { 'saghen/blink.cmp' }
+         { "barreiroleo/ltex_extra.nvim" },
+         { "saghen/blink.cmp" }
       },
       config = function()
-         local lsp_config = require('lspconfig')
+         local lsps = {
+            "bashls",
+            "clangd",
+            "ltex",
+            "lua_ls",
+            "marksman",
+            "pyright",
+            "rust_analyzer",
+            "texlab",
+         }
 
-         -- Default: Install lsp servers with Mason
-         require('mason').setup({})
-
-         local mason_cfg = require("mason-lspconfig")
-         -- Register autocomplete with all installed language servers
+         -- Register autocomplete with all language servers
          local complete_caps = require("blink.cmp").get_lsp_capabilities()
-         for _, ls in ipairs(mason_cfg.get_installed_servers()) do
-            lsp_config[ls].setup({
-               capabilities = complete_caps
-            })
-         end
-
-         -- Use system clangd instead of Mason one, because it does not work on Mac silicon
-         lsp_config.clangd.setup({
-            capabilities = complete_caps,
+         vim.lsp.config("*", {
+            capabilities = complete_caps
          })
 
-         -- Configure ltex-ls
+         -- Configure ltex-ls to use ltex_extra
+         local ltex_bin = vim.fn.expand("~") .. "/.local/bin/lsps/ltex-ls-16.0.0/bin/ltex-ls"
          local dict_dir = vim.fn.expand("~") .. "/devops/dictionary/"
-         lsp_config.ltex.setup({
-            capabilities = complete_caps,
-            on_attach = function(client, bufnr)
-               require('ltex_extra').setup({
+         vim.lsp.config["ltex"] = {
+            cmd = { ltex_bin },
+            on_attach = function(_, _)
+               require("ltex_extra").setup({
                   path = dict_dir,
                   load_langs = { "en-US", "de-DE" },
                })
@@ -46,11 +41,10 @@ return {
                   sentenceCacheSize = 4096,
                }
             },
-         })
+         }
 
-         -- Use system version of rust-analyzer and configure it to use clippy
-         lsp_config.rust_analyzer.setup({
-            capabilities = complete_caps,
+         -- Configure rust-analyzer to use clippy
+         vim.lsp.config["rust_analyzer"] = {
             settings = {
                ["rust-analyzer"] = {
                   cargo = {
@@ -61,39 +55,43 @@ return {
                   }
                }
             }
-         })
+         }
 
-         -- Configure texlab
-         lsp_config.texlab.setup({
+         -- Configure texlab to not line break
+         vim.lsp.config["texlab"] = {
             settings = {
                texlab = {
                   formatterLineLength = 1024,
                }
             }
-         })
+         }
+
+         -- Enable all
+         for _, lsp in ipairs(lsps) do
+            vim.lsp.enable(lsp)
+         end
 
          -- Hammerspoon support
-         if vim.fn.executable('hs') == 1 then
-            local hs_version = vim.fn.system('hs -c _VERSION'):gsub('[\n\r]', '')
-            local hs_path = vim.split(vim.fn.system('hs -c package.path'):gsub('[\n\r]', ''), ';')
-            lsp_config.lua_ls.setup({
-               capabilities = complete_caps,
+         if vim.fn.executable("hs") == 1 then
+            local hs_version = vim.fn.system("hs -c _VERSION"):gsub("[\n\r]", "")
+            local hs_path = vim.split(vim.fn.system("hs -c package.path"):gsub("[\n\r]", ""), ";")
+            vim.lsp.config["lua_ls"] = {
                settings = {
                   Lua = {
                      runtime = {
                         version = hs_version,
                         path = hs_path,
                      },
-                     diagnostics = { globals = { 'hs' } },
+                     diagnostics = { globals = { "hs" } },
                      workspace = {
                         library = {
-                           string.format('%s/.hammerspoon/Spoons/EmmyLua.spoon/annotations', os.getenv 'HOME'),
+                           string.format("%s/.hammerspoon/Spoons/EmmyLua.spoon/annotations", os.getenv "HOME"),
                         },
                      },
                   },
                },
-            })
-         end
+            }
+         end -- of hammerspoon support
       end
    },
 }
