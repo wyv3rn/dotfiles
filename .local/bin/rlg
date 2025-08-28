@@ -15,8 +15,11 @@ let browser = "qutebrowser"
 def from_bib [item: string] {
     let path = $"($bib_path)/($item).bib"
     let meta = cat $path | head -n1 | sed 's/[@,]//g' | split row "{"
+    if ($meta | length) != 2 {
+        error make { msg: $"Item ($item) not found or bib file malformed" }
+    }
     if (($meta | get 1) != $item) {
-        error make { msg: "Key of the item does not match (or it does not exist), please go fix" }
+        error make { msg: "Key of the item does not match, please go fix" }
     }
     let body_record = cat $path | sed -n '/=/p' | sed 's/=/:/;s/^  //;s/,$//;s/{\(.*\)}/"\1"/;s/\\.//g' | from yaml
     let type = $meta | get 0
