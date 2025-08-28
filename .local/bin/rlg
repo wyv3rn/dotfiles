@@ -2,14 +2,16 @@
 
 # TODO make these globals configurable
 let library = "~/.library" | path expand
+let bib_path = $"($library)/bib"
+
 let viewer = "rlg-sioyek"
 let db_schema = $"($library)/bootstrap.sql"
 let db_json = $"($library)/state.json"
 let db = $"($library)/sioyek.db"
 let browser = "qutebrowser"
 
-def from_bib [item] {
-    let path = $"($library)/bib/($item).bib"
+def from_bib [item: string] {
+    let path = $"($bib_path)/($item).bib"
     let meta = cat $path | head -n1 | sed 's/[@,]//g' | split row "{"
     if (($meta | get 1) != $item) {
         error make { msg: "Key of the item does not match, please go fix" }
@@ -24,16 +26,7 @@ def from_bib [item] {
     $record
 }
 
-def "main show" [
-    item: string
-] {
-    from_bib $item | print
-}
-
-def "main open" [
-    item: string
-    --doi
-] {
+def my_open [item: string, doi: bool] {
     let pdf_file = $"($library)/pdf/($item).pdf"
     let bib = from_bib $item
 
@@ -44,6 +37,26 @@ def "main open" [
     } else if ("doi" in $bib) {
         nu -c $"($browser) https://doi.org/($bib.doi)"
     }
+}
+
+def "main show" [
+    item: string
+] {
+    from_bib $item | print
+}
+
+def "main open" [
+    item: string
+    --doi
+] {
+    my_open $item $doi
+}
+
+def "main fzf" [
+    --doi
+] {
+    let item = ^find $bib_path -name "*.bib" | xargs basename | sed 's/\.bib$//' | fzf
+    my_open $item $doi
 }
 
 def "main export" [
