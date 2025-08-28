@@ -5,6 +5,7 @@ let library = "~/.library" | path expand
 let bib_path = $"($library)/bib"
 
 let viewer = "rlg-sioyek"
+let editor = "nvim"
 let db_schema = $"($library)/bootstrap.sql"
 let db_json = $"($library)/state.json"
 let db = $"($library)/sioyek.db"
@@ -57,6 +58,10 @@ def "main fzf" [
 ] {
     let item = ^find $bib_path -name "*.bib" | xargs basename | sed 's/\.bib$//' | fzf
     my_open $item $doi
+}
+
+def "main edit" [item: string] {
+    nu -c $"($editor) ($bib_path)/($item).bib"
 }
 
 def "main export" [
