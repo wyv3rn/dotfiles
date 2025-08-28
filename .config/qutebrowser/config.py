@@ -15,6 +15,7 @@ c.url.start_pages = ["about:blank"]
 c.colors.webpage.preferred_color_scheme = "dark"
 c.tabs.last_close = "startpage"
 c.spellcheck.languages = ["de-DE", "en-US"]
+c.downloads.position = "bottom"
 with config.pattern("*.prakinf.tu-ilmenau.de/*") as p:
     p.content.notifications.enabled = True
 
