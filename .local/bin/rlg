@@ -3,6 +3,7 @@
 # TODO make these globals configurable
 let library = "~/.library" | path expand
 let bib_path = $"($library)/bib"
+let collection_path = $"($library)/collections"
 
 let viewer = "rlg-sioyek"
 let editor = "nvim"
@@ -15,7 +16,7 @@ def from_bib [item: string] {
     let path = $"($bib_path)/($item).bib"
     let meta = cat $path | head -n1 | sed 's/[@,]//g' | split row "{"
     if (($meta | get 1) != $item) {
-        error make { msg: "Key of the item does not match, please go fix" }
+        error make { msg: "Key of the item does not match (or it does not exist), please go fix" }
     }
     let body_record = cat $path | sed -n '/=/p' | sed 's/=/:/;s/^  //;s/,$//;s/{\(.*\)}/"\1"/;s/\\.//g' | from yaml
     let type = $meta | get 0
@@ -64,10 +65,20 @@ def "main edit" [item: string] {
     nu -c $"($editor) ($bib_path)/($item).bib"
 }
 
-def "main export" [
+def my_export [
     collection: string,
-    --short
 ] {
+    let collection = open $"($collection_path)/($collection).yml"
+    let dst = $collection | get dst
+    let bib_files = $collection | get src | sort | each {
+        |e| $"($library)/bib/($e).bib"
+    }
+
+    # TODO shortening is still WIP
+    mut short = false
+    if "short" in $collection {
+        $short = $collection | get short
+    }
     mut shorten_sed_cmd = ""
     if $short {
         let short_map = {
@@ -77,12 +88,37 @@ def "main export" [
         let sed_list = $short_map | transpose from to | each { |e| $"s/($e.from)/($e.to)/" }
         $shorten_sed_cmd = $sed_list | str join ";"
     }
-    let collection = open $"($library)/collections/($collection).yml"
-    let dst = $collection | get dst
-    let bib_files = $collection | get src | sort | each {
-        |e| $"($library)/bib/($e).bib"
-    }
+
     awk 'FNR==1 && NR!=1 {print ""} {print}' ...$bib_files | sed $shorten_sed_cmd | save -f $dst
+}
+
+def "main export" [
+    collection: string,
+] {
+    my_export $collection
+}
+
+def "main addto" [
+    collection_name: string,
+    item: string,
+] {
+    let path = $"($collection_path)/($collection_name).yml"
+    let collection = open $path
+    from_bib $item # just to check if it exists
+    let src = $collection | get src | append $item | uniq | sort
+    $collection | update src $src | save -f $path
+    my_export $collection_name
+}
+
+def "main rmfrom" [
+    collection_name: string,
+    item: string,
+] {
+    let path = $"($collection_path)/($collection_name).yml"
+    let collection = open $path
+    let src = $collection | get src | where $it != $item | uniq | sort
+    $collection | update src $src | save -f $path
+    my_export $collection_name
 }
 
 def "main yank" [
