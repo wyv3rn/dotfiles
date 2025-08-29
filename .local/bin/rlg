@@ -60,7 +60,7 @@ def "main open" [
 def "main fzf" [
     --doi
 ] {
-    let item = ^find $bib_path -name "*.bib" | xargs basename | sed 's/\.bib$//' | fzf
+    let item = ^ls $bib_path | sed 's/\.bib$//' | fzf
     my_open $item $doi
 }
 
