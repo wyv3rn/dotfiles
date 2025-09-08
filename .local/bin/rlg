@@ -92,7 +92,10 @@ def my_export [
         $shorten_sed_cmd = $sed_list | str join ";"
     }
 
-    awk 'FNR==1 && NR!=1 {print ""} {print}' ...$bib_files | sed $shorten_sed_cmd | save -f $dst
+    let prefix = try { $collection | get prefix } catch { "" }
+    let prefix_sed_args = $collection | get src | each { |e| $"s/{($e),/{($prefix)($e),/" } | str join ";"
+
+    awk 'FNR==1 && NR!=1 {print ""} {print}' ...$bib_files | sed $prefix_sed_args | sed $shorten_sed_cmd | save -f $dst
 }
 
 def "main export" [
