@@ -15,6 +15,10 @@ if status is-interactive
     if type -q zoxide
         zoxide init fish --cmd cd | source
     end
+
+    if type -q batman
+        alias man batman
+    end
 end
 
 # abbreviations
