@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+if [ "$(uname)" == "Linux" ]; then
+    rofi -dmenu -matching fuzzy
+else
+    choose
+fi
