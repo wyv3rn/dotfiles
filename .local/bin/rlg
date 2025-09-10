@@ -59,8 +59,14 @@ def "main open" [
 
 def "main fzf" [
     --doi
+    --gui
 ] {
-    let item = ^ls $bib_path | sed 's/\.bib$//' | fzf
+    let list = ^ls $bib_path | sed 's/\.bib$//'
+    let item = if $gui {
+        $list | gfzf
+    } else {
+        $list | fzf
+    }
     my_open $item $doi
 }
 
