@@ -376,7 +376,7 @@ end
 
 -- custom launchers
 local launchers = {
-   ["rlg fzf --gui"] = "d",
+   ["rlg fzf --gui"] = "a",
 }
 for launcher, key in pairs(launchers) do
    globalkeys = awful.util.table.join(globalkeys,
