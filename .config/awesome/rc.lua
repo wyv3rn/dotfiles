@@ -84,6 +84,7 @@ local terminal = "ghostty"
 local editor = os.getenv("EDITOR") or "nvim"
 local editor_cmd = terminal .. " -e " .. editor
 local browser = "qutebrowser"
+local pdf_viewer = "sioyek"
 
 -- Default modkey. For reference: Mod4 = OS key, Mod1 = Alt
 local modkey = "Mod4"
@@ -362,13 +363,25 @@ local globalkeys = awful.util.table.join(
 -- focus or spawn applications via keybinding
 local applications = {
    [terminal] = "t",
+   [pdf_viewer] = "r",
    [browser] = "n",
 }
 
 for app, key in pairs(applications) do
    -- TODO awful.spawn.with_shell is probably generally better than awful.util.spawn used everywhere else (does not trigger the "waiting" mouse pointer)
    globalkeys = awful.util.table.join(globalkeys,
-      awful.key({ modkey }, key, function() awful.spawn.with_shell("mwm focus-or-spawn " .. app) end))
+      awful.key({ modkey }, key, function() awful.spawn.with_shell("mwm focus-or-spawn " .. app) end,
+         { description = app, group = "apps" }))
+end
+
+-- custom launchers
+local launchers = {
+   ["rlg fzf --gui"] = "d",
+}
+for launcher, key in pairs(launchers) do
+   globalkeys = awful.util.table.join(globalkeys,
+      awful.key({ modkey }, key, function() awful.spawn.with_shell(launcher) end,
+         { description = launcher, group = "launcher" }))
 end
 
 local clientkeys = awful.util.table.join(
