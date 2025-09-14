@@ -1,3 +1,28 @@
+local home = os.getenv("HOME")
+
+-- Disable animations
+hs.window.animationDuration = 0
+
+local function print_all_windows()
+   for _, win in ipairs(hs.window.allWindows()) do
+      local app = win:application()
+      if app ~= nil then
+         print(app:name() .. ";" .. win:title() .. ";" .. win:id())
+      end
+   end
+end
+
+local function focus_window(hint)
+   local win = hs.window.find(hint)
+   if win ~= nil then
+      win:raise()
+      win:focus()
+   end
+end
+
+-- Keep track of the split ratio
+local left_split = 0.45
+
 -- Helper for rebinding with a fallback
 local function rebind(modifiers, character, fallback_modifier, fun)
    hs.hotkey.bind(modifiers, character, fun)
@@ -11,6 +36,20 @@ local function rebind(modifiers, character, fallback_modifier, fun)
       hs.eventtap.keyStroke(modifiers, character, 0, hs.application.frontmostApplication())
    end)
 end
+
+-- helpers for finding windows
+local function windows_at_focused()
+   local windows = {}
+   local focused_screen_id = hs.window.focusedWindow():screen():id()
+   local space_filter = hs.window.filter.defaultCurrentSpace
+   for _, win in ipairs(space_filter:getWindows()) do
+      if win:screen():id() == focused_screen_id then
+         table.insert(windows, win)
+      end
+   end
+   return windows
+end
+
 
 -- Helpers for snap left/right and resizing
 local function snap(win, fraction, direction)
@@ -52,31 +91,17 @@ local function is_snapped(win, direction)
    end
 end
 
-local function snap_fraction(win)
-   local f = win:frame()
-   local screen = win:screen()
-   local max = screen:frame()
-   return math.floor(f.w / max.w * 100 + 0.5) / 100
-end
-
 local function shift_snaps(fraction_step, direction)
-   local focused_screen_id = hs.window.focusedWindow():screen():id()
-   local space_filter = hs.window.filter.defaultCurrentSpace
-   for _, win in ipairs(space_filter:getWindows()) do
-      if win:screen():id() == focused_screen_id then
-         if is_snapped(win, "left") then
-            if direction == "left" then
-               snap(win, snap_fraction(win) - fraction_step, "left")
-            else
-               snap(win, snap_fraction(win) + fraction_step, "left")
-            end
-         elseif is_snapped(win, "right") then
-            if direction == "left" then
-               snap(win, snap_fraction(win) + fraction_step, "right")
-            else
-               snap(win, snap_fraction(win) - fraction_step, "right")
-            end
-         end
+   if direction == "left" then
+      left_split = left_split - fraction_step
+   else
+      left_split = left_split + fraction_step
+   end
+   for _, win in ipairs(windows_at_focused()) do
+      if is_snapped(win, "left") then
+         snap(win, left_split, "left")
+      elseif is_snapped(win, "right") then
+         snap(win, 1.0 - left_split, "right")
       end
    end
 end
@@ -93,17 +118,37 @@ local function move_focused_to_space(space_idx)
    end
 end
 
--- Open or activate specific applications by key combination
+-- Activate specific applications by key combination
 local apps = {
    ["Ghostty"] = "T",
    ["qutebrowser"] = "N",
+   ["Thunderbird"] = "D",
+   ["sioyek"] = "R",
 }
 
 for app, key in pairs(apps) do
    rebind({ "cmd" }, key, "shift", function()
-      hs.application.open(app)
+      hs.application.find(app):activate(app)
    end)
 end
+
+-- fzf all other windows
+hs.hotkey.bind({ "cmd" }, "Y", function()
+   local task = hs.task.new(home .. "/.local/bin/mwm", nil, { "fzf-win" })
+   local env = task:environment()
+   if task == nil or env == nil then
+      hs.alert("Could not create task")
+      return
+   end
+   env["PATH"] = env["PATH"] .. ":/opt/homebrew/bin:" .. env["HOME"] .. "/.local/bin"
+   task:setEnvironment(env)
+   task:start()
+end)
+
+-- library
+hs.hotkey.bind({ "cmd", "shift" }, "A", function()
+   hs.execute("rlg fzf --gui", true)
+end)
 
 -- Close window with Cmd-Q and kill application with Cmd-Shift-Q
 rebind({ "cmd" }, "Q", "Shift", function()
@@ -113,17 +158,17 @@ end)
 
 -- Maximize
 hs.hotkey.bind({ "cmd" }, "M", function()
-   snap_focused(1.0, "left")
+   hs.window.focusedWindow():maximize()
 end)
 
 -- Snap to left
 hs.hotkey.bind({ "cmd", "shift" }, "H", function()
-   snap_focused(0.5, "left")
+   snap_focused(left_split, "left")
 end)
 
 -- Snap to right
 hs.hotkey.bind({ "cmd", "shift" }, "L", function()
-   snap_focused(0.5, "right")
+   snap_focused(1.0 - left_split, "right")
 end)
 
 -- Resize both left and right snaps at the same time
@@ -151,5 +196,18 @@ hs.loadSpoon("EmmyLua")
 
 -- Enable IPC API,too
 hs.ipc.cliInstall()
+
+-- Resnap
+for _, win in ipairs(hs.window.allWindows()) do
+   if is_snapped(win, "left") then
+      snap(win, left_split, "left")
+   elseif is_snapped(win, "right") then
+      snap(win, 1.0 - left_split, "right")
+   end
+end
+
+MWM = {}
+MWM.print_all_windows = print_all_windows
+MWM.focus_window = focus_window
 
 hs.alert.show("Hammerspoon!")

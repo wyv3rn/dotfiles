@@ -3,5 +3,5 @@
 if [ "$(uname)" == "Linux" ]; then
     rofi -dmenu -matching fuzzy
 else
-    choose
+    choose -az
 fi
