@@ -1,3 +1,6 @@
+-- some "forward declarations"
+local fill_if_required
+
 local home = os.getenv("HOME")
 
 -- Disable animations
@@ -17,6 +20,7 @@ local function focus_window(hint)
    if win ~= nil then
       win:raise()
       win:focus()
+      fill_if_required(win)
    end
 end
 
@@ -37,7 +41,7 @@ local function rebind(modifiers, character, fallback_modifier, fun)
    end)
 end
 
--- helpers for finding windows
+-- helpers for finding window that are on the same space as the focused one
 local function windows_at_focused()
    local windows = {}
    local focused_screen_id = hs.window.focusedWindow():screen():id()
@@ -118,6 +122,24 @@ local function move_focused_to_space(space_idx)
    end
 end
 
+local function try_fill(direction)
+   for _, win in ipairs(hs.window.allWindows()) do
+      -- TODO check if it is filled already
+      if is_snapped(win, direction) then
+         win:raise()
+      end
+   end
+end
+
+fill_if_required = function(win)
+   if win == nil then return end
+   if is_snapped(win, "left") then
+      try_fill("right")
+   elseif is_snapped(win, "right") then
+      try_fill("left")
+   end
+end
+
 -- Activate specific applications by key combination
 local apps = {
    ["Ghostty"] = "T",
@@ -128,7 +150,11 @@ local apps = {
 
 for app, key in pairs(apps) do
    rebind({ "cmd" }, key, "shift", function()
-      hs.application.find(app):activate(app)
+      local a = hs.application.find(app)
+      if a == nil then return end
+      a:activate(app)
+      local win = a:focusedWindow()
+      fill_if_required(win)
    end)
 end
 
@@ -143,6 +169,7 @@ hs.hotkey.bind({ "cmd" }, "Y", function()
    env["PATH"] = env["PATH"] .. ":/opt/homebrew/bin:" .. env["HOME"] .. "/.local/bin"
    task:setEnvironment(env)
    task:start()
+   task:waitUntilExit()
 end)
 
 -- library
