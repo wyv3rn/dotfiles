@@ -17,7 +17,7 @@ function sioyek_helper() {
     {
         echo '{'
         first=1
-        for table in marks bookmarks highlights links; do
+        for table in bookmarks highlights links; do
             [ $first -eq 1 ] || echo ','
             first=0
             echo "\"$table\":"
