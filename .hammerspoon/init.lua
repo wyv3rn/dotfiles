@@ -6,6 +6,38 @@ local home = os.getenv("HOME")
 -- Disable animations
 hs.window.animationDuration = 0
 
+-- hotfixing hs.window:setFrame, see https://github.com/Hammerspoon/hammerspoon/issues/3224
+local function axHotfix(win)
+   local fallback = function() end
+   if not win then return fallback end
+   local axApp = hs.axuielement.applicationElement(win:application())
+   if not axApp then return fallback end
+
+   local wasEnhanced = axApp.AXEnhancedUserInterface
+   axApp.AXEnhancedUserInterface = false
+
+   return function()
+      hs.timer.doAfter(hs.window.animationDuration * 2, function()
+         axApp.AXEnhancedUserInterface = wasEnhanced
+      end)
+   end
+end
+
+local function withAxHotfix(fn, position)
+   if not position then position = 1 end
+   return function(...)
+      local revert = axHotfix(select(position, ...))
+      fn(...)
+      revert()
+   end
+end
+
+local window_mt = hs.getObjectMetatable("hs.window")
+if window_mt ~= nil then
+   window_mt.setFrame = withAxHotfix(window_mt.setFrame)
+end
+-- end of hotfixing
+
 local function print_all_windows()
    for _, win in ipairs(hs.window.allWindows()) do
       local app = win:application()
