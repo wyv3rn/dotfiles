@@ -23,6 +23,9 @@ with config.pattern("*.prakinf.tu-ilmenau.de/*") as p:
 # reload config
 config.bind("<Space>x", "config-source")
 
+# don't close tab by accident
+config.unbind("d")
+
 # make some custom keybinds work for neo2 with Karabiner
 config.bind("<Alt-d>", "cmd-set-text :")
 config.bind("<Alt-i>", "cmd-set-text /")
