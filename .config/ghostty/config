@@ -1,4 +1,6 @@
 theme = catppuccin-frappe
+cursor-color = #8caaee
+
 gtk-titlebar = false
 adw-toolbar-style = flat
 
