@@ -8,11 +8,11 @@ keybind = cmd+c=copy_to_clipboard
 keybind = cmd+v=paste_from_clipboard
 
 keybind = ctrl+s>t=new_tab
-keybind = ctrl+physical:one=goto_tab:1
-keybind = ctrl+physical:two=goto_tab:2
-keybind = ctrl+physical:three=goto_tab:3
-keybind = ctrl+physical:four=goto_tab:4
-keybind = ctrl+physical:five=goto_tab:5
+keybind = ctrl+one=goto_tab:1
+keybind = ctrl+two=goto_tab:2
+keybind = ctrl+three=goto_tab:3
+keybind = ctrl+four=goto_tab:4
+keybind = ctrl+five=goto_tab:5
 
 keybind = ctrl+s>d=new_split:down
 keybind = ctrl+s>r=new_split:right
