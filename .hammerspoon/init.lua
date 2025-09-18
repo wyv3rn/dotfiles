@@ -1,3 +1,33 @@
+-- implement LWM API
+
+local wm = {}
+
+function wm.notify(msg)
+   hs.alert(msg)
+end
+
+function wm.pos(win)
+   local frame = win:frame()
+   return { x = frame.x, y = frame.y, width = frame.w, height = frame.h }
+end
+
+function wm.work_area(win)
+   local sframe = win:screen():frame()
+   return {
+      x = sframe.x,
+      y = sframe.y,
+      width = sframe.w,
+      height = sframe.h
+   }
+end
+
+function wm.move_win(win, pos)
+   local frame = hs.geometry({ x = pos.x, y = pos.y, w = pos.width, h = pos.height })
+   win:setFrame(frame)
+end
+
+local lwm = require("lwm").new(wm)
+
 -- some "forward declarations"
 local fill_if_required
 
@@ -86,45 +116,9 @@ local function windows_at_focused()
    return windows
 end
 
-
--- Helpers for snap left/right and resizing
-local function snap(win, fraction, direction)
-   local f = win:frame()
-   local screen = win:screen()
-   local max = screen:frame()
-
-   f.y = max.y
-   f.h = max.h
-   if direction == "left" then
-      f.w = math.floor(max.w * fraction)
-      f.x = max.x
-   else
-      f.w = math.ceil(max.w * fraction)
-      f.x = max.x + max.w - f.w
-   end
-
-   win:setFrame(f)
-end
-
 local function snap_focused(fraction, direction)
    local win = hs.window.focusedWindow()
-   snap(win, fraction, direction)
-end
-
-local function is_snapped(win, direction)
-   local f = win:frame()
-   local screen = win:screen()
-   local max = screen:frame()
-
-   if f.y ~= max.y or f.h ~= max.h or f.w == max.w then
-      return false
-   end
-
-   if direction == "left" then
-      return f.x == max.x
-   else
-      return f.x == max.x + max.w - f.w
-   end
+   lwm:snap(win, fraction, direction)
 end
 
 local function shift_snaps(fraction_step, direction)
@@ -134,30 +128,18 @@ local function shift_snaps(fraction_step, direction)
       left_split = left_split + fraction_step
    end
    for _, win in ipairs(windows_at_focused()) do
-      if is_snapped(win, "left") then
-         snap(win, left_split, "left")
-      elseif is_snapped(win, "right") then
-         snap(win, 1.0 - left_split, "right")
+      if lwm:is_snapped(win, "left") then
+         lwm:snap(win, left_split, "left")
+      elseif lwm:is_snapped(win, "right") then
+         lwm:snap(win, 1.0 - left_split, "right")
       end
-   end
-end
-
-local function move_focused_to_space(space_idx)
-   local win = hs.window.focusedWindow()
-   local screen = win:screen()
-   local src_space = hs.spaces.activeSpaceOnScreen(screen)
-   local dst_space = hs.spaces.spacesForScreen(screen)[space_idx]
-   local result = hs.spaces.moveWindowToSpace(win, dst_space, true)
-   if result == true then
-      hs.alert.show("Moved window from space id = " ..
-         src_space .. " to space id = " .. dst_space)
    end
 end
 
 local function try_fill(direction)
    for _, win in ipairs(hs.window.allWindows()) do
       -- TODO check if it is filled already
-      if is_snapped(win, direction) then
+      if lwm:is_snapped(win, direction) then
          win:raise()
       end
    end
@@ -165,9 +147,9 @@ end
 
 fill_if_required = function(win)
    if win == nil then return end
-   if is_snapped(win, "left") then
+   if lwm:is_snapped(win, "left") then
       try_fill("right")
-   elseif is_snapped(win, "right") then
+   elseif lwm:is_snapped(win, "right") then
       try_fill("left")
    end
 end
@@ -239,12 +221,6 @@ hs.hotkey.bind({ "cmd", }, "L", function()
    shift_snaps(0.05, "right")
 end)
 
-for i = 1, 7 do
-   hs.hotkey.bind({ "cmd", "shift" }, tostring(i), function()
-      move_focused_to_space(i)
-   end)
-end
-
 -- Config reload
 hs.hotkey.bind({ "cmd", "alt", "ctrl" }, "R", function()
    hs.reload()
@@ -258,10 +234,10 @@ hs.ipc.cliInstall()
 
 -- Resnap
 for _, win in ipairs(hs.window.allWindows()) do
-   if is_snapped(win, "left") then
-      snap(win, left_split, "left")
-   elseif is_snapped(win, "right") then
-      snap(win, 1.0 - left_split, "right")
+   if lwm:is_snapped(win, "left") then
+      lwm:snap(win, left_split, "left")
+   elseif lwm:is_snapped(win, "right") then
+      lwm:snap(win, 1.0 - left_split, "right")
    end
 end
 
