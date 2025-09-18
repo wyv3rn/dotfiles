@@ -78,7 +78,7 @@ wk.add({
    { "g",                group = "GoTo mode" },
    { "gd",               telescope.lsp_definitions,                          desc = "Go to definition" },
    { "gy",               telescope.lsp_type_definitions,                     desc = "Go to type definition" },
-   { "gh",               "<cmd>ClangdSwitchSourceHeader<cr>",                desc = "Go to header/source file" },
+   { "gh",               "<cmd>LspClangdSwitchSourceHeader<cr>",             desc = "Go to header/source file" },
    { "grr",              telescope.lsp_references,                           desc = "Go to references" },
    { "gs",               telescope.lsp_document_symbols,                     desc = "Find symbols in buffer" },
    { "gS",               telescope.lsp_dynamic_workspace_symbols,            desc = "Find symbols in workspace" },
