@@ -85,6 +85,7 @@ local editor = os.getenv("EDITOR") or "nvim"
 local editor_cmd = terminal .. " -e " .. editor
 local browser = "qutebrowser"
 local pdf_viewer = "sioyek"
+local mail_client = "thunderbird"
 
 -- Default modkey. For reference: Mod4 = OS key, Mod1 = Alt
 local modkey = "Mod4"
@@ -362,9 +363,10 @@ local globalkeys = awful.util.table.join(
 
 -- focus or spawn applications via keybinding
 local applications = {
-   [terminal] = "t",
-   [pdf_viewer] = "r",
    [browser] = "n",
+   [pdf_viewer] = "r",
+   [terminal] = "t",
+   [mail_client] = "d",
 }
 
 for app, key in pairs(applications) do
