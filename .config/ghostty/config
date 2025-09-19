@@ -1,8 +1,8 @@
-theme = catppuccin-frappe
+theme = Catppuccin Frappe
 cursor-color = #8caaee
 
 gtk-titlebar = false
-adw-toolbar-style = flat
+gtk-toolbar-style = flat
 
 keybind = cmd+c=copy_to_clipboard
 keybind = cmd+v=paste_from_clipboard
