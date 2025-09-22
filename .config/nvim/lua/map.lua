@@ -12,6 +12,22 @@ vim.keymap.set('n', '<C-t>', '<C-o>zz')
 vim.keymap.set('n', '<C-d>', '<C-d>zz')
 vim.keymap.set('n', '<C-u>', '<C-u>zz')
 
+-- Easier built-in completion
+local function imap_compl_pum(from, to)
+   vim.keymap.set("i", from, function()
+      if vim.fn.pumvisible() == 1 then
+         return "<C-n>"       -- cycle next if popup menu is visible
+      else
+         return "<C-x>" .. to -- start omni-completion otherwise
+      end
+   end, { expr = true })
+   opts = { remap = "true" }
+end
+
+imap_compl_pum("<C-f>", "<C-o>")
+imap_compl_pum("<C-l>", "<C-l>")
+
+
 -- Compiling
 local async_make = require("async_make")
 vim.keymap.set("n", "<F8>", function() async_make.make("autobuild --no-tty --mode check", { autosave = true }) end)

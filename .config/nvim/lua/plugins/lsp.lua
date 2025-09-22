@@ -3,7 +3,6 @@ return {
       "neovim/nvim-lspconfig",
       dependencies = {
          { "barreiroleo/ltex_extra.nvim" },
-         { "saghen/blink.cmp" }
       },
       config = function()
          local lsps = {
@@ -16,12 +15,6 @@ return {
             "rust_analyzer",
             "texlab",
          }
-
-         -- Register autocomplete with all language servers
-         local complete_caps = require("blink.cmp").get_lsp_capabilities()
-         vim.lsp.config("*", {
-            capabilities = complete_caps
-         })
 
          -- Configure ltex-ls to use ltex_extra
          local ltex_bin = vim.fn.expand("~") .. "/.local/bin/lsps/ltex-ls-16.0.0/bin/ltex-ls"

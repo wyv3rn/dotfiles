@@ -20,6 +20,9 @@ vim.opt.expandtab = true
 -- Default g flag in substitutions
 vim.opt.gdefault = true
 
+-- Completion
+vim.opt.completeopt = { "menu", "preview", "popup" }
+
 -- Popup border
 vim.opt.winborder = "rounded"
 
