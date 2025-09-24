@@ -6,7 +6,7 @@ function wm.notify(msg)
    hs.alert(msg)
 end
 
-function wm.pos(win)
+function wm.position(win)
    local frame = win:frame()
    return { x = frame.x, y = frame.y, width = frame.w, height = frame.h }
 end
@@ -26,10 +26,23 @@ function wm.move_win(win, pos)
    win:setFrame(frame)
 end
 
-local lwm = require("lwm").new(wm)
+function wm.focused_win()
+   return hs.window.focusedWindow()
+end
 
--- some "forward declarations"
-local fill_if_required
+function wm.windows_at_focused()
+   local windows = {}
+   local focused_screen_id = hs.window.focusedWindow():screen():id()
+   local space_filter = hs.window.filter.defaultCurrentSpace
+   for _, win in ipairs(space_filter:getWindows()) do
+      if win:screen():id() == focused_screen_id then
+         table.insert(windows, win)
+      end
+   end
+   return windows
+end
+
+local lwm = require("lwm").new(wm, 0.45)
 
 local home = os.getenv("HOME")
 
@@ -53,10 +66,10 @@ local function axHotfix(win)
    end
 end
 
-local function withAxHotfix(fn, position)
-   if not position then position = 1 end
+local function withAxHotfix(fn, win_arg_idx)
+   if not win_arg_idx then win_arg_idx = 1 end
    return function(...)
-      local revert = axHotfix(select(position, ...))
+      local revert = axHotfix(select(win_arg_idx, ...))
       fn(...)
       revert()
    end
@@ -77,17 +90,14 @@ local function print_all_windows()
    end
 end
 
-local function focus_window(hint)
-   local win = hs.window.find(hint)
+local function focus_window(id)
+   local win = hs.window.find(id)
    if win ~= nil then
       win:raise()
       win:focus()
-      fill_if_required(win)
+      lwm:fill_if_required(win)
    end
 end
-
--- Keep track of the split ratio
-local left_split = 0.45
 
 -- Helper for rebinding with a fallback
 local function rebind(modifiers, character, fallback_modifier, fun)
@@ -101,57 +111,6 @@ local function rebind(modifiers, character, fallback_modifier, fun)
    hs.hotkey.bind(fallback_modifiers, character, function()
       hs.eventtap.keyStroke(modifiers, character, 0, hs.application.frontmostApplication())
    end)
-end
-
--- helpers for finding window that are on the same space as the focused one
-local function windows_at_focused()
-   local windows = {}
-   local focused_screen_id = hs.window.focusedWindow():screen():id()
-   local space_filter = hs.window.filter.defaultCurrentSpace
-   for _, win in ipairs(space_filter:getWindows()) do
-      if win:screen():id() == focused_screen_id then
-         table.insert(windows, win)
-      end
-   end
-   return windows
-end
-
-local function snap_focused(fraction, direction)
-   local win = hs.window.focusedWindow()
-   lwm:snap(win, fraction, direction)
-end
-
-local function shift_snaps(fraction_step, direction)
-   if direction == "left" then
-      left_split = left_split - fraction_step
-   else
-      left_split = left_split + fraction_step
-   end
-   for _, win in ipairs(windows_at_focused()) do
-      if lwm:is_snapped(win, "left") then
-         lwm:snap(win, left_split, "left")
-      elseif lwm:is_snapped(win, "right") then
-         lwm:snap(win, 1.0 - left_split, "right")
-      end
-   end
-end
-
-local function try_fill(direction)
-   for _, win in ipairs(hs.window.allWindows()) do
-      -- TODO check if it is filled already
-      if lwm:is_snapped(win, direction) then
-         win:raise()
-      end
-   end
-end
-
-fill_if_required = function(win)
-   if win == nil then return end
-   if lwm:is_snapped(win, "left") then
-      try_fill("right")
-   elseif lwm:is_snapped(win, "right") then
-      try_fill("left")
-   end
 end
 
 -- Activate specific applications by key combination
@@ -168,7 +127,7 @@ for app, key in pairs(apps) do
       if a == nil then return end
       a:activate(app)
       local win = a:focusedWindow()
-      fill_if_required(win)
+      lwm:fill_if_required(win)
    end)
 end
 
@@ -204,21 +163,21 @@ end)
 
 -- Snap to left
 hs.hotkey.bind({ "cmd", "shift" }, "H", function()
-   snap_focused(left_split, "left")
+   lwm:snap_focused("left")
 end)
 
 -- Snap to right
 hs.hotkey.bind({ "cmd", "shift" }, "L", function()
-   snap_focused(1.0 - left_split, "right")
+   lwm:snap_focused("right")
 end)
 
 -- Resize both left and right snaps at the same time
 hs.hotkey.bind({ "cmd", }, "H", function()
-   shift_snaps(0.05, "left")
+   lwm:shift_snaps(0.05, "left")
 end)
 
 hs.hotkey.bind({ "cmd", }, "L", function()
-   shift_snaps(0.05, "right")
+   lwm:shift_snaps(0.05, "right")
 end)
 
 -- Config reload
@@ -235,9 +194,9 @@ hs.ipc.cliInstall()
 -- Resnap
 for _, win in ipairs(hs.window.allWindows()) do
    if lwm:is_snapped(win, "left") then
-      lwm:snap(win, left_split, "left")
+      lwm:snap(win, "left")
    elseif lwm:is_snapped(win, "right") then
-      lwm:snap(win, 1.0 - left_split, "right")
+      lwm:snap(win, "right")
    end
 end
 
