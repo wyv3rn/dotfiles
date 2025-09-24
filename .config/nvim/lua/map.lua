@@ -13,19 +13,18 @@ vim.keymap.set('n', '<C-d>', '<C-d>zz')
 vim.keymap.set('n', '<C-u>', '<C-u>zz')
 
 -- Easier built-in completion
-local function imap_compl_pum(from, to)
+local function pmap(from, to, alt)
    vim.keymap.set("i", from, function()
       if vim.fn.pumvisible() == 1 then
-         return "<C-n>"       -- cycle next if popup menu is visible
+         return to
       else
-         return "<C-x>" .. to -- start omni-completion otherwise
+         return alt or from
       end
    end, { expr = true })
-   opts = { remap = "true" }
 end
 
-imap_compl_pum("<C-f>", "<C-o>")
-imap_compl_pum("<C-l>", "<C-l>")
+pmap("<Tab>", "<C-y>")
+pmap("<C-f>", "<C-y>", "<C-x><C-o>")
 
 
 -- Compiling
