@@ -21,7 +21,7 @@ vim.opt.expandtab = true
 vim.opt.gdefault = true
 
 -- Completion
-vim.opt.completeopt = { "menu", "popup", "fuzzy", "longest" }
+vim.opt.completeopt = { "menuone", "popup", "fuzzy", "noinsert" }
 
 -- Popup border
 vim.opt.winborder = "rounded"
