@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+if [ $# -ne 1 ]; then
+    echo "Usage: bulibet day"
+    exit -1
+fi
+
+year=2025
+day=$1
+
+curl https://api.openligadb.de/getmatchdata/bl1/${year}/${day} | jq ".[] | [ .team1.shortName,.team2.shortName ]" | sed '/\[/d;/\]/d;s/^  //;s/\"//g;s/,/ vs/' | paste -d " " - - | sed 's/$/: /' | nvim -
