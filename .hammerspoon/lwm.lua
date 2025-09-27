@@ -16,7 +16,7 @@ setmetatable(Lwm, {
 function Lwm.new(wm, left_split)
    local self = setmetatable({}, Lwm)
    self.wm = {}
-   self.notify = wm.notify
+   self.wm.notify = wm.notify
    for _, fun in ipairs(api_funs) do
       self["wm"][fun] = wm[fun] or self.notify("Oh no, your wm does not implement wm." .. fun)
    end
