@@ -5,8 +5,16 @@ local api_funs = {
    "position",
    "work_area",
    "move_win",
+   "all_windows",
    "focused_win",
    "windows_at_focused",
+   "close",
+   "maximize",
+   "focus_and_raise",
+   "window_title",
+   "window_app_name",
+   "window_id",
+   "execute",
 }
 
 setmetatable(Lwm, {
@@ -22,6 +30,32 @@ function Lwm.new(wm, left_split)
    end
    self.left_split = left_split or 0.5
    return self
+end
+
+function Lwm:fzf_win()
+   local input = ""
+   local wins = self.wm.all_windows()
+   for i, win in ipairs(wins) do
+      local app_name = self.wm.window_app_name(win):gsub("%s+", "")
+      local title = self.wm.window_title(win):gsub("%s+", "_")
+      input = input .. app_name .. "%%" .. title .. "%%" .. i
+      if i ~= #wins then
+         input = input .. "\\\\n"
+      end
+   end
+   local output = self.wm.execute("gfzf \"" .. input .. "\"")
+   local _, _, selected_idx_str = output:find(".*%%%%.*%%%%(%d+)")
+   local selected_idx = tonumber(selected_idx_str)
+   local selected_win = wins[selected_idx]
+   self.wm.focus_and_raise(selected_win)
+end
+
+function Lwm:close_focused()
+   self.wm.close(self.wm.focused_win())
+end
+
+function Lwm:maximize_focused()
+   self.wm.maximize(self.wm.focused_win())
 end
 
 function Lwm:snap(win, direction)

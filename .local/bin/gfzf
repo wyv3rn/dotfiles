@@ -1,7 +1,16 @@
 #!/usr/bin/env bash
 
 if [ "$(uname)" == "Linux" ]; then
-    rofi -dmenu -matching fuzzy
+    bin=rofi
+    args=-dmenu -matching fuzzy
 else
-    choose -az
+    bin=choose
+    args=-az
+fi
+
+if [ $# -eq 1 ]; then
+    echo -e "$1" > /Users/dschatz/gg.txt
+    echo -e "$1" | $bin $args
+else
+    $bin $args
 fi

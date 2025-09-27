@@ -6,6 +6,27 @@ function wm.notify(msg)
    hs.alert(msg)
 end
 
+function wm.execute(cmd)
+   return hs.execute(cmd, true)
+end
+
+function wm.window_id(win)
+   return win:id()
+end
+
+function wm.window_title(win)
+   return win:title()
+end
+
+function wm.window_app_name(win)
+   local app = win:application()
+   if app == nil then
+      return "unknown"
+   else
+      return app:name()
+   end
+end
+
 function wm.position(win)
    local frame = win:frame()
    return { x = frame.x, y = frame.y, width = frame.w, height = frame.h }
@@ -26,6 +47,10 @@ function wm.move_win(win, pos)
    win:setFrame(frame)
 end
 
+function wm.all_windows()
+   return hs.window.allWindows()
+end
+
 function wm.focused_win()
    return hs.window.focusedWindow()
 end
@@ -40,6 +65,19 @@ function wm.windows_at_focused()
       end
    end
    return windows
+end
+
+function wm.close(win)
+   win:close()
+end
+
+function wm.focus_and_raise(win)
+   win:raise()
+   win:focus()
+end
+
+function wm.maximize(win)
+   win:maximize()
 end
 
 local lwm = require("lwm").new(wm, 0.45)
@@ -81,24 +119,6 @@ if window_mt ~= nil then
 end
 -- end of hotfixing
 
-local function print_all_windows()
-   for _, win in ipairs(hs.window.allWindows()) do
-      local app = win:application()
-      if app ~= nil then
-         print(app:name() .. ";" .. win:title() .. ";" .. win:id())
-      end
-   end
-end
-
-local function focus_window(id)
-   local win = hs.window.find(id)
-   if win ~= nil then
-      win:raise()
-      win:focus()
-      lwm:fill_if_required(win)
-   end
-end
-
 -- Helper for rebinding with a fallback
 local function rebind(modifiers, character, fallback_modifier, fun)
    hs.hotkey.bind(modifiers, character, fun)
@@ -132,7 +152,7 @@ for app, key in pairs(apps) do
 end
 
 -- fzf all other windows
-hs.hotkey.bind({ "cmd" }, "Y", function()
+hs.hotkey.bind({ "cmd" }, "Z", function()
    local task = hs.task.new(home .. "/.local/bin/mwm", nil, { "fzf-win" })
    local env = task:environment()
    if task == nil or env == nil then
@@ -142,7 +162,10 @@ hs.hotkey.bind({ "cmd" }, "Y", function()
    env["PATH"] = env["PATH"] .. ":/opt/homebrew/bin:" .. env["HOME"] .. "/.local/bin"
    task:setEnvironment(env)
    task:start()
-   task:waitUntilExit()
+end)
+
+hs.hotkey.bind({ "cmd" }, "Y", function()
+   lwm:fzf_win()
 end)
 
 -- library
@@ -152,21 +175,17 @@ end)
 
 -- Close window with Cmd-Q and kill application with Cmd-Shift-Q
 rebind({ "cmd" }, "Q", "Shift", function()
-   local win = hs.window.focusedWindow()
-   win:close()
+   lwm:close_focused()
 end)
 
--- Maximize
 hs.hotkey.bind({ "cmd" }, "M", function()
-   hs.window.focusedWindow():maximize()
+   lwm:maximize_focused()
 end)
 
--- Snap to left
 hs.hotkey.bind({ "cmd", "shift" }, "H", function()
    lwm:snap_focused("left")
 end)
 
--- Snap to right
 hs.hotkey.bind({ "cmd", "shift" }, "L", function()
    lwm:snap_focused("right")
 end)
@@ -199,9 +218,5 @@ for _, win in ipairs(hs.window.allWindows()) do
       lwm:snap(win, "right")
    end
 end
-
-MWM = {}
-MWM.print_all_windows = print_all_windows
-MWM.focus_window = focus_window
 
 hs.alert.show("Hammerspoon!")

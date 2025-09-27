@@ -2,16 +2,6 @@
 
 uname=$(uname)
 
-fzf-win() {
-    if [ "$uname" == "Darwin" ]; then
-        win_id=$(hs -c "MWM.print_all_windows()" | gfzf | awk -F';' '{print $3}')
-        hs -c "MWM.focus_window(${win_id})"
-    else
-        echo "Unimplemented"
-        exit -1
-    fi
-}
-
 focus-or-spawn() {
     winid=`wmctrl -lx | awk -v program=$1 'tolower($3) ~ tolower(program) {print $1}' | head -n1`
     if [ -n "$winid" ]; then
