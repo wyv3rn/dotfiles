@@ -38,13 +38,16 @@ function Lwm:fzf_win()
    for i, win in ipairs(wins) do
       local app_name = self.wm.window_app_name(win):gsub("%s+", "")
       local title = self.wm.window_title(win):gsub("%s+", "_")
-      input = input .. app_name .. "%%" .. title .. "%%" .. i
+      input = input .. app_name .. "\\\\t" .. title .. "\\\\t" .. i
       if i ~= #wins then
          input = input .. "\\\\n"
       end
    end
    local output = self.wm.execute("gfzf \"" .. input .. "\"")
-   local _, _, selected_idx_str = output:find(".*%%%%.*%%%%(%d+)")
+   local found, _, selected_idx_str = output:find(".*\t(%d+)$")
+   if not found then
+      return
+   end
    local selected_idx = tonumber(selected_idx_str)
    local selected_win = wins[selected_idx]
    self.wm.focus_and_raise(selected_win)
