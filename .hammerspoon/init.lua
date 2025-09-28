@@ -6,6 +6,21 @@ function wm.notify(msg)
    hs.alert(msg)
 end
 
+function wm.bind(mods, key, fun, fallback_mod)
+   hs.hotkey.bind(mods, key, fun)
+
+   if fallback_mod then
+      local fallback_modifiers = {}
+      for i, val in ipairs(mods) do
+         fallback_modifiers[i] = val
+      end
+      table.insert(fallback_modifiers, fallback_mod)
+      hs.hotkey.bind(fallback_modifiers, key, function()
+         hs.eventtap.keyStroke(mods, key, 0, hs.application.frontmostApplication())
+      end)
+   end
+end
+
 function wm.execute(cmd)
    return hs.execute(cmd, true)
 end
@@ -76,13 +91,18 @@ function wm.focus_and_raise(win)
    win:focus()
 end
 
+function wm.focus_and_raise_app(app_name)
+   local app = hs.application.find(app_name)
+   if app == nil then return end
+   app:activate()
+   return app:focusedWindow()
+end
+
 function wm.maximize(win)
    win:maximize()
 end
 
 local lwm = require("lwm").new(wm, 0.45)
-
-local home = os.getenv("HOME")
 
 -- Disable animations
 hs.window.animationDuration = 0
@@ -119,20 +139,6 @@ if window_mt ~= nil then
 end
 -- end of hotfixing
 
--- Helper for rebinding with a fallback
-local function rebind(modifiers, character, fallback_modifier, fun)
-   hs.hotkey.bind(modifiers, character, fun)
-
-   local fallback_modifiers = {}
-   for i, val in ipairs(modifiers) do
-      fallback_modifiers[i] = val
-   end
-   table.insert(fallback_modifiers, fallback_modifier)
-   hs.hotkey.bind(fallback_modifiers, character, function()
-      hs.eventtap.keyStroke(modifiers, character, 0, hs.application.frontmostApplication())
-   end)
-end
-
 -- Activate specific applications by key combination
 local apps = {
    ["Ghostty"] = "T",
@@ -142,27 +148,8 @@ local apps = {
 }
 
 for app, key in pairs(apps) do
-   rebind({ "cmd" }, key, "shift", function()
-      local a = hs.application.find(app)
-      if a == nil then return end
-      a:activate(app)
-      local win = a:focusedWindow()
-      lwm:fill_if_required(win)
-   end)
+   lwm:bind({ "cmd" }, key, "switch_to_app", app, "Shift")
 end
-
--- fzf all other windows
-hs.hotkey.bind({ "cmd" }, "Z", function()
-   local task = hs.task.new(home .. "/.local/bin/mwm", nil, { "fzf-win" })
-   local env = task:environment()
-   if task == nil or env == nil then
-      hs.alert("Could not create task")
-      return
-   end
-   env["PATH"] = env["PATH"] .. ":/opt/homebrew/bin:" .. env["HOME"] .. "/.local/bin"
-   task:setEnvironment(env)
-   task:start()
-end)
 
 hs.hotkey.bind({ "cmd" }, "Y", function()
    lwm:fzf_win()
@@ -174,19 +161,17 @@ hs.hotkey.bind({ "cmd", "shift" }, "A", function()
 end)
 
 -- Close window with Cmd-Q and kill application with Cmd-Shift-Q
-rebind({ "cmd" }, "Q", "Shift", function()
-   lwm:close_focused()
-end)
+lwm:bind({ "cmd" }, "Q", "close_focused", nil, "Shift")
 
 hs.hotkey.bind({ "cmd" }, "M", function()
    lwm:maximize_focused()
 end)
 
-hs.hotkey.bind({ "cmd", "shift" }, "H", function()
+hs.hotkey.bind({ "cmd", "shift" }, "L", function()
    lwm:snap_focused("left")
 end)
 
-hs.hotkey.bind({ "cmd", "shift" }, "L", function()
+hs.hotkey.bind({ "cmd", "shift" }, "H", function()
    lwm:snap_focused("right")
 end)
 
@@ -206,9 +191,6 @@ end)
 
 -- Spoon for LSP support
 hs.loadSpoon("EmmyLua")
-
--- Enable IPC API,too
-hs.ipc.cliInstall()
 
 -- Resnap
 for _, win in ipairs(hs.window.allWindows()) do

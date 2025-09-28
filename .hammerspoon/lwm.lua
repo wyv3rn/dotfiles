@@ -2,6 +2,7 @@ local Lwm = {}
 Lwm.__index = Lwm
 
 local api_funs = {
+   "bind",
    "position",
    "work_area",
    "move_win",
@@ -11,6 +12,7 @@ local api_funs = {
    "close",
    "maximize",
    "focus_and_raise",
+   "focus_and_raise_app",
    "window_title",
    "window_app_name",
    "window_id",
@@ -30,6 +32,11 @@ function Lwm.new(wm, left_split)
    end
    self.left_split = left_split or 0.5
    return self
+end
+
+function Lwm:bind(mods, key, fun_name, args, fallback_mods)
+   local fun = function() self[fun_name](self, args) end
+   self.wm.bind(mods, key, fun, fallback_mods)
 end
 
 function Lwm:fzf_win()
@@ -134,6 +141,11 @@ function Lwm:try_fill(other_win, direction)
          win:raise()
       end
    end
+end
+
+function Lwm:switch_to_app(app_name)
+   local win = self.wm.focus_and_raise_app(app_name)
+   self:fill_if_required(win)
 end
 
 return Lwm
