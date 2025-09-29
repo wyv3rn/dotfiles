@@ -2,6 +2,7 @@ local Lwm = {}
 Lwm.__index = Lwm
 
 local api_funs = {
+   "notify",
    "bind",
    "position",
    "work_area",
@@ -15,8 +16,8 @@ local api_funs = {
    "focus_and_raise_app",
    "window_title",
    "window_app_name",
-   "window_id",
    "execute",
+   "restart",
 }
 
 setmetatable(Lwm, {
@@ -25,51 +26,48 @@ setmetatable(Lwm, {
 
 function Lwm.new(wm, left_split)
    local self = setmetatable({}, Lwm)
-   self.wm = {}
-   self.wm.notify = wm.notify
-   for _, fun in ipairs(api_funs) do
-      self["wm"][fun] = wm[fun] or self.notify("Oh no, your wm does not implement wm." .. fun)
+   for _, fun_name in ipairs(api_funs) do
+      if wm[fun_name] ~= nil then
+         self[fun_name] = function(_, ...) return wm[fun_name](...) end
+      else
+         self:notify("Oh no, your wm does not implement " .. fun_name)
+      end
    end
    self.left_split = left_split or 0.5
    return self
 end
 
-function Lwm:bind(mods, key, fun_name, args, fallback_mods)
-   local fun = function() self[fun_name](self, args) end
-   self.wm.bind(mods, key, fun, fallback_mods)
-end
-
 function Lwm:fzf_win()
    local input = ""
-   local wins = self.wm.all_windows()
+   local wins = self:all_windows()
    for i, win in ipairs(wins) do
-      local app_name = self.wm.window_app_name(win):gsub("%s+", "")
-      local title = self.wm.window_title(win):gsub("%s+", "_")
+      local app_name = self:window_app_name(win):gsub("%s+", "")
+      local title = self:window_title(win):gsub("%s+", "_")
       input = input .. app_name .. "\\\\t" .. title .. "\\\\t" .. i
       if i ~= #wins then
          input = input .. "\\\\n"
       end
    end
-   local output = self.wm.execute("gfzf \"" .. input .. "\"")
+   local output = self:execute("gfzf \"" .. input .. "\"")
    local found, _, selected_idx_str = output:find(".*\t(%d+)$")
    if not found then
       return
    end
    local selected_idx = tonumber(selected_idx_str)
    local selected_win = wins[selected_idx]
-   self.wm.focus_and_raise(selected_win)
+   self:focus_and_raise(selected_win)
 end
 
 function Lwm:close_focused()
-   self.wm.close(self.wm.focused_win())
+   self:close(self:focused_win())
 end
 
 function Lwm:maximize_focused()
-   self.wm.maximize(self.wm.focused_win())
+   self:maximize(self:focused_win())
 end
 
 function Lwm:snap(win, direction)
-   local work_area = self.wm.work_area(win)
+   local work_area = self:work_area(win)
    local y = work_area.y
    local h = work_area.height
 
@@ -83,21 +81,21 @@ function Lwm:snap(win, direction)
    end
 
    local pos = { x = x, y = y, width = w, height = h }
-   self.wm.move_win(win, pos)
+   self:move_win(win, pos)
 end
 
 function Lwm:snap_focused(direction)
-   local win = self.wm.focused_win()
+   local win = self:focused_win()
    if win ~= nil then
       self:snap(win, direction)
    else
-      self.wm.notify("Did not find a focused window!")
+      self:notify("Did not find a focused window!")
    end
 end
 
 function Lwm:is_snapped(win, direction)
-   local pos = self.wm.position(win)
-   local work_area = self.wm.work_area(win)
+   local pos = self:position(win)
+   local work_area = self:work_area(win)
 
    if pos.y ~= work_area.y or pos.height ~= work_area.height or pos.width == work_area.width then
       return false
@@ -116,7 +114,7 @@ function Lwm:shift_snaps(fraction_step, direction)
    else
       self.left_split = self.left_split + fraction_step
    end
-   for _, win in ipairs(self.wm.windows_at_focused()) do
+   for _, win in ipairs(self:windows_at_focused()) do
       if self:is_snapped(win, "left") then
          self:snap(win, "left")
       elseif self:is_snapped(win, "right") then
@@ -135,7 +133,7 @@ function Lwm:fill_if_required(other_win)
 end
 
 function Lwm:try_fill(other_win, direction)
-   for _, win in ipairs(self.wm.windows_at_focused(other_win)) do
+   for _, win in ipairs(self:windows_at_focused(other_win)) do
       -- TODO check if it is filled already
       if self:is_snapped(win, direction) then
          win:raise()
@@ -144,7 +142,7 @@ function Lwm:try_fill(other_win, direction)
 end
 
 function Lwm:switch_to_app(app_name)
-   local win = self.wm.focus_and_raise_app(app_name)
+   local win = self:focus_and_raise_app(app_name)
    self:fill_if_required(win)
 end
 

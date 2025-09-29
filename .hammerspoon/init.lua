@@ -1,5 +1,4 @@
 -- implement LWM API
-
 local wm = {}
 
 function wm.notify(msg)
@@ -23,10 +22,6 @@ end
 
 function wm.execute(cmd)
    return hs.execute(cmd, true)
-end
-
-function wm.window_id(win)
-   return win:id()
 end
 
 function wm.window_title(win)
@@ -102,7 +97,9 @@ function wm.maximize(win)
    win:maximize()
 end
 
-local lwm = require("lwm").new(wm, 0.45)
+function wm.restart()
+   hs.reload()
+end
 
 -- Disable animations
 hs.window.animationDuration = 0
@@ -139,66 +136,10 @@ if window_mt ~= nil then
 end
 -- end of hotfixing
 
--- Activate specific applications by key combination
-local apps = {
-   ["Ghostty"] = "T",
-   ["qutebrowser"] = "N",
-   ["Thunderbird"] = "D",
-   ["sioyek"] = "R",
-}
-
-for app, key in pairs(apps) do
-   lwm:bind({ "cmd" }, key, "switch_to_app", app, "Shift")
-end
-
-hs.hotkey.bind({ "cmd" }, "Y", function()
-   lwm:fzf_win()
-end)
-
--- library
-hs.hotkey.bind({ "cmd", "shift" }, "A", function()
-   hs.execute("rlg fzf --gui", true)
-end)
-
--- Close window with Cmd-Q and kill application with Cmd-Shift-Q
-lwm:bind({ "cmd" }, "Q", "close_focused", nil, "Shift")
-
-hs.hotkey.bind({ "cmd" }, "M", function()
-   lwm:maximize_focused()
-end)
-
-hs.hotkey.bind({ "cmd", "shift" }, "L", function()
-   lwm:snap_focused("left")
-end)
-
-hs.hotkey.bind({ "cmd", "shift" }, "H", function()
-   lwm:snap_focused("right")
-end)
-
--- Resize both left and right snaps at the same time
-hs.hotkey.bind({ "cmd", }, "H", function()
-   lwm:shift_snaps(0.05, "left")
-end)
-
-hs.hotkey.bind({ "cmd", }, "L", function()
-   lwm:shift_snaps(0.05, "right")
-end)
-
--- Config reload
-hs.hotkey.bind({ "cmd", "alt", "ctrl" }, "R", function()
-   hs.reload()
-end)
-
 -- Spoon for LSP support
 hs.loadSpoon("EmmyLua")
 
--- Resnap
-for _, win in ipairs(hs.window.allWindows()) do
-   if lwm:is_snapped(win, "left") then
-      lwm:snap(win, "left")
-   elseif lwm:is_snapped(win, "right") then
-      lwm:snap(win, "right")
-   end
-end
+local lwm = require("lwm").new(wm, 0.45)
+require("keymap").map(lwm)
 
-hs.alert.show("Hammerspoon!")
+lwm:notify("Hammerspoon!")
