@@ -1,3 +1,5 @@
+package.path = package.path .. ";../.config/lwm/?.lua"
+
 -- implement LWM API
 local wm = {}
 
