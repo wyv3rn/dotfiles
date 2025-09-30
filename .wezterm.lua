@@ -1,5 +1,6 @@
 local wezterm = require("wezterm")
 local config = wezterm.config_builder()
+local act = wezterm.action
 
 if wezterm.target_triple:find("windows") then
    config.default_prog = { "powershell.exe" }
@@ -17,82 +18,56 @@ config.colors = {
    cursor_border = "#8caaee"
 }
 
-config.font_size = 14
+config.font_size = 13
 
--- Lead my way
-config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 1000 }
+config.use_dead_keys = false
 
-config.keys = {
-   {
-      key = "c",
-      mods = "LEADER",
-      action = wezterm.action.SpawnCommandInNewTab,
-   },
-}
-
--- split vertical
-for key, mod in pairs({
-   ["phys:2"] = "|SHIFT",
-   ["mapped:\""] = "",
-}) do
-   table.insert(config.keys, {
-      key = key,
-      mods = "LEADER" .. mod,
-      action = wezterm.action.SplitVertical({ domain = "CurrentPaneDomain" })
-   })
+local function fix_voyager(key, mods)
+   if key == "mapped:\"" then
+      return "phys:2", mods .. "|SHIFT"
+   elseif key == "mapped:%" then
+      return "phys:5", mods .. "|SHIFT"
+   elseif key == "mapped:/" then
+      return "phys:7", mods .. "|SHIFT"
+   end
+   return nil
 end
 
--- split horizontal
-for key, mod in pairs({
-   ["phys:5"] = "|SHIFT",
-   ["mapped:%"] = "",
-}) do
-   table.insert(config.keys, {
-      key = key,
-      mods = "LEADER" .. mod,
-      action = wezterm.action.SplitHorizontal({ domain = "CurrentPaneDomain" })
-   })
+local function bind(mods, key, action, use_leader)
+   use_leader = use_leader or false
+   local mods_with_leader = mods
+   if use_leader then
+      mods_with_leader = "LEADER|" .. mods
+   end
+   table.insert(config.keys, { key = key, mods = mods_with_leader, action = action })
+
+   -- fix voyager
+   local k_key, k_mods = fix_voyager(key, mods)
+   if k_key then
+      bind(k_mods, k_key, action, use_leader)
+   end
 end
 
--- copy mode
-for key, mod in pairs({
-   ["mapped:["] = "",
-}) do
-   table.insert(config.keys, {
-      key = key,
-      mods = "LEADER" .. mod,
-      action = wezterm.action.ActivateCopyMode,
-   })
+local function lbind(mods, key, action)
+   bind(mods, key, action, true)
 end
 
--- search mode
-for key, mod in pairs({
-   ["phys:7"] = "|SHIFT",
-   ["mapped:/"] = "",
-}) do
-   table.insert(config.keys, {
-      key = key,
-      mods = "LEADER" .. mod,
-      action = wezterm.action.Search({ CaseInSensitiveString = "" })
-   })
-end
+-- Lead my way and empty table to start with
+config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 2000 }
+config.keys = {}
 
--- switch panes
-for _, key in ipairs({ "y", "Tab" }) do
-   table.insert(config.keys, {
-      key = key,
-      mods = "CTRL",
-      action = wezterm.action.ActivatePaneDirection("Next"),
-   })
-end
-
--- switch tabs
+-- actual mappings without leader
+bind("CTRL", "y", act.ActivatePaneDirection("Next"))
+bind("CTRL", "Tab", act.ActivatePaneDirection("Next"))
 for i = 1, 9 do
-   table.insert(config.keys, {
-      key = tostring(i),
-      mods = 'CTRL',
-      action = wezterm.action.ActivateTab(i - 1),
-   })
+   bind("CTRL", tostring(i), act.ActivateTab(i - 1))
 end
+
+-- actual mappings with leader
+lbind("", "c", act.SpawnCommandInNewTab)
+lbind("", "mapped:[", act.ActivateCopyMode)
+lbind("", "mapped:\"", act.SplitVertical({ domain = "CurrentPaneDomain" }))
+lbind("", "mapped:%", act.SplitHorizontal({ domain = "CurrentPaneDomain" }))
+lbind("", "mapped:/", act.Search({ CaseInSensitiveString = "" }))
 
 return config
