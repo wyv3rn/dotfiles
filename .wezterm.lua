@@ -6,22 +6,20 @@ if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
 end
 config.color_scheme = "Catppuccin Frappe"
 config.hide_tab_bar_if_only_one_tab = true
-config.default_cursor_style = "SteadyBar"
+
+config.default_cursor_style = "BlinkingBar"
+config.animation_fps = 1
+config.cursor_blink_ease_in = "Constant"
+config.cursor_blink_ease_out = "Constant"
+config.colors = {
+   cursor_bg = "#8caaee",
+   cursor_border = "#8caaee"
+}
 
 -- Lead my way
 config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 1000 }
 
 config.keys = {
-   {
-      key = '"',
-      mods = "LEADER|SHIFT",
-      action = wezterm.action.SplitVertical,
-   },
-   {
-      key = "%",
-      mods = "LEADER|SHIFT",
-      action = wezterm.action.SplitHorizontal,
-   },
    {
       key = "c",
       mods = "LEADER",
@@ -29,7 +27,55 @@ config.keys = {
    },
 }
 
-for _, key  in ipairs({ "y", "Tab" }) do
+-- split vertical
+for key, mod in pairs({
+   ["phys:2"] = "|SHIFT",
+   ["mapped:\""] = "",
+}) do
+   table.insert(config.keys, {
+      key = key,
+      mods = "LEADER" .. mod,
+      action = wezterm.action.SplitVertical({ domain = "CurrentPaneDomain" })
+   })
+end
+
+-- split horizontal
+for key, mod in pairs({
+   ["phys:5"] = "|SHIFT",
+   ["mapped:%"] = "",
+}) do
+   table.insert(config.keys, {
+      key = key,
+      mods = "LEADER" .. mod,
+      action = wezterm.action.SplitHorizontal({ domain = "CurrentPaneDomain" })
+   })
+end
+
+-- copy mode
+for key, mod in pairs({
+   ["mapped:["] = "",
+}) do
+   table.insert(config.keys, {
+      key = key,
+      mods = "LEADER" .. mod,
+      action = wezterm.action.ActivateCopyMode,
+   })
+end
+
+-- search mode
+for key, mod in pairs({
+   ["phys:7"] = "|SHIFT",
+   ["mapped:/"] = "",
+}) do
+   table.insert(config.keys, {
+      key = key,
+      mods = "LEADER" .. mod,
+      action = wezterm.action.Search({ CaseInSensitiveString = "" })
+   })
+end
+
+-- switch panes
+for _, key in ipairs({ "y", "Tab" }) do
    table.insert(config.keys, {
       key = key,
       mods = "CTRL",
@@ -37,6 +83,7 @@ for _, key  in ipairs({ "y", "Tab" }) do
    })
 end
 
+-- switch tabs
 for i = 1, 9 do
    table.insert(config.keys, {
       key = tostring(i),
