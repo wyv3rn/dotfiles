@@ -16,6 +16,8 @@ config.colors = {
    cursor_border = "#8caaee"
 }
 
+config.font_size = 14
+
 -- Lead my way
 config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 1000 }
 
