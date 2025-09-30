@@ -1,11 +1,16 @@
 local m = {}
 
+local browser = "qutebrowser"
+local pdf_viewer = "sioyek"
+local terminal = "WezTerm"
+local mail_client = "Thunderbird"
+
 -- Activate specific applications by key combination
 local apps = {
-   ["Ghostty"] = "T",
-   ["qutebrowser"] = "N",
-   ["Thunderbird"] = "D",
-   ["sioyek"] = "R",
+   [browser] = "N",
+   [pdf_viewer] = "R",
+   [terminal] = "T",
+   [mail_client] = "D",
 }
 
 function m.map(lwm)
