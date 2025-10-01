@@ -10,6 +10,7 @@ config.color_scheme = "Catppuccin Frappe"
 config.hide_tab_bar_if_only_one_tab = true
 
 config.default_cursor_style = "BlinkingBar"
+config.cursor_blink_rate = 700
 config.animation_fps = 1
 config.cursor_blink_ease_in = "Constant"
 config.cursor_blink_ease_out = "Constant"
@@ -18,7 +19,7 @@ config.colors = {
    cursor_border = "#8caaee"
 }
 
-config.font_size = 13
+config.font_size = 12
 
 config.use_dead_keys = false
 
@@ -69,5 +70,7 @@ lbind("", "mapped:[", act.ActivateCopyMode)
 lbind("", "mapped:\"", act.SplitVertical({ domain = "CurrentPaneDomain" }))
 lbind("", "mapped:%", act.SplitHorizontal({ domain = "CurrentPaneDomain" }))
 lbind("", "mapped:/", act.Search({ CaseInSensitiveString = "" }))
+lbind("", "f", act.QuickSelect)
+lbind("CTRL", "a", act.SendKey({ key = "a", mods = "CTRL" }))
 
 return config
