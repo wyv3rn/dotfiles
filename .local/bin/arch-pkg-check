@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+for p in $(pacman -Qqent); do
+    if ! grep -q "^${p}\$" $HOME/.config/arch/*; then
+        echo $p
+    fi
+done

@@ -1,0 +1,10 @@
+clang
+gdb
+lld
+llvm
+meson
+ninja
+npm
+python-black
+rustup
+sloccount
