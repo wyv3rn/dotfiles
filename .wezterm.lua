@@ -2,7 +2,14 @@ local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 local act = wezterm.action
 
+local os = "linux"
 if wezterm.target_triple:find("windows") then
+   os = "windows"
+elseif wezterm.target_triple:find("darwin") then
+   os = "darwin"
+end
+
+if os == "windows" then
    config.default_prog = { "powershell.exe" }
 end
 
@@ -20,6 +27,7 @@ config.colors = {
 }
 
 config.font_size = 12
+if os == "darwin" then config.font_size = 14 end
 
 config.use_dead_keys = false
 
