@@ -29,6 +29,8 @@ config.colors = {
 config.font_size = 12
 if os == "darwin" then config.font_size = 14 end
 
+config.warn_about_missing_glyphs = false
+
 config.use_dead_keys = false
 
 local function fix_voyager(key, mods)
