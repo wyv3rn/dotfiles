@@ -10,10 +10,12 @@ local api_funs = {
    "all_windows",
    "focused_win",
    "windows_at_focused",
+   "ordered_windows",
    "close",
    "maximize",
    "focus_and_raise",
    "focus_and_raise_app",
+   "window_id",
    "window_title",
    "window_app_name",
    "execute",
@@ -133,10 +135,15 @@ function Lwm:fill_if_required(other_win)
 end
 
 function Lwm:try_fill(other_win, direction)
+   local win_ids_at_focused = {}
    for _, win in ipairs(self:windows_at_focused(other_win)) do
-      -- TODO check if it is filled already
-      if self:is_snapped(win, direction) then
+      win_ids_at_focused[self:window_id(win)] = true
+   end
+
+   for _, win in ipairs(self:ordered_windows()) do
+      if win_ids_at_focused[self:window_id(win)] and self:is_snapped(win, direction) then
          win:raise()
+         return
       end
    end
 end

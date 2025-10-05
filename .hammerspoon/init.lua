@@ -26,6 +26,10 @@ function wm.execute(cmd)
    return hs.execute(cmd, true)
 end
 
+function wm.window_id(win)
+   return win:id()
+end
+
 function wm.window_title(win)
    return win:title()
 end
@@ -61,6 +65,10 @@ end
 
 function wm.all_windows()
    return hs.window.allWindows()
+end
+
+function wm.ordered_windows()
+   return hs.window.orderedWindows()
 end
 
 function wm.focused_win()
