@@ -12,20 +12,25 @@ vim.keymap.set('n', '<C-t>', '<C-o>zz')
 vim.keymap.set('n', '<C-d>', '<C-d>zz')
 vim.keymap.set('n', '<C-u>', '<C-u>zz')
 
--- Easier built-in completion
-local function pmap(from, to, alt)
+-- Easier built-in completion and snippets
+local function cmap(from, menu, snippet, default)
    vim.keymap.set("i", from, function()
       if vim.fn.pumvisible() == 1 then
-         return to
+         return menu
+      elseif vim.snippet.active() then
+         return snippet or from
       else
-         return alt or from
+         return default or from
       end
    end, { expr = true })
 end
 
-pmap("<Tab>", "<C-y>")
-pmap("<C-f>", "<C-y>", "<C-x><C-o>")
+local snippet_jump_fwd = "<Cmd>lua vim.snippet.jump(1)<CR>"
+local snippet_jump_bwd = "<Cmd>lua vim.snippet.jump(-1)<CR>"
 
+cmap("<Tab>", "<C-y>", snippet_jump_fwd)
+cmap("<C-f>", "<C-y>", snippet_jump_fwd, "<C-x><C-o>")
+cmap("<C-b>", "<C-b>", snippet_jump_bwd)
 
 -- Compiling
 local async_make = require("async_make")
