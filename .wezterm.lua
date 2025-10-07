@@ -10,7 +10,7 @@ elseif wezterm.target_triple:find("darwin") then
 end
 
 if os == "windows" then
-   config.default_prog = { "powershell.exe" }
+   config.default_prog = { "nu.exe" }
 end
 
 config.color_scheme = "Catppuccin Frappe"
