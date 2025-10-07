@@ -6,22 +6,25 @@ return {
    build = ":TSUpdate",
    config = function()
       local treesitter = require("nvim-treesitter.configs")
+      local langs = {
+         "c",
+         "lua",
+         "vim",
+         "vimdoc",
+         "query",
+         "comment",
+         "rust",
+         "bash",
+         "python",
+         "javascript",
+         "typescript",
+         "nu",
+      }
+      if vim.loop.os_uname().sysname ~= "Windows_NT" then
+         table.insert(langs, "latex")
+      end
       treesitter.setup({
-         ensure_installed = {
-            "c",
-            "lua",
-            "vim",
-            "vimdoc",
-            "query",
-            "comment",
-            "latex",
-            "rust",
-            "bash",
-            "python",
-            "javascript",
-            "typescript",
-            "nu",
-         },
+         ensure_installed = langs,
          sync_install = false,
          auto_install = true,
          ignore_install = {},
