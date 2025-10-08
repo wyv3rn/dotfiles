@@ -23,7 +23,7 @@ config.cursor_blink_ease_in = "Constant"
 config.cursor_blink_ease_out = "Constant"
 config.colors = {
    cursor_bg = "#8caaee",
-   cursor_border = "#8caaee"
+   cursor_border = "#8caaee",
 }
 
 config.font_size = 12
@@ -82,5 +82,20 @@ lbind("", "mapped:%", act.SplitHorizontal({ domain = "CurrentPaneDomain" }))
 lbind("", "mapped:/", act.Search({ CaseInSensitiveString = "" }))
 lbind("", "f", act.QuickSelect)
 lbind("CTRL", "a", act.SendKey({ key = "a", mods = "CTRL" }))
+lbind("", "mapped:{", act.PaneSelect({ mode = "SwapWithActive" }))
+
+local resize_step = 10
+lbind("", "h", act.AdjustPaneSize({ "Left", resize_step }))
+lbind("", "j", act.AdjustPaneSize({ "Down", resize_step }))
+lbind("", "k", act.AdjustPaneSize({ "Up", resize_step }))
+lbind("", "l", act.AdjustPaneSize({ "Right", resize_step }))
+
+wezterm.on("update-right-status", function(win, pane)
+   local status = ""
+   if win:leader_is_active() then
+      status = status .. " Leader detected, awaiting input ..."
+   end
+   win:set_right_status(status)
+end)
 
 return config
