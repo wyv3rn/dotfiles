@@ -7,6 +7,10 @@ function wm.notify(msg)
    hs.alert(msg)
 end
 
+function wm.os()
+   return "darwin"
+end
+
 function wm.bind(mods, key, fun, fallback_mod)
    hs.hotkey.bind(mods, key, fun)
 
@@ -20,6 +24,21 @@ function wm.bind(mods, key, fun, fallback_mod)
          hs.eventtap.keyStroke(mods, key, 0, hs.application.frontmostApplication())
       end)
    end
+end
+
+function wm.keystroke_to_app(mods, key, except, alt_mods, alt_key)
+   except = except or {}
+   local app = hs.application.frontmostApplication()
+   if app == nil then
+      return
+   end
+   for _, e in ipairs(except) do
+      if app:name() == e then
+         hs.eventtap.keyStroke(alt_mods, alt_key, 0, app)
+         return
+      end
+   end
+   hs.eventtap.keyStroke(mods, key, 0, app)
 end
 
 function wm.execute(cmd)

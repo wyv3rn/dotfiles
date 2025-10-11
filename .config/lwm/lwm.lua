@@ -3,7 +3,9 @@ Lwm.__index = Lwm
 
 local api_funs = {
    "notify",
+   "os",
    "bind",
+   "keystroke_to_app",
    "position",
    "work_area",
    "move_win",
@@ -37,6 +39,10 @@ function Lwm.new(wm, left_split)
    end
    self.left_split = left_split or 0.5
    return self
+end
+
+function Lwm:rebind_in_apps(from_mods, from_key, to_mods, to_key, except)
+   self:bind(from_mods, from_key, function() self:keystroke_to_app(to_mods, to_key, except, from_mods, from_key) end)
 end
 
 function Lwm:fzf_win()
@@ -89,6 +95,13 @@ end
 function Lwm:snap_focused(direction)
    local win = self:focused_win()
    if win ~= nil then
+      if direction == "next" then
+         if self:is_snapped(win, "left") then
+            direction = "right"
+         else
+            direction = "left"
+         end
+      end
       self:snap(win, direction)
    else
       self:notify("Did not find a focused window!")
