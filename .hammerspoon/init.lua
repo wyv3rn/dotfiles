@@ -21,7 +21,10 @@ function wm.bind(mods, key, fun, fallback_mod)
       end
       table.insert(fallback_modifiers, fallback_mod)
       hs.hotkey.bind(fallback_modifiers, key, function()
-         hs.eventtap.keyStroke(mods, key, 0, hs.application.frontmostApplication())
+         local app = hs.application.frontmostApplication()
+         if app ~= nil then
+            hs.eventtap.keyStroke(mods, key, 0, app)
+         end
       end)
    end
 end
