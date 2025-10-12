@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+sudo kanata -c ~/.config/kanata/mac-voyager.kbd
