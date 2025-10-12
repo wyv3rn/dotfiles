@@ -1,0 +1,80 @@
+(deflocalkeys-macos
+  ß    12
+  ´    13
+  z    21
+  ü    26
+  +    27
+  ö    39
+  ä    40
+  <    41
+  #    43
+  y    44
+  -    53
+  ^    86
+)
+
+(defalias
+    X   nop0
+
+    cs  (tap-hold 0 130 ␣ lctl)
+    e   (tap-hold 0 130 e lsft)
+    n   (tap-hold 0 130 n rsft)
+
+    n3  (layer-while-held neo-3)
+    n4  (layer-while-held neo-4)
+
+    €   RA-e
+    _   S--
+    [   RA-8
+    ]   RA-9
+    !   S-1
+    >   S-<
+    =   S-0
+    &   S-6
+    \   RA-ß
+    /   S-7
+    {   RA-7
+    }   RA-0
+    *   S-+
+    ?   S-ß
+    lp  S-8
+    rp  S-9
+    :   S-.
+    @   RA-q
+    $   S-4
+    |   RA-<
+    ~   RA-+
+    `   S-´
+    %   S-5
+    qt  S-2
+    '   S-#
+    ;   S-,
+)
+
+(defsrc
+  ↹         q    w    e    r    t    z    u    i    o    p    ü
+  ⇪         a    s    d    f    g    h    j    k    l    ö    ä    #    ↩
+ ‹⇧   <     y    x    c    v    b    n    m    ,    .    -             ⇧›
+           ‹⌃   ‹⌥   ‹⌘              ␣              ⌘›   ⌥›
+)
+
+(deflayer neo-1
+  ↹         x    v    l    c    w    k    h    g    f    q    ß
+ @n3        u    i    a    @e   o    s    @n   r    t    d    y   @n3   ↩
+ ‹⇧   @X    ü    ö    ä    p    z    b    m    ,    .    j             ⇧›
+           ‹⌃   ‹⌥   ‹⌘             @cs            @n4   ⌥›
+)
+
+(deflayer neo-3
+  _         @€   @_   @[   @]   ^    @!   <    @>   @=   @&   _
+  _         @\   @/   @{   @}   @*   @?  @lp  @rp   -    @:   @@   _   ↩
+ ‹⇧   _     #    @$   @|   @~   @`   +    @%   @qt  @'   @;            ⇧›
+           ‹⌃   ‹⌥   ‹⌘              ␣              ⌘›   ⌥›
+)
+
+(deflayer neo-4
+ sys       ins   ⇞    ▲    ⇟    ⌦    _    _    _    _    _    _
+  ⇪         ⇤    ◀    ▼    ▶    ⇥    _    _    _    _    _    _    _    ↩
+ ‹⇧   _     _    _    _    _    _    _    _    _    _    _             ⇧›
+           ‹⌃   ‹⌥   ‹⌘              ␣              ⌘›   ⌥›
+)

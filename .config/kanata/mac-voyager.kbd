@@ -1,0 +1,12 @@
+(deflocalkeys-macos
+  <    41
+  ^    86
+)
+
+(defsrc
+    ^ <
+)
+
+(deflayer fix
+    < ^
+)
