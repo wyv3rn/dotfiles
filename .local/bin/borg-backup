@@ -14,6 +14,11 @@ trap 'echo $( date ) Backup interrupted >&2; exit 2' INT TERM
 
 info "Starting backup"
 
+if mount | grep -q "on /srv"; then
+    echo "Warning: Skipping /srv/* because it is a mountpoint"
+    EXCLUDE_SRV="--exclude '/srv/*'"
+fi
+
 borg create                    	    \
     --list			                \
     --filter E                      \
@@ -21,6 +26,8 @@ borg create                    	    \
     --show-rc                       \
     --compression lz4               \
     --exclude-caches                \
+    $EXCLUDE_SRV                    \
+    --exclude '/home/*.homedir'     \
     --exclude '/home/*/.cache/*'    \
     --exclude '/home/*/mnt'         \
     --exclude '/home/*/nefos'       \
@@ -35,7 +42,6 @@ borg create                    	    \
     --exclude '/media/*'            \
     --exclude '/lost+found'         \
     --exclude '/home/*/.gvfs'       \
-                                    \
     $BORG_REPO::'{hostname}-{now}'  \
     /                               \
 
