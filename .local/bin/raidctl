@@ -8,7 +8,7 @@ print_usage() {
 DEV=/dev/disk/by-uuid/db0c4776-2d88-4fb0-9600-2fec4460c603
 MAP=raid
 MNT=/srv
-USB_BUS=/sys/bus/usb/devices/usb2/
+USB_BUS=/sys/bus/usb/devices/usb3/
 
 if [ $# -ne 1 ]; then
     print_usage
@@ -26,10 +26,9 @@ if [ "$1" == "on" ]; then
     echo "Finally got up!"
     pass raid | sudo cryptsetup luksOpen $DEV $MAP -
     sudo mount /dev/mapper/$MAP $MNT
-    sudo systemctl restart apache2.service
-    sudo systemctl restart smbd.service nmbd.service
+    # sudo systemctl restart smbd.service nmbd.service
 elif [ "$1" == "off" ]; then
-    sudo systemctl stop smbd.service nmbd.service
+    # sudo systemctl stop smbd.service nmbd.service
     sudo umount $MNT || exit 1
     sudo cryptsetup luksClose $MAP || exit 1
     sudo udisksctl power-off -b $DEV || echo "Power off failed"
