@@ -119,7 +119,7 @@ function wm.focus_and_raise(win)
 end
 
 function wm.focus_and_raise_app(app_name)
-   local app = hs.application.find(app_name)
+   local app = hs.application.open(app_name)
    if app == nil then return end
    app:activate()
    return app:focusedWindow()
