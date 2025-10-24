@@ -10,6 +10,7 @@ c.url.searchengines = {
     "di": "https://dict.cc/?s={}",
     "gs": "https://scholar.google.com/scholar?q={}",
     "doi": "https://doi.org/{}",
+    "dev": "https://devdocs.io/#q={}",
 }
 c.url.start_pages = ["about:blank"]
 c.colors.webpage.preferred_color_scheme = "dark"
