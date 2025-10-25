@@ -5,15 +5,20 @@ local pdf_viewer = "sioyek"
 local terminal = "WezTerm"
 local mail_client = "Thunderbird"
 
--- Activate specific applications by key combination
-local apps = {
-   [browser] = "N",
-   [pdf_viewer] = "R",
-   [terminal] = "T",
-   [mail_client] = "D",
-}
-
 function m.map(lwm)
+   if lwm:os() == "linux" then
+      terminal = "wezterm"
+      mail_client = "thunderbird"
+   end
+
+   -- Activate specific applications by key combination
+   local apps = {
+      [browser] = "n",
+      [pdf_viewer] = "r",
+      [terminal] = "t",
+      [mail_client] = "d",
+   }
+
    for app, key in pairs(apps) do
       lwm:bind({ "cmd" }, key, function() lwm:switch_to_app(app) end, "Shift")
    end
