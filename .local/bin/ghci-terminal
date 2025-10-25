@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-alacritty --class TermHaskell -o "window.dimensions: {lines: 64, columns: 128}" -o "window.position: {x: 2700, y: 128}" -e sh -c 'ghci'
