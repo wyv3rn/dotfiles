@@ -44,7 +44,8 @@ function wm.keystroke_to_app(mods, key, except, alt_mods, alt_key)
    hs.eventtap.keyStroke(mods, key, 0, app)
 end
 
-function wm.execute(cmd)
+function wm.spawn(cmd)
+   -- TODO not ideal, because this actually blocks
    return hs.execute(cmd, true)
 end
 
@@ -85,12 +86,12 @@ function wm.move_win(win, pos)
    win:setFrame(frame)
 end
 
-function wm.all_windows()
-   return hs.window.allWindows()
+function wm.maximize(win)
+   win:maximize()
 end
 
-function wm.ordered_windows()
-   return hs.window.orderedWindows()
+function wm.toggle_fullscreen(win)
+   win:toggleFullScreen()
 end
 
 function wm.focused_win()
@@ -113,6 +114,10 @@ function wm.close(win)
    win:close()
 end
 
+function wm.raise(win)
+   win:raise()
+end
+
 function wm.focus_and_raise(win)
    win:raise()
    win:focus()
@@ -125,8 +130,8 @@ function wm.focus_and_raise_app(app_name)
    return app:focusedWindow()
 end
 
-function wm.maximize(win)
-   win:maximize()
+function wm.fzf_win()
+   hs.hints.windowHints()
 end
 
 function wm.restart()
