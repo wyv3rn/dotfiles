@@ -2,7 +2,7 @@
 -- Catppuccin theme --
 ---------------------------
 
-local dpi = 120
+local dpi = 144
 
 local theme = {}
 
@@ -22,9 +22,9 @@ theme.fg_minimize   = "#949cbb"
 
 -- Borders
 theme.useless_gap   = 0
-theme.border_width  = 1
+theme.border_width  = 2
 theme.border_normal = "#000000"
-theme.border_focus  = "#8c8fa1"
+theme.border_focus  = "#81c8be"
 theme.border_marked = "#fe640b"
 
 -- Taglist

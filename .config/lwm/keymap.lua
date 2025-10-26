@@ -24,9 +24,10 @@ function m.map(lwm)
    end
 
    lwm:bind({ "cmd" }, "y", function() lwm:fzf_win() end)
-   lwm:bind({ "cmd", "shift" }, "a", function() lwm:execute("rlg fzf --gui", true) end)
+   lwm:bind({ "cmd" }, "a", function() lwm:spawn("rlg fzf --gui") end)
    lwm:bind({ "cmd" }, "q", function() lwm:close_focused() end, "Shift")
    lwm:bind({ "cmd" }, "m", function() lwm:maximize_focused() end)
+   lwm:bind({ "cmd" }, "f", function() lwm:toggle_fullscreen_focused() end)
    lwm:bind({ "cmd" }, "s", function() lwm:snap_focused("next") end)
    lwm:bind({ "cmd" }, "h", function() lwm:shift_snaps(0.05, "left") end)
    lwm:bind({ "cmd" }, "l", function() lwm:shift_snaps(0.05, "right") end)
@@ -37,6 +38,8 @@ function m.map(lwm)
       lwm:rebind_in_apps({ "ctrl" }, "c", { "cmd" }, "c", { terminal })
       lwm:rebind_in_apps({ "ctrl" }, "v", { "cmd" }, "v", { terminal })
       lwm:rebind_in_apps({ "ctrl" }, "z", { "cmd" }, "z", { terminal })
+      lwm:rebind_in_apps({ "ctrl" }, "a", { "cmd" }, "a", { terminal })
+      lwm:rebind_in_apps({ "ctrl" }, "f", { "cmd" }, "f", { terminal })
    end
 end
 

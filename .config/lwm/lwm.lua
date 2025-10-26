@@ -9,18 +9,19 @@ local api_funs = {
    "position",
    "work_area",
    "move_win",
-   "all_windows",
    "focused_win",
    "windows_at_focused",
-   "ordered_windows",
    "close",
    "maximize",
+   "toggle_fullscreen",
+   "raise",
    "focus_and_raise",
    "focus_and_raise_app",
    "window_id",
    "window_title",
    "window_app_name",
-   "execute",
+   "fzf_win",
+   "spawn",
    "restart",
 }
 
@@ -28,7 +29,7 @@ setmetatable(Lwm, {
    __call = function(cls, ...) return cls.new(...) end
 })
 
-function Lwm.new(wm, left_split)
+function Lwm.new(wm, left_split, win_border)
    local self = setmetatable({}, Lwm)
    for _, fun_name in ipairs(api_funs) do
       if wm[fun_name] ~= nil then
@@ -38,32 +39,12 @@ function Lwm.new(wm, left_split)
       end
    end
    self.left_split = left_split or 0.5
+   self.win_border = win_border or 0
    return self
 end
 
 function Lwm:rebind_in_apps(from_mods, from_key, to_mods, to_key, except)
    self:bind(from_mods, from_key, function() self:keystroke_to_app(to_mods, to_key, except, from_mods, from_key) end)
-end
-
-function Lwm:fzf_win()
-   local input = ""
-   local wins = self:all_windows()
-   for i, win in ipairs(wins) do
-      local app_name = self:window_app_name(win):gsub("%s+", "")
-      local title = self:window_title(win):gsub("%s+", "_")
-      input = input .. app_name .. "\\\\t" .. title .. "\\\\t" .. i
-      if i ~= #wins then
-         input = input .. "\\\\n"
-      end
-   end
-   local output = self:execute("gfzf \"" .. input .. "\"")
-   local found, _, selected_idx_str = output:find(".*\t(%d+)$")
-   if not found then
-      return
-   end
-   local selected_idx = tonumber(selected_idx_str)
-   local selected_win = wins[selected_idx]
-   self:focus_and_raise(selected_win)
 end
 
 function Lwm:close_focused()
@@ -74,18 +55,22 @@ function Lwm:maximize_focused()
    self:maximize(self:focused_win())
 end
 
+function Lwm:toggle_fullscreen_focused()
+   self:toggle_fullscreen(self:focused_win())
+end
+
 function Lwm:snap(win, direction)
    local work_area = self:work_area(win)
    local y = work_area.y
-   local h = work_area.height
+   local h = work_area.height - 2 * self.win_border
 
    local w, x
    if direction == "left" then
-      w = math.floor(work_area.width * self.left_split)
+      w = math.floor(work_area.width * self.left_split) - 2 * self.win_border + 1
       x = work_area.x
    else
-      w = math.ceil(work_area.width * (1.0 - self.left_split))
-      x = work_area.x + work_area.width - w
+      w = math.ceil(work_area.width * (1.0 - self.left_split)) - 2 * self.win_border
+      x = work_area.x + work_area.width - w - 2 * self.win_border
    end
 
    local pos = { x = x, y = y, width = w, height = h }
@@ -103,6 +88,7 @@ function Lwm:snap_focused(direction)
          end
       end
       self:snap(win, direction)
+      self:focus_and_raise(win)
    else
       self:notify("Did not find a focused window!")
    end
@@ -112,14 +98,14 @@ function Lwm:is_snapped(win, direction)
    local pos = self:position(win)
    local work_area = self:work_area(win)
 
-   if pos.y ~= work_area.y or pos.height ~= work_area.height or pos.width == work_area.width then
+   if pos.y ~= work_area.y or pos.height + 2 * self.win_border ~= work_area.height or pos.width == work_area.width - 2 * self.win_border then
       return false
    end
 
    if direction == "left" then
       return pos.x == work_area.x
    else
-      return pos.x == work_area.x + work_area.width - pos.width
+      return pos.x == work_area.x + work_area.width - pos.width - 2 * self.win_border
    end
 end
 
@@ -141,21 +127,16 @@ end
 function Lwm:fill_if_required(other_win)
    if other_win == nil then return end
    if self:is_snapped(other_win, "left") then
-      self:try_fill(other_win, "right")
+      self:try_fill("right")
    elseif self:is_snapped(other_win, "right") then
-      self:try_fill(other_win, "left")
+      self:try_fill("left")
    end
 end
 
-function Lwm:try_fill(other_win, direction)
-   local win_ids_at_focused = {}
-   for _, win in ipairs(self:windows_at_focused(other_win)) do
-      win_ids_at_focused[self:window_id(win)] = true
-   end
-
-   for _, win in ipairs(self:ordered_windows()) do
-      if win_ids_at_focused[self:window_id(win)] and self:is_snapped(win, direction) then
-         win:raise()
+function Lwm:try_fill(direction)
+   for _, win in ipairs(self:windows_at_focused()) do
+      if self:is_snapped(win, direction) then
+         self:raise(win)
          return
       end
    end
@@ -163,6 +144,9 @@ end
 
 function Lwm:switch_to_app(app_name)
    local win = self:focus_and_raise_app(app_name)
+   if win == nil then
+      return
+   end
    self:fill_if_required(win)
 end
 

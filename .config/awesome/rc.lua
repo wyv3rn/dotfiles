@@ -8,7 +8,6 @@ local mouse = mouse
 
 -- Standard awesome library
 local awful = require("awful")
-require("awful.autofocus")
 
 -- init theme
 local beautiful = require("beautiful")
@@ -29,7 +28,7 @@ function wm.os()
 end
 
 local bindings = {}
-function wm.bind(mods, key, fun, fallback_mod)
+function wm.bind(mods, key, fun, _)
    local translate = {
       cmd = "Mod4",
       alt = "Mod1",
@@ -43,26 +42,20 @@ function wm.bind(mods, key, fun, fallback_mod)
    bindings = awful.util.table.join(bindings, awful.key(tmods, key, fun))
 end
 
+function wm.spawn(cmd)
+   awful.spawn.with_shell(cmd)
+end
+
 function wm.focused_win()
-   return client.focus
+   if client["focus"] then
+      return client.focus
+   else
+      return nil
+   end
 end
 
 function wm.windows_at_focused()
    return client.focus.screen.clients
-end
-
-function wm.all_windows()
-   local wins = {}
-   for win in awful.client.iterate(function(_) return true end) do
-      table.insert(wins, win)
-   end
-
-   return wins
-end
-
-function wm.ordered_windows()
-   -- TODO actually order them (according to visibility)
-   return wm.all_windows()
 end
 
 function wm.window_id(win)
@@ -92,13 +85,24 @@ function wm.move_win(win, pos)
    win.height = pos.height
 end
 
+function wm.raise(win)
+   win:raise()
+end
+
 function wm.focus_and_raise(win)
    win:raise()
+   win.first_tag:view_only()
    client.focus = win
 end
 
 function wm.maximize(win)
    awful.placement.maximize(win, { honor_workarea = true })
+   win:raise()
+end
+
+function wm.toggle_fullscreen(win)
+   win.fullscreen = not win.fullscreen
+   win:raise()
 end
 
 function wm.close(win)
@@ -106,26 +110,20 @@ function wm.close(win)
 end
 
 function wm.focus_and_raise_app(app_name)
-   awful.spawn.with_shell("mwm focus-or-spawn " .. app_name)
-   -- WIP this should return the window in order for lwm to do filling
+   local filter = function(c)
+      return awful.rules.match(c, { class = app_name })
+   end
+   local win = awful.client.iterate(filter)()
+   if win == nil then
+      wm.spawn(app_name)
+   else
+      wm.focus_and_raise(win)
+      return win
+   end
 end
 
-function wm.execute(cmd)
-   -- WIP
-   local output = ""
-   local waiting = true
-   awful.spawn.easy_async_with_shell(cmd, function(stdout, _, _, _)
-      output = stdout
-      waiting = false
-      wm.notify(output)
-   end)
-   local i = 0
-   while waiting and i < 5 do
-      os.execute("sleep 1")
-      i = i + 1
-   end
-   wm.notify("Done")
-   return output
+function wm.fzf_win()
+   wm.spawn("rofi -show window -matching fuzzy")
 end
 
 function wm.keystroke_to_app(_, _, _, _, _)
@@ -137,10 +135,8 @@ function wm.restart()
 end
 
 -- start lwm
-local lwm = require("lwm").new(wm, 0.5)
+local lwm = require("lwm").new(wm, 0.5, beautiful.border_width)
 require("keymap").map(lwm)
-
--- WIP legacy down below
 
 -- Widget and layout library
 local wibox = require("wibox")
@@ -150,7 +146,6 @@ local hotkeys_popup = require("awful.hotkeys_popup").widget
 
 -- our helpers
 local cmd_to_txt = require("widgets/cmd-to-txt")
-
 
 -- 3rd party imports
 local volume_ctrl = require("widgets/volume-control")
@@ -176,36 +171,6 @@ local vert_sep = wibox.widget {
    thickness = 1.5,
 }
 
--- {{{ Error handling
--- Check if awesome encountered an error during startup and fell back to
--- another config (This code will only ever execute for the fallback config)
-if awesome.startup_errors then
-   naughty.notify({
-      preset = naughty.config.presets.critical,
-      title = "Oops, there were errors during startup!",
-      text = awesome.startup_errors
-   })
-end
-
--- Handle runtime errors after startup
-do
-   local in_error = false
-   awesome.connect_signal("debug::error", function(err)
-      -- Make sure we don't go into an endless error loop
-      if in_error then return end
-      in_error = true
-
-      naughty.notify({
-         preset = naughty.config.presets.critical,
-         title = "Oops, an error happened!",
-         text = tostring(err)
-      })
-      in_error = false
-   end)
-end
--- }}}
-
-
 -- This is used later as the default terminal and editor to run.
 local terminal = "wezterm"
 
@@ -216,21 +181,6 @@ local modkey = "Mod4"
 awful.layout.layouts = {
    awful.layout.suit.floating,
 }
-
--- {{{ Helper functions
-local function client_menu_toggle_fn()
-   local instance = nil
-
-   return function()
-      if instance and instance.wibox.visible then
-         instance:hide()
-         instance = nil
-      else
-         instance = awful.menu.clients({ theme = { width = 250 } })
-      end
-   end
-end
--- }}}
 
 -- {{{ Menu
 -- Create a launcher widget and a main menu
@@ -261,47 +211,6 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 
 -- {{{ Wibar
 -- Create a wibox for each screen and add it
-local taglist_buttons = awful.util.table.join(
-   awful.button({}, 1, function(t) t:view_only() end),
-   awful.button({ modkey }, 1, function(t)
-      if client.focus then
-         client.focus:move_to_tag(t)
-      end
-   end),
-   awful.button({}, 3, awful.tag.viewtoggle),
-   awful.button({ modkey }, 3, function(t)
-      if client.focus then
-         client.focus:toggle_tag(t)
-      end
-   end),
-   awful.button({}, 4, function(t) awful.tag.viewnext(t.screen) end),
-   awful.button({}, 5, function(t) awful.tag.viewprev(t.screen) end)
-)
-
-local tasklist_buttons = awful.util.table.join(
-   awful.button({}, 1, function(c)
-      if c == client.focus then
-         c.minimized = true
-      else
-         -- Without this, the following
-         -- :isvisible() makes no sense
-         c.minimized = false
-         if not c:isvisible() and c.first_tag then
-            c.first_tag:view_only()
-         end
-         -- This will also un-minimize
-         -- the client, if needed
-         client.focus = c
-         c:raise()
-      end
-   end),
-   awful.button({}, 3, client_menu_toggle_fn()),
-   awful.button({}, 4, function()
-      awful.client.focus.byidx(1)
-   end),
-   awful.button({}, 5, function()
-      awful.client.focus.byidx(-1)
-   end))
 
 awful.screen.connect_for_each_screen(function(s)
    -- Each screen has its own tag table.
@@ -309,19 +218,12 @@ awful.screen.connect_for_each_screen(function(s)
 
    -- Create a promptbox for each screen
    s.mypromptbox = awful.widget.prompt()
-   -- Create an imagebox widget which will contains an icon indicating which layout we're using.
-   -- We need one layoutbox per screen.
-   s.mylayoutbox = awful.widget.layoutbox(s)
-   s.mylayoutbox:buttons(awful.util.table.join(
-      awful.button({}, 1, function() awful.layout.inc(1) end),
-      awful.button({}, 3, function() awful.layout.inc(-1) end),
-      awful.button({}, 4, function() awful.layout.inc(1) end),
-      awful.button({}, 5, function() awful.layout.inc(-1) end)))
-   -- Create a taglist widget
-   s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, taglist_buttons)
 
-   -- Create a tasklist widget
-   s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, tasklist_buttons)
+   -- Create a taglist widget
+   local taglist_buttons = awful.util.table.join(
+      awful.button({}, 1, function(t) t:view_only() end)
+   )
+   s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, taglist_buttons)
 
    -- Create the wibox
    s.mywibox = awful.wibar({ position = "top", screen = s })
@@ -335,8 +237,8 @@ awful.screen.connect_for_each_screen(function(s)
          s.mytaglist,
          s.mypromptbox,
       },
-      s.mytasklist, -- Middle widget
-      {             -- Right widgets
+      nil,
+      { -- Right widgets
          layout = wibox.layout.fixed.horizontal,
          wibox.widget.systray(),
          vert_sep,
@@ -345,49 +247,15 @@ awful.screen.connect_for_each_screen(function(s)
          battery_widget,
          vert_sep,
          mytextclock,
-         s.mylayoutbox,
       },
    }
 end)
 -- }}}
 
--- {{{ Mouse bindings
-root.buttons(awful.util.table.join(
-   awful.button({}, 3, function() mymainmenu:toggle() end),
-   awful.button({}, 4, awful.tag.viewnext),
-   awful.button({}, 5, awful.tag.viewprev)
-))
--- }}}
-
 -- {{{ Key bindings
 local globalkeys = awful.util.table.join(
-   awful.key({ modkey, }, "Left", awful.tag.viewprev,
-      { description = "view previous", group = "tag" }),
-   awful.key({ modkey, }, "Right", awful.tag.viewnext,
-      { description = "view next", group = "tag" }),
-   awful.key({ modkey, "Shift" }, "Tab", awful.tag.history.restore,
-      { description = "go back", group = "tag" }),
-
-   awful.key({ modkey, }, "j",
-      function()
-         awful.client.focus.byidx(1)
-      end,
-      { description = "focus next by index", group = "client" }
-   ),
-   awful.key({ modkey, }, "k",
-      function()
-         awful.client.focus.byidx(-1)
-      end,
-      { description = "focus previous by index", group = "client" }
-   ),
    awful.key({ modkey, }, "w", function() mymainmenu:show() end,
       { description = "show main menu", group = "awesome" }),
-
-   -- Layout manipulation
-   awful.key({ modkey, "Shift" }, "j", function() awful.client.swap.byidx(1) end,
-      { description = "swap with next client by index", group = "client" }),
-   awful.key({ modkey, "Shift" }, "k", function() awful.client.swap.byidx(-1) end,
-      { description = "swap with previous client by index", group = "client" }),
 
    -- Screen navigation
    awful.key({ modkey, }, "o", function() awful.screen.focus_relative(1) end,
@@ -396,10 +264,7 @@ local globalkeys = awful.util.table.join(
       { description = "focus the previous screen", group = "screen" }),
    awful.key({ modkey, }, "u", awful.client.urgent.jumpto,
       { description = "jump to urgent client", group = "client" }),
-   awful.key({ modkey }, "Tab",
-      function()
-         switcher.switch(1, "Super_L", "Tab", "ISO_Left_Tab")
-      end),
+   awful.key({ modkey }, "Tab", function() switcher.switch(1, "Super_L", "Tab", "ISO_Left_Tab") end),
 
    -- Launch terminal
    awful.key({ modkey, }, "Return", function() awful.spawn(terminal) end,
@@ -439,40 +304,6 @@ local globalkeys = awful.util.table.join(
    -- Quit awesome
    awful.key({ modkey, "Control", "Mod1" }, "q", awesome.quit,
       { description = "quit awesome", group = "awesome" })
-)
-
--- custom launchers
-local launchers = {
-   ["rlg fzf --gui"] = "a",
-}
-for launcher, key in pairs(launchers) do
-   globalkeys = awful.util.table.join(globalkeys,
-      awful.key({ modkey }, key, function() awful.spawn.with_shell(launcher) end,
-         { description = launcher, group = "launcher" }))
-end
-
-local clientkeys = awful.util.table.join(
-   awful.key({ modkey, "Shift" }, "f",
-      function(c)
-         c.fullscreen = not c.fullscreen
-         c:raise()
-      end,
-      { description = "toggle fullscreen", group = "client" }),
-   awful.key({ modkey, }, "o", function(c) c:move_to_screen() end,
-      { description = "move to screen", group = "client" }),
-   awful.key({ modkey, "Shift", }, "n",
-      function(c)
-         -- The client currently has the input focus, so it cannot be
-         -- minimized, since minimized clients can't have the focus.
-         c.minimized = true
-      end,
-      { description = "minimize", group = "client" }),
-   awful.key({ modkey, }, "m",
-      function(c)
-         c.maximized = not c.maximized
-         c:raise()
-      end,
-      { description = "maximize", group = "client" })
 )
 
 -- Bind all key numbers to tags.
@@ -528,7 +359,6 @@ awful.rules.rules = {
          border_color = beautiful.border_normal,
          focus = awful.client.focus.filter,
          raise = true,
-         keys = clientkeys,
          buttons = clientbuttons,
          screen = awful.screen.preferred,
          placement = awful.placement.no_offscreen + awful.placement.centered,
@@ -549,59 +379,37 @@ client.connect_signal("manage", function(c)
    end
 end)
 
--- Add a titlebar if titlebars_enabled is set to true in the rules.
-client.connect_signal("request::titlebars", function(c)
-   -- buttons for the titlebar
-   local buttons = awful.util.table.join(
-      awful.button({}, 1, function()
-         client.focus = c
-         c:raise()
-         awful.mouse.client.move(c)
-      end),
-      awful.button({}, 3, function()
-         client.focus = c
-         c:raise()
-         awful.mouse.client.resize(c)
-      end)
-   )
-
-   awful.titlebar(c):setup {
-      { -- Left
-         awful.titlebar.widget.iconwidget(c),
-         buttons = buttons,
-         layout  = wibox.layout.fixed.horizontal
-      },
-      {    -- Middle
-         { -- Title
-            align  = "center",
-            widget = awful.titlebar.widget.titlewidget(c)
-         },
-         buttons = buttons,
-         layout  = wibox.layout.flex.horizontal
-      },
-      { -- Right
-         awful.titlebar.widget.floatingbutton(c),
-         awful.titlebar.widget.maximizedbutton(c),
-         awful.titlebar.widget.stickybutton(c),
-         awful.titlebar.widget.ontopbutton(c),
-         awful.titlebar.widget.closebutton(c),
-         layout = wibox.layout.fixed.horizontal()
-      },
-      layout = wibox.layout.align.horizontal
-   }
-end)
-
--- Enable sloppy focus, so that focus follows mouse.
-client.connect_signal("mouse::enter", function(c)
-   if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
-       and awful.client.focus.filter(c) then
-      client.focus = c
-   end
-end)
-
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
 
-wm.notify("Awesome!")
+-- {{{ Error handling
+-- Check if awesome encountered an error during startup and fell back to
+-- another config (This code will only ever execute for the fallback config)
+if awesome.startup_errors then
+   naughty.notify({
+      preset = naughty.config.presets.critical,
+      title = "Oops, there were errors during startup!",
+      text = awesome.startup_errors
+   })
+end
 
+-- Handle runtime errors after startup
+do
+   local in_error = false
+   awesome.connect_signal("debug::error", function(err)
+      -- Make sure we don't go into an endless error loop
+      if in_error then return end
+      in_error = true
+
+      naughty.notify({
+         preset = naughty.config.presets.critical,
+         title = "Oops, an error happened!",
+         text = tostring(err)
+      })
+      in_error = false
+   end)
+end
+-- }}}
+
+wm.notify("Awesome!")
