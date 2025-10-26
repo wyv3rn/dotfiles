@@ -86,6 +86,7 @@ wk.add({
    { "<leader><Tab>",    "<cmd>update<cr><cmd>edit #<cr>",                   desc = "Go to last buffer" },
    { "<leader>?",        telescope.help_tags,                                desc = "Find help" },
    { "<leader>b",        telescope.buffers,                                  desc = "Find buffers" },
+   { "<leader>r",        telescope.oldfiles,                                 desc = "Find in recent files" },
    { "<leader>u",        vim.cmd.UndotreeToggle,                             desc = "Toggle undo tree" },
    { "<leader>-",        oil.open_float,                                     desc = "Open Oil in directory of current buffer" },
    { "<leader>_",        function() oil.open_float(vim.uv.cwd()) end,        desc = "Open Oil in cwd" },
