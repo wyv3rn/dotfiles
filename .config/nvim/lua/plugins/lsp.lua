@@ -3,6 +3,7 @@ return {
       "neovim/nvim-lspconfig",
       dependencies = {
          { "barreiroleo/ltex_extra.nvim" },
+         { "stevearc/conform.nvim" },
       },
       config = function()
          local lsps = {
@@ -73,6 +74,13 @@ return {
                   vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
                end
             end
+         })
+
+         -- More formatters
+         require("conform").setup({
+            formatters_by_ft = {
+               python = { "black" },
+            }
          })
 
          -- Hammerspoon support
