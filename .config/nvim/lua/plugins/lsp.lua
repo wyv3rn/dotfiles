@@ -76,8 +76,11 @@ return {
             end
          })
 
-         -- More formatters
+         -- More formatters via conform.nvim
          require("conform").setup({
+            default_format_opts = {
+               lsp_format = "prefer",
+            },
             formatters_by_ft = {
                python = { "black" },
             }
