@@ -77,6 +77,10 @@ local lazygit_dotfiles = terminal:new({
 
 local next_diagnostic = function() vim.diagnostic.jump({ count = 1, float = true }) end
 local prev_diagnostic = function() vim.diagnostic.jump({ count = -1, float = true }) end
+local format_and_save = function()
+   conform.format()
+   vim.cmd("update")
+end
 
 wk.add({
    { "<leader>",         group = "Space mode" },
@@ -92,7 +96,7 @@ wk.add({
    { "<leader>-",        oil.open_float,                              desc = "Open Oil in directory of current buffer" },
    { "<leader>_",        function() oil.open_float(vim.uv.cwd()) end, desc = "Open Oil in cwd" },
    { "<leader>h",        vim.lsp.buf.hover,                           desc = "Show symbol information in hover" },
-   { "<leader><leader>", conform.format,                              desc = "Format buffer" },
+   { "<leader><leader>", format_and_save,                             desc = "Format buffer" },
 
    { "<leader>g",        group = "Git mode" },
    { "<leader>gb",       "<cmd>ToggleBlame virtual<cr>",              desc = "Toggle git blame" },
