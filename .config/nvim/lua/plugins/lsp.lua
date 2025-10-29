@@ -66,9 +66,9 @@ return {
          end
 
          -- Function to enable autocompletion on almost every key stroke for a buffer
-         local function enable_autocompletion(buf, keys)
-            local exclude = { ' ', '(', ')', '[', ']', '"', "'" }
-            vim.api.nvim_create_autocmd('InsertCharPre', {
+         local function enable_autocompl(buf, keys)
+            local exclude = { ' ', '(', ')', '[', ']', '"', "'", '{', '}', '!' }
+            vim.api.nvim_create_autocmd("InsertCharPre", {
                buffer = buf,
                callback = function()
                   if vim.fn.pumvisible() == 1 or vim.fn.state('m') == 'm' then
@@ -83,17 +83,29 @@ return {
             })
          end
 
+         local function prefer_keyword_compl(filename)
+            local exts = { "md", "tex" }
+            for _, ext in ipairs(exts) do
+               if filename:match(".*%." .. ext) then
+                  return true
+               end
+            end
+            return false
+         end
+
          -- Enable autocompletion for buffers on LspAttach
          vim.api.nvim_create_autocmd("LspAttach", {
             group = vim.api.nvim_create_augroup("my.lsp", {}),
             callback = function(args)
                local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+               local compl_keys = "<C-x><C-n>"
                if client:supports_method("textDocument/completion") then
                   vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = false })
-                  enable_autocompletion(args.buf, "<C-x><C-o>")
-               else
-                  enable_autocompletion(args.buf, "<C-x><C-n>")
+                  if not prefer_keyword_compl(args.file) then
+                     compl_keys = "<C-x><C-o>"
+                  end
                end
+               enable_autocompl(args.buf, compl_keys)
             end
          })
 
