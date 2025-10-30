@@ -51,18 +51,6 @@ local terminal = require("toggleterm.terminal").Terminal
 local oil = require("oil")
 local conform = require("conform")
 
-local scratch_term = terminal:new({
-   hidden = true,
-   direction = "float",
-})
-
-local calc_term = terminal:new({
-   cmd = "ghci",
-   hidden = true,
-   direction = "float",
-})
-
-
 local lazygit = terminal:new({
    cmd = "lazygit",
    hidden = true,
@@ -75,55 +63,60 @@ local lazygit_dotfiles = terminal:new({
    direction = "float"
 })
 
+-- Jumping to diagnostics with [d, ]d is basically default, but w want auto-hover (float = true), too
 local next_diagnostic = function() vim.diagnostic.jump({ count = 1, float = true }) end
 local prev_diagnostic = function() vim.diagnostic.jump({ count = -1, float = true }) end
+
 local format_and_save = function()
    conform.format()
    vim.cmd("update")
 end
 
+-- Avoid anonymous function boilerplate while mapping complex vim.cmd
+-- And as a bonus: allow chained commands via varargs
+local function vimcmd(...)
+   local arg = { ... }
+   return function()
+      for _, cmd in ipairs(arg) do
+         vim.cmd(cmd)
+      end
+   end
+end
+
 wk.add({
    { "<leader>",         group = "Space mode" },
-   { "<leader><Esc>",    "<cmd>nohlsearch<cr>",                       desc = "Clear everything!" },
+   { "<leader><Esc>",    vim.cmd.nohlsearch,                          desc = "Clear everything!" },
    { "<leader>f",        telescope.find_files,                        desc = "Find files" },
    { "<leader>*",        telescope.grep_string,                       desc = "Grep string under cursor" },
    { "<leader>/",        telescope.live_grep,                         desc = "Live grep" },
-   { "<leader><Tab>",    "<cmd>update<cr><cmd>edit #<cr>",            desc = "Go to last buffer" },
+   { "<leader><Tab>",    vimcmd("update", "edit #"),                  desc = "Go to last buffer" },
    { "<leader>?",        telescope.help_tags,                         desc = "Find help" },
    { "<leader>b",        telescope.buffers,                           desc = "Find buffers" },
    { "<leader>r",        telescope.oldfiles,                          desc = "Find in recent files" },
-   { "<leader>u",        vim.cmd.UndotreeToggle,                      desc = "Toggle undo tree" },
    { "<leader>-",        oil.open_float,                              desc = "Open Oil in directory of current buffer" },
    { "<leader>_",        function() oil.open_float(vim.uv.cwd()) end, desc = "Open Oil in cwd" },
    { "<leader>h",        vim.lsp.buf.hover,                           desc = "Show symbol information in hover" },
    { "<leader><leader>", format_and_save,                             desc = "Format buffer" },
 
    { "<leader>g",        group = "Git mode" },
-   { "<leader>gb",       "<cmd>ToggleBlame virtual<cr>",              desc = "Toggle git blame" },
+   { "<leader>gb",       vimcmd("ToggleBlame virtual"),               desc = "Toggle git blame" },
    { "<leader>gg",       function() lazygit:toggle() end,             desc = "Toggle lazygit terminal" },
    { "<leader>gd",       function() lazygit_dotfiles:toggle() end,    desc = "Toggle lazygit terminal for dotfiles" },
 
    { "g",                group = "GoTo mode" },
    { "gd",               telescope.lsp_definitions,                   desc = "Go to definition" },
    { "gy",               telescope.lsp_type_definitions,              desc = "Go to type definition" },
-   { "gh",               "<cmd>LspClangdSwitchSourceHeader<cr>",      desc = "Go to header/source file" },
+   { "gh",               vimcmd("LspClangdSwitchSourceHeader"),       desc = "Go to header/source file" },
    { "grr",              telescope.lsp_references,                    desc = "Go to references" },
    { "gs",               telescope.lsp_document_symbols,              desc = "Find symbols in buffer" },
    { "gS",               telescope.lsp_dynamic_workspace_symbols,     desc = "Find symbols in workspace" },
    { "gD",               telescope.diagnostics,                       desc = "Find diagnostics" },
    { "ga",               vim.lsp.buf.code_action,                     desc = "Perform code action" },
-   { "gq",               "<cmd>tab copen<cr>",                        desc = "Open quickfix list in new tab" },
+   { "gq",               vimcmd("tab copen"),                         desc = "Open quickfix list in new tab" },
 
    { "<leader>t",        group = "Toggle mode" },
-   { "<leader>tt",       function() scratch_term:toggle() end,        desc = "Toggle floating scratch terminal" },
-   { "<leader>tc",       function() calc_term:toggle() end,           desc = "Toggle floating calculator terminal" },
-   { "<leader>tw",       "<cmd>StripWhitespace<cr>",                  desc = "Strip trailing whitespaces" },
-
+   { "<leader>tw",       vimcmd("StripWhitespace"),                   desc = "Strip trailing whitespaces" },
 
    { "[d",               prev_diagnostic,                             desc = "GoTo prev diagnostic" },
    { "]d",               next_diagnostic,                             desc = "GoTo next diagnostic" },
-   { "[c",               "<cmd>cprev<cr>",                            desc = "GoTo prev quickfix" },
-   { "]c",               "<cmd>cnext<cr>",                            desc = "GoTo next quickfix" },
-   { "[b",               "<cmd>update<cr><cmd>bprev<cr>",             desc = "Go to previous buffer" },
-   { "]b",               "<cmd>update<cr><cmd>bnext<cr>",             desc = "Go to next buffer" },
 })
