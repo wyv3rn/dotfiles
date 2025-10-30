@@ -65,9 +65,27 @@ return {
             vim.lsp.enable(lsp)
          end
 
+         local function lang_by_ext(filename)
+            local ext_to_lang = {
+               py = "python",
+               rs = "rust",
+               md = "markdown",
+            }
+            local _, _, ext = filename:find(".*%.(%w+)$")
+            if ext_to_lang[ext] then
+               return ext_to_lang[ext]
+            else
+               return ext
+            end
+         end
+
          -- Function to enable autocompletion on almost every key stroke for a buffer
-         local function enable_autocompl(buf, keys)
-            local exclude = { ' ', '(', ')', '[', ']', '"', "'", '{', '}', '!' }
+         local function enable_autocompl(buf, keys, lang)
+            local exclude = { ' ', '(', ')', '[', ']', '"', "'", '{', '}', '!', ",", ";", "=" }
+            if lang == "python" then
+               table.insert(exclude, ":")
+            end
+
             vim.api.nvim_create_autocmd("InsertCharPre", {
                buffer = buf,
                callback = function()
@@ -83,14 +101,8 @@ return {
             })
          end
 
-         local function prefer_keyword_compl(filename)
-            local exts = { "md", "tex" }
-            for _, ext in ipairs(exts) do
-               if filename:match(".*%." .. ext) then
-                  return true
-               end
-            end
-            return false
+         local function prefer_keyword_compl(lang)
+            return lang == "markdown" or lang == "tex"
          end
 
          -- Enable autocompletion for buffers on LspAttach
@@ -99,13 +111,14 @@ return {
             callback = function(args)
                local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
                local compl_keys = "<C-x><C-n>"
+               local lang = lang_by_ext(args.file)
                if client:supports_method("textDocument/completion") then
                   vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = false })
-                  if not prefer_keyword_compl(args.file) then
+                  if not prefer_keyword_compl(lang) then
                      compl_keys = "<C-x><C-o>"
                   end
                end
-               enable_autocompl(args.buf, compl_keys)
+               enable_autocompl(args.buf, compl_keys, lang)
             end
          })
 
