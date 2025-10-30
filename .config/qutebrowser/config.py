@@ -11,6 +11,7 @@ c.url.searchengines = {
     "gs": "https://scholar.google.com/scholar?q={}",
     "doi": "https://doi.org/{}",
     "dev": "https://devdocs.io/#q={}",
+    "rs": "https://lib.rs/search?q={}",
 }
 c.url.start_pages = ["about:blank"]
 c.colors.webpage.preferred_color_scheme = "dark"
