@@ -81,7 +81,7 @@ return {
 
          -- Function to enable autocompletion on almost every key stroke for a buffer
          local function enable_autocompl(buf, keys, lang)
-            local exclude = { ' ', '(', ')', '[', ']', '"', "'", '{', '}', '!', ",", ";", "=" }
+            local exclude = { ' ', '(', ')', '[', ']', '"', "'", '{', '}', '!', ",", ";", "=", "<", ">" }
             if lang == "python" then
                table.insert(exclude, ":")
             end

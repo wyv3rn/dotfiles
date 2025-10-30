@@ -29,6 +29,7 @@ local snippet_jump_fwd = "<Cmd>lua vim.snippet.jump(1)<CR>"
 local snippet_jump_bwd = "<Cmd>lua vim.snippet.jump(-1)<CR>"
 
 cmap("<Tab>", "<C-y>")
+cmap("<CR>", "<C-e><CR>")
 cmap("<C-f>", snippet_jump_fwd, snippet_jump_fwd)
 cmap("<C-b>", "<C-b>", snippet_jump_bwd)
 cmap("<C-l>", "<C-y>", "<C-x><C-l>", "<C-x><C-l>")
