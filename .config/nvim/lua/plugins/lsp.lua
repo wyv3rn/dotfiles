@@ -15,6 +15,7 @@ return {
             "pyright",
             "rust_analyzer",
             "texlab",
+            "elmls",
          }
 
          -- Configure ltex-ls to use ltex_extra
