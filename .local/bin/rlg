@@ -21,7 +21,7 @@ def from_bib [item: string] {
     if (($meta | get 1) != $item) {
         error make { msg: "Key of the item does not match, please go fix" }
     }
-    let body_record = cat $path | sed -n '/=/p' | sed 's/"/\\"/g;s/=/:/;s/^  //;s/,$//;s/{\(.*\)}/"\1"/;s/\\.//g' | from yaml
+    let body_record = cat $path | sed -n '/=/p' | sed 's/\([^\\]\)"/\1/g;s/=/:/;s/^  //;s/,$//;s/{\(.*\)}/"\1"/;s/\\.//g' | from yaml
     let reftype = $meta | get 0
     let record = {
         ...$body_record
