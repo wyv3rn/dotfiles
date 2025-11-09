@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+remote=tau
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -h|--help)
+            echo "No help yet :("
+            exit 0
+            ;;
+        --home)
+            remote="tau-at-home"
+            ;;
+    esac
+    shift
+done
+
+cmd="rsync -aHAXi --exclude .DS_Store ${HOME}/Documents ${remote}:"
+echo $cmd
+$cmd --dry-run
+read -p "Execute? [yes/NO]" b
+if [ "$b" == "yes" ]; then
+    echo "Executing"
+    $cmd
+else
+    echo "Aborting"
+fi
