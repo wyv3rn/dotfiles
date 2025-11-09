@@ -112,14 +112,16 @@ return {
             callback = function(args)
                local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
                local compl_keys = "<C-x><C-n>"
+               local fallback_keys = "<C-x><C-o>"
                local lang = lang_by_ext(args.file)
                if client:supports_method("textDocument/completion") then
                   vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = false })
                   if not prefer_keyword_compl(lang) then
-                     compl_keys = "<C-x><C-o>"
+                     compl_keys, fallback_keys = fallback_keys, compl_keys
                   end
                end
                enable_autocompl(args.buf, compl_keys, lang)
+               vim.keymap.set('i', '<C-g>', fallback_keys)
             end
          })
 
