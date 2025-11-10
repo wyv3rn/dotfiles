@@ -48,7 +48,12 @@ function Lwm:rebind_in_apps(from_mods, from_key, to_mods, to_key, except)
 end
 
 function Lwm:close_focused()
-   self:close(self:focused_win())
+   local win = self:focused_win()
+   if win == nil then
+      self:notify("Did not find a focused window!")
+      return
+   end
+   self:close(win)
 end
 
 function Lwm:maximize_focused()
