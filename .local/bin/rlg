@@ -12,6 +12,14 @@ let db_json = $"($library)/state.json"
 let db = $"($library)/sioyek.db"
 let browser = "qutebrowser"
 
+# some OS specific commands
+let os = uname | get kernel-name
+let clip = if $os == "Darwin" {
+    "pbcopy"
+} else {
+    "xclip -selection clipboard"
+}
+
 def from_bib [item: string] {
     let path = $"($bib_path)/($item).bib"
     let meta = cat $path | sed '/^#/d' | head -n1 | sed 's/[@,]//g' | split row "{"
@@ -136,7 +144,7 @@ def "main rmfrom" [
 def "main yank" [
     item: string
 ] {
-    cat $"($library)/bib/($item).bib" | xclip -selection clipboard
+    cat $"($library)/bib/($item).bib" | nu -c $clip
 }
 
 def main [] {
