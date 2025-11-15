@@ -16,6 +16,7 @@ return {
             "rust_analyzer",
             "texlab",
             "elmls",
+            "hls",
          }
 
          -- Configure ltex-ls to use ltex_extra
