@@ -141,6 +141,9 @@ end
 -- Disable animations
 hs.window.animationDuration = 0
 
+-- Configure window switcher
+hs.hints.style = "vimperator"
+
 -- hotfixing hs.window:setFrame, see https://github.com/Hammerspoon/hammerspoon/issues/3224
 local function axHotfix(win)
    local fallback = function() end
