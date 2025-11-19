@@ -4,7 +4,9 @@ if [ $# -ne 2 ]; then
     echo "Usage: yt-pl id name"
 fi
 
-list_id=$1
+list_id=$(echo $1 | sed -n "s/.*list\=\(.*\)&si\=.*/\1/p")
+echo "List ID = ${list_id}"
+
 list_name=$2
 
 opus_dir="${HOME}/Music/opus"
