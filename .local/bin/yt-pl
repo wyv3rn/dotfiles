@@ -23,9 +23,10 @@ for track_id in $track_ids; do
         continue
     fi
     echo "[${number}] Written to ${dst}"
+    rel_dst=$(echo $dst | sed 's/\/.*\/.*\/Music/..\/../')
     link_name="$(printf "%03d" $number)_$(basename $dst)"
-    echo "[${number}] Linking as ${link_name}"
-    ln -s $dst "${pl_dir}/${link_name}"
+    echo "[${number}] Linking ${link_name} -> ${rel_dst}"
+    ln -s ${rel_dst} "${pl_dir}/${link_name}"
     echo $link_name >> $m3u_file
     ((number+=1))
 done
