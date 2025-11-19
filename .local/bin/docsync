@@ -23,7 +23,7 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
-flags="-aHAXi --no-xattrs --no-perms --ignore-existing --delete"
+flags="-aHAXi --no-xattrs --delete"
 
 case $direction in
     push)
