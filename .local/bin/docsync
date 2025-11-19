@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+if [ $# -lt 2 ]; then
+    echo "Usage: docsync pull|push dir"
+    exit -1
+fi
+
+direction=$1
+directory=$2
+
 remote=tau
 
 while [[ $# -gt 0 ]]; do
@@ -15,7 +23,19 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
-cmd="rsync -aHAXi --exclude .DS_Store ${HOME}/Documents ${remote}:"
+case $direction in
+    push)
+        cmd="rsync -aHAXi --no-xattrs --no-perms --delete --exclude .DS_Store ${HOME}/${directory} ${remote}:"
+        ;;
+    pull)
+        cmd="rsync -aHAXi --no-xattrs --no-perms --delete ${remote}:${directory} ${HOME}"
+        ;;
+    *)
+        echo "Unknown direction: ${direction}"
+        exit -1
+        ;;
+esac
+
 echo $cmd
 $cmd --dry-run
 read -p "Execute? [yes/NO]" b
