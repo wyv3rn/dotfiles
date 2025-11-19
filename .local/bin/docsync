@@ -23,12 +23,14 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
+flags="-aHAXi --no-xattrs --no-perms --ignore-existing --delete"
+
 case $direction in
     push)
-        cmd="rsync -aHAXi --no-xattrs --no-perms --delete --exclude .DS_Store ${HOME}/${directory} ${remote}:"
+        cmd="rsync ${flags} --exclude .DS_Store ${HOME}/${directory} ${remote}:"
         ;;
     pull)
-        cmd="rsync -aHAXi --no-xattrs --no-perms --delete ${remote}:${directory} ${HOME}"
+        cmd="rsync ${flags} ${remote}:${directory} ${HOME}"
         ;;
     *)
         echo "Unknown direction: ${direction}"
