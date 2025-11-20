@@ -1,26 +1,39 @@
 #!/usr/bin/env bash
 
-if [ $# -ne 3 ]; then
-    echo "Usage: yt-pl init|add id name"
+if [ $# -lt 3 ]; then
+    echo "Usage: yt-pl init|add id name [options]"
     exit -1
 fi
 
+cmd=$1
+id=$2
 list_name=$3
+
+extra_flags=""
+
+while [ $# -gt 0 ]; do
+    case $1 in
+        --cookies)
+            extra_flags="${extra_flags} --cookies-from-browser brave"
+            ;;
+    esac
+    shift
+done
 
 opus_dir="${HOME}/Music/opus"
 pl_dir="${HOME}/Music/playlists/${list_name}"
 m3u_file="${pl_dir}/playlist.m3u"
 mkdir -p $pl_dir
 
-case $1 in
+case $cmd in
     init)
-        list_id=$(echo $2 | sed -n "s/.*list\=\(.*\)&si\=.*/\1/p")
+        list_id=$(echo $id | sed -n "s/.*list\=\(.*\)&si\=.*/\1/p")
         echo "List ID = ${list_id}"
         track_ids=$(yt-dlp --skip-download https://music.youtube.com/playlist?list=${list_id} 2>/dev/null | sed -n 's/^.*Extracting URL:.*\?v\=\(.*\)/\1/p')
         number=1
         ;;
     add)
-        track_id=$(echo $2 | sed -n "s/.*watch\?v\=\(.*\)&si\=.*/\1/p")
+        track_id=$(echo $id | sed -n "s/.*watch\?v\=\(.*\)&si\=.*/\1/p")
         echo "Track ID = ${track_id}"
         track_ids=($track_id)
         if [ ! -f $m3u_file ]; then
@@ -31,14 +44,14 @@ case $1 in
         ((number+=1))
         ;;
     *)
-        echo "Unknown subcommand $1"
+        echo "Unknown subcommand ${cmd}"
         exit -1
         ;;
 esac
 
 for track_id in $track_ids; do
     echo "[${number}] Downloading track_id = ${track_id}"
-    dst=$(yt-dlp -x --audio-format opus --embed-metadata https://music.youtube.com/watch?v=${track_id} -o "${opus_dir}/%(artists.0)s/%(album)s/%(track)s.%(ext)s" --restrict-filenames | grep -o "\S\+\.opus" | head -n1)
+    dst=$(yt-dlp ${extra_flags} -x --audio-format opus --embed-metadata https://music.youtube.com/watch?v=${track_id} -o "${opus_dir}/%(artists.0)s/%(album)s/%(track)s.%(ext)s" --restrict-filenames | grep -o "\S\+\.opus" | head -n1)
     if [ "${dst}" == "" ]; then
         echo "[${number}] Failed to get destination file, skipping linking!"
         continue
