@@ -68,6 +68,9 @@ config.bind("ss", "open -t gs {primary}")
 
 # yank primary selected text to clipboard
 config.bind("ys", "yank selection")
+
+# go watch
+config.bind("gw", "spawn mpv {url}")
 ### end of key bindings
 
 # set PATH on macos
