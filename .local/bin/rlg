@@ -50,7 +50,12 @@ function edit() {
 }
 
 function yank() {
-    show $@ | $clip
+    if [ $usefzf -eq 1 ]; then
+        list=$(ls $bib_dir | sed 's/\.bib$//')
+        show $(echo "$list" | $fzfprg) | $clip
+    else
+        show $@ | $clip
+    fi
 }
 
 function do_fzf() {
@@ -102,6 +107,7 @@ fi
 usedoi=0
 fzfprg="fzf"
 output="/dev/stdout"
+usefzf=0
 
 posargs=()
 while [ $# -gt 0 ]; do
@@ -113,6 +119,9 @@ while [ $# -gt 0 ]; do
         -p|--prefix)
             prefix=$2
             shift
+            ;;
+        --fzf)
+            usefzf=1
             ;;
         --doi)
             usedoi=1
