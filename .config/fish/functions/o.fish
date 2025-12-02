@@ -1,4 +1,5 @@
 function o --wraps=open --description 'alias o open'
+    set PDFV zathura
     set BACK 1
     switch (uname)
     case Darwin
@@ -9,7 +10,7 @@ function o --wraps=open --description 'alias o open'
 
     switch $argv
     case "*.pdf"
-        set BIN "sioyek"
+        set BIN $PDFV
     case "*.md" "*.tex" "*.json"
         set BIN nvim
         set BACK 0

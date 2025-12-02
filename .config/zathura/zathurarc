@@ -3,3 +3,4 @@ map { scroll half-up
 map } scroll half-down
 map [ navigate previous
 map ] navigate next
+map <C-t> jumplist backward

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # general params
+pdfviewer="zathura"
 do_clear=1
 color=1
 mode="release"
@@ -99,7 +100,10 @@ if [ -f .venv/bin/activate ]; then
 fi
 
 
-if [ -f Makefile ]; then
+if [ "$tex_file_count" == "1" ] && [ "$mode" == "open" ]; then
+    pdf_file=$(ls | grep -o "\S*\.tex" | sed 's/\.tex$/\.pdf/')
+    nohup $pdfviewer $pdf_file >/dev/null 2>&1 &
+elif [ -f Makefile ]; then
     make MODE=$mode
 elif [ -f .latexmkrc ]; then
     latexmk
@@ -190,6 +194,9 @@ elif [ -f build.py ]; then
         ssh $host "cd autobuild/${cwd}; binaries/bin/opp_scavetool export -o results/${sim_config}/results.json results/${sim_config}/*.vec results/${sim_config}/*.sca"
         mkdir -p results/${sim_config}
         scp ${host}:autobuild/${cwd}/results/${sim_config}/results.json results/${sim_config}/results.json
+    elif [ "$mode" == "open" ]; then
+        echo "Unsupported mode ${mode} for build.py projects"
+        exit -1
     else
         targets=`jq '.targets | .[]' -r .autobuild.json 2>/dev/null || echo $cwd`
         for target in $targets; do
