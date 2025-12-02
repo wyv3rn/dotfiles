@@ -26,8 +26,8 @@ function do_open() {
     pdf="${pdf_dir}/${1}.pdf"
     bib="${bib_dir}/${1}.bib"
     data=$(cat $bib)
-    url_re="url ?= ?{([^}]*)}"
-    doi_re="doi ?= ?{([^}]*)}"
+    url_re="url ?= ?\{([^}]*)\}"
+    doi_re="doi ?= ?\{([^}]*)\}"
 
     if [[ -f $pdf && usedoi -ne 1 ]]; then
         $viewer $pdf $db_schema $db $db_json
