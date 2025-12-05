@@ -9,7 +9,7 @@ return {
          local lsps = {
             "bashls",
             "clangd",
-            "ltex",
+            "ltex_plus",
             "lua_ls",
             "marksman",
             "pyright",
@@ -20,11 +20,15 @@ return {
             "tinymist"
          }
 
-         -- Configure ltex-ls to use ltex_extra
-         local ltex_bin = vim.fn.expand("~") .. "/.local/bin/lsps/ltex-ls-16.0.0/bin/ltex-ls"
+         -- Configure ltex-ls-plus to use ltex_extra
+         local ltex_bin = vim.fn.expand("~") .. "/.local/bin/lsps/ltex-ls-plus-18.6.1/bin/ltex-ls-plus"
          local dict_dir = vim.fn.expand("~") .. "/devops/dictionary/"
-         vim.lsp.config["ltex"] = {
+         vim.lsp.config["ltex_plus"] = {
             cmd = { ltex_bin },
+            filetypes = {
+               "markdown",
+               "latex",
+            },
             on_attach = function(_, _)
                require("ltex_extra").setup({
                   path = dict_dir,
