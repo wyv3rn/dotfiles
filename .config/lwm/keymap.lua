@@ -24,7 +24,7 @@ function m.map(lwm)
    end
 
    lwm:bind({ "cmd" }, "y", function() lwm:fzf_win() end)
-   lwm:bind({ "cmd" }, "a", function() lwm:spawn("rlg fzf --gui") end)
+   lwm:bind({ "cmd" }, "a", function() lwm:spawn("rlg open --gui") end)
    lwm:bind({ "cmd" }, "q", function() lwm:close_focused() end, "Shift")
    lwm:bind({ "cmd" }, "m", function() lwm:maximize_focused() end)
    lwm:bind({ "cmd" }, "f", function() lwm:toggle_fullscreen_focused() end)

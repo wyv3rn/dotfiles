@@ -23,8 +23,9 @@ fi
 
 # cmds/helper functions
 function do_open() {
-    pdf="${pdf_dir}/${1}.pdf"
-    bib="${bib_dir}/${1}.bib"
+    item=$(get_item $@)
+    pdf="${pdf_dir}/${item}.pdf"
+    bib="${bib_dir}/${item}.bib"
     data=$(cat $bib)
     url_re="url ?= ?\{([^}]*)\}"
     doi_re="doi ?= ?\{([^}]*)\}"
@@ -36,31 +37,32 @@ function do_open() {
     elif [[ "$data" =~ $doi_re ]]; then
         $browser "https://doi.org/${BASH_REMATCH[1]}"
     else
-        echo "Do not know how to open ${1}"
+        echo "Do not know how to open ${item}"
         exit -1
     fi
 }
 
-function show() {
-    cat "${library}/bib/${1}.bib"
-}
-
-function edit() {
-    $editor "${bib_dir}/${1}.bib"
-}
-
-function yank() {
-    if [ $usefzf -eq 1 ]; then
-        list=$(ls $bib_dir | sed 's/\.bib$//')
-        show $(echo "$list" | $fzfprg) | $clip
+function get_item() {
+    if [ $# -gt 0 ]; then
+        echo $1
     else
-        show $@ | $clip
+        list=$(ls $bib_dir | sed 's/\.bib$//')
+        echo "$list" | $fzfprg
     fi
 }
 
-function do_fzf() {
-    list=$(ls $bib_dir | sed 's/\.bib$//')
-    do_open $(echo "$list" | $fzfprg)
+function show() {
+    item=$(get_item $@)
+    cat "${library}/bib/${item}.bib"
+}
+
+function edit() {
+    item=$(get_item $@)
+    $editor "${bib_dir}/${item}.bib"
+}
+
+function yank() {
+    show $@ | $clip
 }
 
 function do_export() {
@@ -95,9 +97,8 @@ fi
 
 cmd=$1
 shift
-if [ "$cmd" == "fzf" ]; then
-    cmd="do_fzf" # avoiding name clash with fzf programm
-elif [ "$cmd" == "open" ]; then
+# avoiding name clashes with builtins/system tools
+if [ "$cmd" == "open" ]; then
     cmd="do_open"
 elif [ "$cmd" == "export" ]; then
     cmd="do_export"
@@ -107,7 +108,6 @@ fi
 usedoi=0
 fzfprg="fzf"
 output="/dev/stdout"
-usefzf=0
 
 posargs=()
 while [ $# -gt 0 ]; do
@@ -119,9 +119,6 @@ while [ $# -gt 0 ]; do
         -p|--prefix)
             prefix=$2
             shift
-            ;;
-        --fzf)
-            usefzf=1
             ;;
         --doi)
             usedoi=1
