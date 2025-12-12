@@ -78,6 +78,8 @@ return {
                rs = "rust",
                md = "markdown",
                typ = "typst",
+               hpp = "cpp",
+               cpp = "cpp",
             }
             local _, _, ext = filename:find(".*%.(%w+)$")
             if ext_to_lang[ext] then
@@ -98,9 +100,12 @@ return {
 
          -- Function to enable autocompletion on almost every key stroke for a buffer
          local function enable_autocompl(buf, keys, lang)
-            local exclude = { ' ', '(', ')', '[', ']', '"', "'", '{', '}', '!', ",", ";", "=", "<", ">" }
+            local exclude = { ' ', '(', ')', '[', ']', '"', "'", '{', '}', '!', ",", ";", "=", "<" }
             if lang == "python" then
                table.insert(exclude, ":")
+            end
+            if lang ~= "cpp" then
+               table.insert(exclude, ">")
             end
 
             vim.api.nvim_create_autocmd("InsertCharPre", {
