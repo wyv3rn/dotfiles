@@ -1,12 +1,13 @@
 local m = {}
 
 local browser = "qutebrowser"
-local pdf_viewer = "Zathura"
+local pdf_viewer = "sioyek"
 local terminal = "WezTerm"
 local mail_client = "Thunderbird"
 
 function m.map(lwm)
    if lwm:os() == "linux" then
+      pdf_viewer = "Zathura"
       terminal = "wezterm"
       mail_client = "thunderbird"
    end
@@ -37,6 +38,7 @@ function m.map(lwm)
       lwm:rebind_in_apps({ "ctrl" }, "s", { "cmd" }, "s", { terminal })
       lwm:rebind_in_apps({ "ctrl" }, "c", { "cmd" }, "c", { terminal })
       lwm:rebind_in_apps({ "ctrl" }, "v", { "cmd" }, "v", { terminal })
+      lwm:rebind_in_apps({ "ctrl" }, "x", { "cmd" }, "x", { terminal })
       lwm:rebind_in_apps({ "ctrl" }, "z", { "cmd" }, "z", { terminal })
       lwm:rebind_in_apps({ "ctrl" }, "a", { "cmd" }, "a", { terminal })
       lwm:rebind_in_apps({ "ctrl" }, "f", { "cmd" }, "f", { terminal })
