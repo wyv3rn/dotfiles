@@ -3,9 +3,10 @@ function o --wraps=open --description 'alias o open'
     set BACK 1
     switch (uname)
     case Darwin
-        set BIN "open"
+        set BIN open
+        set PDFV sioyek
     case "*"
-        set BIN "xdg-open"
+        set BIN xdg-open
     end
 
     switch $argv
