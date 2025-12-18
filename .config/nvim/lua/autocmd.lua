@@ -61,7 +61,7 @@ vim.api.nvim_create_autocmd("InsertCharPre", {
 
 -- smart newline matching autoclose
 local function smart_newline()
-   if vim.fn.pumvisible() then
+   if vim.fn.pumvisible() ~= 0 then
       feed_keys("<C-e>")
    end
    feed_keys("<CR>")

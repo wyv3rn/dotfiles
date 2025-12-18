@@ -15,7 +15,7 @@ vim.keymap.set('n', '<C-u>', '<C-u>zz')
 -- Easier built-in completion and snippets
 local function cmap(from, menu, snippet, default)
    vim.keymap.set("i", from, function()
-      if vim.fn.pumvisible() == 1 then
+      if vim.fn.pumvisible() ~= 0 then
          return menu
       elseif vim.snippet.active() then
          return snippet or from
