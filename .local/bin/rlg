@@ -5,7 +5,6 @@ library="${HOME}/.library"
 bib_dir="${library}/bib"
 bib_dir_sed_esc=$(echo $bib_dir | sed 's/\//\\\//g')
 pdf_dir="${library}/pdf"
-collection_dir="${library}/collections"
 
 viewer="rlg-sioyek"
 editor="nvim"
@@ -65,28 +64,45 @@ function yank() {
     show $@ | $clip
 }
 
-function do_export() {
-    collection="${collection_dir}/${1}.txt"
-    files=$(sed "s/^\(.*\)$/${bib_dir_sed_esc}\/\1.bib/" ${collection})
-    awk 'FNR==1 && NR!=1 {print ""} {print}' $files | sed "s/\(^@[^{]*{\)/\1${prefix}/" > $output
-}
-
-function addto() {
-    collection="${collection_dir}/${1}.txt"
-    item=$2
-    bib_file="${bib_dir}/${item}.bib"
-    if [[ ! -f $bib_file ]]; then
-        echo "Do not know ${item}!"
+function do_diff() {
+    if [ $# -lt 1 ]; then
+        echo "Usage: rlg diff some-file.bib"
         exit -1
     fi
-    echo $item >> $collection
-    sort -u -o $collection $collection
-}
+    collection=$1
 
-function rmfrom() {
-    collection="${collection_dir}/${1}.txt"
-    item=$2
-    sed -i '' "/^${item}$/d" $collection
+    entries=()
+    current_entry=""
+    while read -r; do
+        if [[ $REPLY ]]; then
+            if [[ $current_entry ]]; then
+                current_entry+=$'\n'"$REPLY"
+            else
+                current_entry+=$REPLY
+            fi
+        else
+            entries+=("$current_entry")
+            current_entry=""
+        fi
+    done < $collection
+    for entry in "${entries[@]}"; do
+        item=$(echo "$entry" | sed -n 's/^@.*{\(.*\),/\1/p')
+        if grep -q "bib:" <(echo $item); then
+            replace='s/bib://'
+            item=$(echo $item | sed $replace)
+            entry=$(echo "$entry" | sed $replace)
+        fi
+        bibfile=${bib_dir}/${item}.bib
+        if [ -f $bibfile ]; then
+            if [ $apply_patch -eq 1 ]; then
+                diff --color <(echo "$entry") <(cat $bibfile) | patch --no-backup-if-mismatch $collection -
+            else
+                diff --color <(echo "$entry") <(cat $bibfile)
+            fi
+        else
+            echo "Entry ${item} not found in library!"
+        fi
+    done
 }
 
 # parse args
@@ -100,14 +116,15 @@ shift
 # avoiding name clashes with builtins/system tools
 if [ "$cmd" == "open" ]; then
     cmd="do_open"
-elif [ "$cmd" == "export" ]; then
-    cmd="do_export"
+elif [ "$cmd" == "diff" ]; then
+    cmd="do_diff"
 fi
 
 # defaults for named args
 usedoi=0
 fzfprg="fzf"
 output="/dev/stdout"
+apply_patch=0
 
 posargs=()
 while [ $# -gt 0 ]; do
@@ -125,6 +142,9 @@ while [ $# -gt 0 ]; do
             ;;
         --gui)
             fzfprg="gfzf"
+            ;;
+        --apply)
+            apply_patch=1
             ;;
         *)
             posargs+=($1)
