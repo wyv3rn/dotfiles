@@ -28,6 +28,7 @@ return {
             filetypes = {
                "markdown",
                "latex",
+               "tex",
             },
             on_attach = function(_, _)
                require("ltex_extra").setup({
