@@ -12,7 +12,7 @@ local close_to_pair = {
 }
 
 local function str_at(s, i)
-   return string.sub(s, i, i)
+   return s:sub(i, i)
 end
 
 local function feed_keys(str)
@@ -26,6 +26,13 @@ local function pos()
    local line = vim.api.nvim_buf_get_lines(0, row - 1, row, false)[1]
    local line_len = #line
    local at_line_end = col == line_len
+
+   local in_ac = false
+   if at_line_end and col >= 3 then
+      print(line:sub(col - 2, col))
+      in_ac = line:sub(col - 2, col) == "\\ac"
+   end
+
    local in_pair = false
    local next_char = nil
    if col > 0 and col < line_len then
@@ -36,16 +43,16 @@ local function pos()
          end
       end
    end
-   return at_line_end, in_pair, next_char
+   return at_line_end, in_pair, in_ac, next_char
 end
 
 -- autoclose
 vim.api.nvim_create_autocmd("InsertCharPre", {
    callback = function()
-      local at_line_end, in_pair, next_char = pos()
+      local at_line_end, in_pair, in_ac, next_char = pos()
       local pair = open_to_pair[vim.v.char]
 
-      local autoclose = pair ~= nil and (at_line_end or in_pair)
+      local autoclose = pair ~= nil and (at_line_end or in_pair) and not in_ac
       local skip_closing = close_to_pair[vim.v.char] ~= nil and next_char == vim.v.char
 
       if skip_closing then
@@ -65,7 +72,7 @@ local function smart_newline()
       feed_keys("<C-e>")
    end
    feed_keys("<CR>")
-   local _, in_pair, _ = pos()
+   local _, in_pair, _, _ = pos()
    if in_pair then
       feed_keys("<C-o>O")
    end
