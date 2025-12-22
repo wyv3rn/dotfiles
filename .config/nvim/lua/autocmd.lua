@@ -29,7 +29,6 @@ local function pos()
 
    local in_ac = false
    if at_line_end and col >= 3 then
-      print(line:sub(col - 2, col))
       in_ac = line:sub(col - 2, col) == "\\ac"
    end
 
