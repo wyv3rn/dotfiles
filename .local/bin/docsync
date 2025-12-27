@@ -7,6 +7,15 @@ fi
 
 direction=$1
 directory=$2
+shift
+shift
+
+if [ "$directory" == "all" ]; then
+    for dir in "Documents" "Music" "Scratch"; do
+        docsync $direction $dir $@
+    done
+    exit
+fi
 
 remote=tau
 
