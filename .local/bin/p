@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+
+function force-curses() {
+    # TODO this is probably not enough on linux
+    export GPG_TTY=$(tty)
+    export PINENTRY_USER_DATA="USE_CURSES=1"
+}
+
+fzfprg="fzf"
+
+if [ "$(uname)" == "Darwin" ]; then
+    clip="pbcopy"
+else
+    clip="xclip"
+fi
+
+pwdir="${HOME}/.pstore"
+if [ ! -d $pwdir ]; then
+    mkdir $pwdir
+fi
+
+if [ "$1" == "add" ]; then
+    if [ $# -ne 2 ]; then
+        echo "Usage: p add <key>"
+        exit -2
+    fi
+    key=$2
+    filename="${pwdir}/${key}"
+
+    read -p "Username: " user
+    read -s -p "Password: " pw
+    echo ""
+    read -s -p "Again: " pwcheck
+    echo ""
+
+    if [ ! "$pw" == "$pwcheck" ]; then
+        echo "Passwords do not match"
+        exit -1
+    fi
+    value="${user}"$'\n'"${pw}"
+
+    force-curses
+    echo -n "$value" | gpg -c --armor --no-symkey-cache > $filename
+
+    unset -v pw pwcheck
+else
+    if [ "$1" == "--gui" ]; then
+        fzfprg="gfzf"
+    else
+        force-curses
+    fi
+    key=$(ls $pwdir | $fzfprg)
+    if [ "$key" == "" ]; then
+        exit 0
+    fi
+    plain=$(gpg -d --no-symkey-cache "${pwdir}/${key}")
+    echo -n "$plain" | head -n1
+    echo -n "$plain" | tail -n1 | $clip
+fi
