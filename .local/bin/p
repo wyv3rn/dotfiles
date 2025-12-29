@@ -1,9 +1,47 @@
 #!/usr/bin/env bash
 
+set -e
+
 function force-curses() {
     # TODO this is probably not enough on linux
     export GPG_TTY=$(tty)
     export PINENTRY_USER_DATA="USE_CURSES=1"
+}
+
+function fullprompt() {
+    read -p "Username: " user
+    pw=$(pwprompt)
+    value="${user}"$'\n'"${pw}"
+    echo "$value"
+}
+
+function pwprompt() {
+    read -s -p "Password: " pw
+    read -s -p "Again: " pwcheck
+
+    if [ ! "$pw" == "$pwcheck" ]; then
+        echo "Passwords do not match" >&2
+        exit -1
+    fi
+    unset -v pwcheck
+    echo $pw
+}
+
+function add() {
+    key=$1
+    master=$2
+    filename="${pwdir}/${key}"
+    value=$(fullprompt)
+    xtraflags=""
+
+    if [ ! "$master" == "" ]; then
+        xtraflags="--passphrase ${master} --batch"
+    fi
+
+    force-curses
+    echo -n "$value" | gpg -c --armor --no-symkey-cache $xtraflags > $filename
+
+    unset -v pw
 }
 
 fzfprg="fzf"
@@ -24,25 +62,21 @@ if [ "$1" == "add" ]; then
         echo "Usage: p add <key>"
         exit -2
     fi
-    key=$2
-    filename="${pwdir}/${key}"
-
-    read -p "Username: " user
-    read -s -p "Password: " pw
+    add $2
+elif [ "$1" == "batch" ]; then
+    echo "Master first"
+    master=$(pwprompt)
     echo ""
-    read -s -p "Again: " pwcheck
-    echo ""
-
-    if [ ! "$pw" == "$pwcheck" ]; then
-        echo "Passwords do not match"
-        exit -1
-    fi
-    value="${user}"$'\n'"${pw}"
-
-    force-curses
-    echo -n "$value" | gpg -c --armor --no-symkey-cache > $filename
-
-    unset -v pw pwcheck
+    echo "Entries next, quit with empty key"
+    while true; do
+        echo ""
+        read -p "Key: " key
+        if [ "$key" == "" ]; then
+            break
+        fi
+        add $key $master
+    done
+    unset -v master
 else
     if [ "$1" == "--gui" ]; then
         fzfprg="gfzf"
