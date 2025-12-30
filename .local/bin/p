@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -e
-
 function force-curses() {
     # TODO this is probably not enough on linux
     export GPG_TTY=$(tty)
@@ -11,6 +9,9 @@ function force-curses() {
 function fullprompt() {
     read -p "Username: " user
     pw=$(pwprompt)
+    if [ $? -ne 0 ]; then
+        exit $?
+    fi
     value="${user}"$'\n'"${pw}"
     echo "$value"
 }
@@ -32,6 +33,9 @@ function add() {
     master=$2
     filename="${pwdir}/${key}"
     value=$(fullprompt)
+    if [ $? -ne 0 ]; then
+        exit $?
+    fi
     xtraflags=""
 
     if [ ! "$master" == "" ]; then
