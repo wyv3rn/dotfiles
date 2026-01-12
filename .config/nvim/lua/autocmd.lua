@@ -29,7 +29,7 @@ local function pos()
 
    local in_ac = false
    if at_line_end and col >= 3 then
-      in_ac = line:sub(col - 2, col) == "\\ac"
+      in_ac = line:sub(col - 2, col) == "\\ac" or line:sub(col - 3, col) == "\\acp"
    end
 
    local in_pair = false
