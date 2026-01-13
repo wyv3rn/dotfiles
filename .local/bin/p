@@ -53,7 +53,7 @@ fzfprg="fzf"
 if [ "$(uname)" == "Darwin" ]; then
     clip="pbcopy"
 else
-    clip="xclip"
+    clip="xclip -selection clipboard"
 fi
 
 pwdir="${HOME}/.pstore"
@@ -81,6 +81,8 @@ elif [ "$1" == "batch" ]; then
         add $key $master
     done
     unset -v master
+elif [ "$1" == "clear" ]; then
+    echo -n "Clear!" | $clip
 else
     if [ "$1" == "--gui" ]; then
         fzfprg="gfzf"
