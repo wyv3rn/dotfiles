@@ -52,8 +52,10 @@ fzfprg="fzf"
 
 if [ "$(uname)" == "Darwin" ]; then
     clip="pbcopy"
+    paste="pbpaste"
 else
     clip="xclip -selection clipboard"
+    paste="xclip -selection clipboard -o"
 fi
 
 pwdir="${HOME}/.pstore"
@@ -82,7 +84,7 @@ elif [ "$1" == "batch" ]; then
     done
     unset -v master
 elif [ "$1" == "clear" ]; then
-    echo -n "Clear!" | $clip
+    echo -n "Cleared!" | $clip
 else
     if [ "$1" == "--gui" ]; then
         fzfprg="gfzf"
@@ -93,7 +95,12 @@ else
     if [ "$key" == "" ]; then
         exit 0
     fi
+
+    clip_bak=$(${paste})
     plain=$(gpg -d --no-symkey-cache "${pwdir}/${key}")
     echo -n "$plain" | head -n1
     echo -n "$plain" | tail -n1 | $clip
+    echo "Resetting clipboard in 10 seconds ..."
+    sleep 10
+    echo -n "$clip_bak" | $clip
 fi
