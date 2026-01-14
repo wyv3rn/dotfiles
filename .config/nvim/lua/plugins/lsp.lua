@@ -128,11 +128,13 @@ return {
             return lang == "markdown" or lang == "tex"
          end
 
-         -- Enable autocompletion for buffers on LspAttach
+         -- Enable advanced LSP features for buffers on LspAttach
          vim.api.nvim_create_autocmd("LspAttach", {
             group = vim.api.nvim_create_augroup("my.lsp", {}),
             callback = function(args)
                local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+
+               -- Autocompletion
                local compl_keys = "<C-x><C-n>"
                local fallback_keys = "<C-x><C-o>"
                local lang = lang_by_ext(args.file)
@@ -144,6 +146,13 @@ return {
                end
                enable_autocompl(args.buf, compl_keys, lang)
                vim.keymap.set('i', '<C-g>', fallback_keys)
+
+               -- Inlay hints
+               if client:supports_method("textDocument/inlayHint") then
+                  vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
+               end
+
+               -- Autowrite
                if lang == "typst" then
                   enable_autowrite(args.buf)
                end

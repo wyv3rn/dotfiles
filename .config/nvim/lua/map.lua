@@ -71,6 +71,10 @@ local format_and_save = function()
    vim.cmd("update")
 end
 
+local toggle_inlay_hints = function()
+   vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+end
+
 -- Avoid anonymous function boilerplate while mapping complex vim.cmd
 -- And as a bonus: allow chained commands via varargs
 local function vimcmd(...)
@@ -115,6 +119,7 @@ wk.add({
 
    { "<leader>t",        group = "Toggle mode" },
    { "<leader>tw",       vimcmd("StripWhitespace"),                   desc = "Strip trailing whitespaces" },
+   { "<leader>ti",       toggle_inlay_hints,                          desc = "Toggle inlay hints" },
 
    { "[d",               prev_diagnostic,                             desc = "GoTo prev diagnostic" },
    { "]d",               next_diagnostic,                             desc = "GoTo next diagnostic" },
