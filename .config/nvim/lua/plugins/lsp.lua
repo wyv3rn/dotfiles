@@ -59,11 +59,14 @@ return {
             }
          }
 
-         -- Configure texlab to not line break
+         -- Configure texlab to not line break and limit inlay hint length
          vim.lsp.config["texlab"] = {
             settings = {
                texlab = {
                   formatterLineLength = 1024,
+                  inlayHints = {
+                     maxLength = 42,
+                  }
                }
             }
          }
