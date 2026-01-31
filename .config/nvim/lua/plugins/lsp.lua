@@ -150,11 +150,6 @@ return {
                enable_autocompl(args.buf, compl_keys, lang)
                vim.keymap.set('i', '<C-g>', fallback_keys)
 
-               -- Inlay hints
-               if client:supports_method("textDocument/inlayHint") then
-                  vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
-               end
-
                -- Autowrite
                if lang == "typst" then
                   enable_autowrite(args.buf)
