@@ -12,10 +12,11 @@ c.url.searchengines = {
     "doi": "https://doi.org/{}",
     "dev": "https://devdocs.io/#q={}",
     "rs": "https://lib.rs/search?q={}",
-    "tldr": "https://chat.openai.com/?q=Give%20a%20TLDR%20for%20{}"
+    "tldr": "https://chat.openai.com/?q=Give%20a%20TLDR%20for%20{}",
 }
 c.url.start_pages = ["about:blank"]
 c.colors.webpage.preferred_color_scheme = "dark"
+c.colors.webpage.bg = "#838ba7"
 c.tabs.last_close = "startpage"
 c.spellcheck.languages = ["de-DE", "en-US"]
 c.downloads.position = "bottom"
