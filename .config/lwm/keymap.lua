@@ -4,6 +4,7 @@ local browser = "qutebrowser"
 local pdf_viewer = "sioyek"
 local terminal = "WezTerm"
 local mail_client = "Thunderbird"
+local emacs = "Emacs"
 
 function m.map(lwm)
    if lwm:os() == "linux" then
@@ -35,15 +36,16 @@ function m.map(lwm)
    lwm:bind({ "cmd" }, "p", function() lwm:spawn("p --gui") end)
    lwm:bind({ "cmd", "alt", "ctrl" }, "r", function() lwm:restart() end)
 
+   local except = { terminal, emacs }
    if lwm:os() == "darwin" then
-      lwm:rebind_in_apps({ "ctrl" }, "s", { "cmd" }, "s", { terminal })
-      lwm:rebind_in_apps({ "ctrl" }, "c", { "cmd" }, "c", { terminal })
-      lwm:rebind_in_apps({ "ctrl" }, "v", { "cmd" }, "v", { terminal })
-      lwm:rebind_in_apps({ "ctrl" }, "x", { "cmd" }, "x", { terminal })
-      lwm:rebind_in_apps({ "ctrl" }, "z", { "cmd" }, "z", { terminal })
-      lwm:rebind_in_apps({ "ctrl" }, "a", { "cmd" }, "a", { terminal })
-      lwm:rebind_in_apps({ "ctrl" }, "f", { "cmd" }, "f", { terminal })
-      lwm:rebind_in_apps({ "ctrl" }, "p", { "cmd" }, "p", { terminal })
+      lwm:rebind_in_apps({ "ctrl" }, "s", { "cmd" }, "s", except)
+      lwm:rebind_in_apps({ "ctrl" }, "c", { "cmd" }, "c", except)
+      lwm:rebind_in_apps({ "ctrl" }, "v", { "cmd" }, "v", except)
+      lwm:rebind_in_apps({ "ctrl" }, "x", { "cmd" }, "x", except)
+      lwm:rebind_in_apps({ "ctrl" }, "z", { "cmd" }, "z", except)
+      lwm:rebind_in_apps({ "ctrl" }, "a", { "cmd" }, "a", except)
+      lwm:rebind_in_apps({ "ctrl" }, "f", { "cmd" }, "f", except)
+      lwm:rebind_in_apps({ "ctrl" }, "p", { "cmd" }, "p", except)
    end
 end
 
