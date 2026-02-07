@@ -103,14 +103,14 @@ function Lwm:is_snapped(win, direction)
    local pos = self:position(win)
    local work_area = self:work_area(win)
 
-   if pos.y ~= work_area.y or pos.height + 2 * self.win_border ~= work_area.height or pos.width == work_area.width - 2 * self.win_border then
+   if pos.y ~= work_area.y or pos.height + 2 * self.win_border < 0.95 * work_area.height or pos.width == work_area.width - 2 * self.win_border then
       return false
    end
 
    if direction == "left" then
       return pos.x == work_area.x
    else
-      return pos.x == work_area.x + work_area.width - pos.width - 2 * self.win_border
+      return pos.x >= 0.95 * (work_area.x + work_area.width - pos.width - 2 * self.win_border)
    end
 end
 
