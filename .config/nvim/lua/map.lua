@@ -41,7 +41,7 @@ vim.keymap.set("n", "<F10>", function() async_make.make("autobuild --no-tty --mo
 vim.keymap.set("n", "<F11>", function() async_make.make("autobuild --no-tty --mode open", { autosave = true }) end)
 
 -- Builtin terminal
-vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
+vim.keymap.set('t', '<C-g>', '<C-\\><C-n>')
 
 -- Configure the rest with WhichKey
 local wk = require("which-key")
