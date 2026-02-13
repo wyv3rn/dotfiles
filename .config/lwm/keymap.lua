@@ -4,6 +4,7 @@ local browser = "qutebrowser"
 local pdf_viewer = "sioyek"
 local terminal = "WezTerm"
 local mail_client = "Thunderbird"
+local smerge = "Sublime_merge"
 local emacs = "Emacs"
 
 function m.map(lwm)
@@ -19,6 +20,7 @@ function m.map(lwm)
       [pdf_viewer] = "r",
       [terminal] = "t",
       [mail_client] = "d",
+      [smerge] = "g",
    }
 
    for app, key in pairs(apps) do
