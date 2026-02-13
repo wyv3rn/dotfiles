@@ -17,8 +17,10 @@
     X   nop0
 
     cs  (tap-hold 0 130 ␣ lctl)
+    a   (tap-hold 0 160 a lalt)
     e   (tap-hold 0 130 e lsft)
     n   (tap-hold 0 130 n rsft)
+    r   (tap-hold 0 160 r lalt)
 
     n3  (layer-while-held neo-3)
     n4  (layer-while-held neo-4)
@@ -63,7 +65,7 @@ esc         f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
 _           🔅   🔆   _    _    _    _    ◀◀   ▶⏸   ▶▶   🔇   🔉   🔊
 esc         _    _    _    _    _    _    _    _    _    _    _    _
   ↹         x    v    l    c    w    k    h    g    f    q    ß
- @n3        u    i    a    @e   o    s    @n   r    t    d    y    @n3  ↩
+ @n3        u    i   @a    @e   o    s    @n   @r   t    d    y    @n3  ↩
  ‹⇧   @n4   ü    ö    ä    p    z    b    m    ,    .    j             ⇧›
 _          ‹⌃   ‹⌥   ‹⌘             @cs            @n4   ⌥›
 )
