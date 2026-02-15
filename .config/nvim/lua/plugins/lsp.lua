@@ -17,7 +17,8 @@ return {
             "texlab",
             "elmls",
             "hls",
-            "tinymist"
+            "tinymist",
+            "ts_ls",
          }
 
          -- Configure ltex-ls-plus to use ltex_extra
