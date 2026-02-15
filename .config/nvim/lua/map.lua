@@ -49,6 +49,7 @@ local telescope = require("telescope.builtin")
 local terminal = require("toggleterm.terminal").Terminal
 local oil = require("oil")
 local conform = require("conform")
+local projects = require("projects")
 
 local lazygit = terminal:new({
    cmd = "lazygit",
@@ -116,6 +117,8 @@ wk.add({
    { "gD",               telescope.diagnostics,                       desc = "Find diagnostics" },
    { "ga",               vim.lsp.buf.code_action,                     desc = "Perform code action" },
    { "gq",               vimcmd("copen", "wincmd o"),                 desc = "Open quickfix list as only window" },
+
+   { "pf",               projects.telescope_projects,                 desc = "Open file in project" },
 
    { "<leader>t",        group = "Toggle mode" },
    { "<leader>tw",       vimcmd("StripWhitespace"),                   desc = "Strip trailing whitespaces" },
