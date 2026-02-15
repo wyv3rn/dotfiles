@@ -32,12 +32,12 @@ done
 
 case $cmd in
     init)
-        list_id=$(echo $id | sed -n "s/.*list\=\(.*\)&si\=.*/\1/p")
+        list_id=$(echo $id | sed -n "s/.*list=\(.*\)&si=.*/\1/p")
         echo "List ID = ${list_id}"
-        track_ids=$(yt-dlp --skip-download https://music.youtube.com/playlist?list=${list_id} 2>/dev/null | sed -n 's/^.*Extracting URL:.*\?v\=\(.*\)/\1/p')
+        track_ids=$(yt-dlp --skip-download https://music.youtube.com/playlist?list=${list_id} 2>/dev/null | sed -n 's/^.*Extracting URL:.*?v=\(.*\)/\1/p')
         ;;
     add)
-        track_id=$(echo $id | sed -n "s/.*watch\?v\=\(.*\)&si\=.*/\1/p")
+        track_id=$(echo $id | sed -n "s/.*watch?v=\(.*\)&si=.*/\1/p")
         echo "Track ID = ${track_id}"
         track_ids=($track_id)
         ;;
