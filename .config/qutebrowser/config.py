@@ -31,6 +31,9 @@ config.bind("<Space>x", "config-source")
 # don't close tab by accident
 config.unbind("d")
 
+# macros are not so useful in a browser, and I hit q by accident too often
+config.unbind("q")
+
 # passthrough
 config.bind("I", "mode-enter passthrough")
 
