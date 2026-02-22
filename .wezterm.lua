@@ -44,6 +44,14 @@ local function fix_voyager(key, mods)
    return nil
 end
 
+local next_pane_action = wezterm.action_callback(function(win, pane)
+   if #win:active_tab():panes() > 1 then
+      win:perform_action(act.ActivatePaneDirection("Next"), pane)
+   else
+      win:perform_action(act.SendKey({ key = "Tab", mods = "CTRL" }), pane)
+   end
+end)
+
 local function bind(mods, key, action, use_leader)
    use_leader = use_leader or false
    local mods_with_leader = mods
@@ -68,8 +76,8 @@ config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 2000 }
 config.keys = {}
 
 -- actual mappings without leader
-bind("CTRL", "y", act.ActivatePaneDirection("Next"))
-bind("CTRL", "Tab", act.ActivatePaneDirection("Next"))
+bind("CTRL", "y", next_pane_action)
+bind("CTRL", "Tab", next_pane_action)
 for i = 1, 9 do
    bind("CTRL", tostring(i), act.ActivateTab(i - 1))
 end

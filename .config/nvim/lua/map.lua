@@ -42,6 +42,8 @@ vim.keymap.set("n", "<F11>", function() async_make.make("autobuild --no-tty --mo
 
 -- Builtin terminal
 vim.keymap.set('t', '<C-g>', '<C-\\><C-n>')
+vim.keymap.set('t', '<C-Tab>', '<C-\\><C-o><C-w><C-w><Esc>')
+vim.keymap.set('n', '<C-Tab>', "<Cmd>wincmd w<CR>")
 
 -- Configure the rest with WhichKey
 local wk = require("which-key")
@@ -50,6 +52,15 @@ local terminal = require("toggleterm.terminal").Terminal
 local oil = require("oil")
 local conform = require("conform")
 local projects = require("projects")
+
+vim.api.nvim_create_autocmd({ "TermOpen", "BufEnter" }, {
+   pattern = { "*" },
+   callback = function()
+      if vim.opt.buftype:get() == "terminal" then
+         vim.cmd(":startinsert")
+      end
+   end
+})
 
 local lazygit = terminal:new({
    cmd = "lazygit",
@@ -61,6 +72,11 @@ local lazygit_dotfiles = terminal:new({
    cmd = "lazygit --git-dir ~/.dotfiles.git/ --work-tree ~/",
    hidden = true,
    direction = "float"
+})
+
+local quickterm = terminal:new({
+   hidden = true,
+   direction = "horizontal",
 })
 
 -- Jumping to diagnostics with [d, ]d is basically default, but w want auto-hover (float = true), too
@@ -122,6 +138,7 @@ wk.add({
    { "<leader>pf",       projects.oneshot_file,                       desc = "Open file of project, but do not cd" },
 
    { "<leader>t",        group = "Toggle mode" },
+   { "<leader>tt",       function() quickterm:toggle(24) end,         desc = "Toggle quick terminal" },
    { "<leader>tw",       vimcmd("StripWhitespace"),                   desc = "Strip trailing whitespaces" },
    { "<leader>ti",       toggle_inlay_hints,                          desc = "Toggle inlay hints" },
 
