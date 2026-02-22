@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+cmd=find
+type_flag="-type"
+begin_ex="("
+exclude_flag="-name"
+or="-o"
+end_ex=") -prune -o -type d -print"
+
+if type fd 2>&1 >/dev/null; then
+    cmd="fd -u ."
+    type_flag="--type"
+    begin_ex=""
+    exclude_flag="--exclude"
+    or=""
+    end_ex=""
+fi
+
+$cmd $HOME $type_flag d $begin_ex \
+        $exclude_flag cross $or \
+        $exclude_flag binaries $or \
+        $exclude_flag target $or \
+        $exclude_flag share $or \
+        $exclude_flag testing $or \
+        $exclude_flag .rustup $or \
+        $exclude_flag .cargo $or \
+        $exclude_flag .ghcup $or \
+        $exclude_flag .elm $or \
+        $exclude_flag .tldrc $or \
+        $exclude_flag .*cache $or \
+        $exclude_flag .docker $or \
+        $exclude_flag .npm $or \
+        $exclude_flag node_modules $or \
+        $exclude_flag .venv $or \
+        $exclude_flag pipx $or \
+        $exclude_flag *.git $or \
+        $exclude_flag *.bak $or \
+        $exclude_flag Music $or \
+        $exclude_flag Pictures $or \
+        $exclude_flag Movies $or \
+        $exclude_flag GarageBand $or \
+        $exclude_flag Library \
+        $end_ex

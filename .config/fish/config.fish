@@ -19,6 +19,8 @@ if status is-interactive
     if type -q batman
         alias man batman
     end
+
+    alias cdf "cd (find-projects | fzf)"
 end
 
 # abbreviations

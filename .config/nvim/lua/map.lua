@@ -118,7 +118,8 @@ wk.add({
    { "ga",               vim.lsp.buf.code_action,                     desc = "Perform code action" },
    { "gq",               vimcmd("copen", "wincmd o"),                 desc = "Open quickfix list as only window" },
 
-   { "<leader>pf",       projects.telescope_projects,                 desc = "Open file in project" },
+   { "<leader>ps",       projects.switch,                             desc = "Switch project" },
+   { "<leader>pf",       projects.oneshot_file,                       desc = "Open file of project, but do not cd" },
 
    { "<leader>t",        group = "Toggle mode" },
    { "<leader>tw",       vimcmd("StripWhitespace"),                   desc = "Strip trailing whitespaces" },

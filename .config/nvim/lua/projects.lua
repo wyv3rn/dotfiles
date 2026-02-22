@@ -1,40 +1,44 @@
-local pickers = require "telescope.pickers"
-local finders = require "telescope.finders"
+local telescope = require("telescope.builtin")
+local pickers = require("telescope.pickers")
+local finders = require("telescope.finders")
 local conf = require("telescope.config").values
 
-local actions = require "telescope.actions"
-local action_state = require "telescope.actions.state"
+local actions = require("telescope.actions")
+local action_state = require("telescope.actions.state")
 
 local M = {}
 
-local history_file = vim.fn.stdpath("data") .. "projects.json"
-local history = {}
-
-vim.api.nvim_create_autocmd("DirChanged", {
-   callback = function()
-      table.insert(history, 1, vim.v.event.cwd)
+local builder = function(action)
+   return function(opts)
+      opts = opts or {}
+      pickers.new(opts, {
+         prompt_title = "Oneshot project file",
+         finder = finders.new_oneshot_job({ "find-projects" }, opts),
+         sorter = conf.generic_sorter(opts),
+         attach_mappings = function(prompt_bufnr, _)
+            actions.select_default:replace(function()
+               actions.close(prompt_bufnr)
+               local selection = action_state.get_selected_entry()
+               if selection ~= nil then
+                  action(selection[1])
+               end
+            end)
+            return true
+         end,
+      }):find()
    end
-})
-
-M.telescope_projects = function(opts)
-   opts = opts or {}
-   pickers.new(opts, {
-      prompt_title = "Projects",
-      finder = finders.new_table {
-         results = history
-      },
-      sorter = conf.generic_sorter(opts),
-      attach_mappings = function(prompt_bufnr, map)
-         actions.select_default:replace(function()
-            actions.close(prompt_bufnr)
-            local selection = action_state.get_selected_entry()
-            if selection ~= nil then
-               vim.cmd("cd " .. selection[1])
-            end
-         end)
-         return true
-      end,
-   }):find()
 end
+
+local switcher = function(arg)
+   vim.cmd("cd " .. arg)
+   vim.cmd("e .")
+end
+
+local oneshotter = function(arg)
+   telescope.find_files({ cwd = arg })
+end
+
+M.switch = builder(switcher)
+M.oneshot_file = builder(oneshotter)
 
 return M
