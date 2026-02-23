@@ -137,10 +137,9 @@ wk.add({
    { "<leader>ps",       projects.switch,                             desc = "Switch project" },
    { "<leader>pf",       projects.oneshot_file,                       desc = "Open file of project, but do not cd" },
 
-   { "<leader>t",        group = "Toggle mode" },
-   { "<leader>tt",       function() quickterm:toggle(24) end,         desc = "Toggle quick terminal" },
-   { "<leader>tw",       vimcmd("StripWhitespace"),                   desc = "Strip trailing whitespaces" },
-   { "<leader>ti",       toggle_inlay_hints,                          desc = "Toggle inlay hints" },
+   { "<leader>t",        function() quickterm:toggle(24) end,         desc = "Toggle quick terminal" },
+   { "<leader>w",        vimcmd("StripWhitespace"),                   desc = "Strip trailing whitespaces" },
+   { "<leader>i",        toggle_inlay_hints,                          desc = "Toggle inlay hints" },
 
    { "[d",               prev_diagnostic,                             desc = "GoTo prev diagnostic" },
    { "]d",               next_diagnostic,                             desc = "GoTo next diagnostic" },
