@@ -48,36 +48,10 @@ vim.keymap.set('n', '<C-Tab>', "<Cmd>wincmd w<CR>")
 -- Configure the rest with WhichKey
 local wk = require("which-key")
 local telescope = require("telescope.builtin")
-local terminal = require("toggleterm.terminal").Terminal
 local oil = require("oil")
 local conform = require("conform")
 local projects = require("projects")
-
-vim.api.nvim_create_autocmd({ "TermOpen", "BufEnter" }, {
-   pattern = { "*" },
-   callback = function()
-      if vim.opt.buftype:get() == "terminal" then
-         vim.cmd(":startinsert")
-      end
-   end
-})
-
-local lazygit = terminal:new({
-   cmd = "lazygit",
-   hidden = true,
-   direction = "float",
-})
-
-local lazygit_dotfiles = terminal:new({
-   cmd = "lazygit --git-dir ~/.dotfiles.git/ --work-tree ~/",
-   hidden = true,
-   direction = "float"
-})
-
-local quickterm = terminal:new({
-   hidden = true,
-   direction = "horizontal",
-})
+local terminal = require("terminal")
 
 -- Jumping to diagnostics with [d, ]d is basically default, but w want auto-hover (float = true), too
 local next_diagnostic = function() vim.diagnostic.jump({ count = 1, float = true }) end
@@ -103,6 +77,8 @@ local function vimcmd(...)
    end
 end
 
+local ldotf = "lazygit --git-dir ~/.dotfiles.git/ --work-tree ~/"
+
 wk.add({
    { "<leader>",         group = "Space mode" },
    { "<leader><Esc>",    vim.cmd.nohlsearch,                          desc = "Clear everything!" },
@@ -120,8 +96,8 @@ wk.add({
 
    { "<leader>g",        group = "Git mode" },
    { "<leader>gb",       vimcmd("ToggleBlame virtual"),               desc = "Toggle git blame" },
-   { "<leader>gg",       function() lazygit:toggle() end,             desc = "Toggle lazygit terminal" },
-   { "<leader>gd",       function() lazygit_dotfiles:toggle() end,    desc = "Toggle lazygit terminal for dotfiles" },
+   { "<leader>gg",       vimcmd("term lazygit"),                      desc = "lazygit terminal" },
+   { "<leader>gd",       vimcmd("term " .. ldotf),                    desc = "lazygit terminal for dotfiles" },
 
    { "g",                group = "GoTo mode" },
    { "gd",               telescope.lsp_definitions,                   desc = "Go to definition" },
@@ -137,7 +113,7 @@ wk.add({
    { "<leader>ps",       projects.switch,                             desc = "Switch project" },
    { "<leader>pf",       projects.oneshot_file,                       desc = "Open file of project, but do not cd" },
 
-   { "<leader>t",        function() quickterm:toggle(24) end,         desc = "Toggle quick terminal" },
+   { "<leader>t",        terminal.open_quickterm,                     desc = "Open a quick terminal" },
    { "<leader>w",        vimcmd("StripWhitespace"),                   desc = "Strip trailing whitespaces" },
    { "<leader>i",        toggle_inlay_hints,                          desc = "Toggle inlay hints" },
 

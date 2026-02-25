@@ -26,6 +26,9 @@ vim.opt.gdefault = true
 -- Completion
 vim.opt.completeopt = { "menuone", "popup", "fuzzy", "noinsert" }
 
+-- Window handling
+vim.opt.splitbelow = true
+
 -- Popup border
 vim.opt.winborder = "rounded"
 
