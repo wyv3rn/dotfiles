@@ -23,5 +23,6 @@ require("set")
 -- Key mapping
 require("map")
 
--- Useful autocommands
+-- Self explaining
 require("autocmd")
+require("snippets")

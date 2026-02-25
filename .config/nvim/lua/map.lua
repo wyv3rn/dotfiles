@@ -33,11 +33,6 @@ cmap("<C-f>", snippet_jump_fwd, snippet_jump_fwd)
 cmap("<C-b>", "<C-b>", snippet_jump_bwd)
 cmap("<C-l>", "<C-y>", "<C-x><C-l>", "<C-x><C-l>")
 
--- Custom snippets, realized via registers
-vim.fn.setreg("a", "\\begin\022{equation\022}\r\\end\022{equation\022}\027Vk=o", "c")
-vim.fn.setreg("i", "\\begin\022{itemize\022}\r\\end\022{itemize\022}\027Vk=o\\item ", "c")
-vim.fn.setreg("e", "\\begin\022{enumerate\022}\r\\end\022{enumerate\022}\027Vk=o\\item ", "c")
-
 -- Compiling
 local async_make = require("async_make")
 vim.keymap.set("n", "<F8>", function() async_make.make("autobuild --no-tty --mode check", { autosave = true }) end)
