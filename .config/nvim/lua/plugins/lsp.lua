@@ -19,6 +19,7 @@ return {
             "hls",
             "tinymist",
             "ts_ls",
+            "zls",
          }
 
          -- Configure ltex-ls-plus to use ltex_extra

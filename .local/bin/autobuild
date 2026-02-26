@@ -127,6 +127,15 @@ elif [ -f Cargo.toml ]; then
         echo "Unsupported mode ${mode} for Rust projects"
         exit -1
     fi
+elif [ -f build.zig ]; then
+    if [ "$mode" == "debug" ]; then
+        zig build
+    elif [ "$mode" == "release" ]; then
+        zig build --release
+    else
+        echo "Unsupported mode ${mode} for Zig projects"
+        exit -1
+    fi
 elif [ -f main.roc ]; then
     if [ "$mode" == "check" ]; then
         roc check

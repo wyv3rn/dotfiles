@@ -25,4 +25,3 @@ require("map")
 
 -- Self explaining
 require("autocmd")
-require("snippets")
