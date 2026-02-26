@@ -95,15 +95,6 @@ return {
             end
          end
 
-         local function enable_autowrite(buf)
-            vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
-               buffer = buf,
-               callback = function()
-                  vim.cmd "silent write"
-               end,
-            })
-         end
-
          -- Function to enable autocompletion on almost every key stroke for a buffer
          local function enable_autocompl(buf, keys, lang)
             local exclude = { ' ', '(', ')', '[', ']', '"', "'", '{', '}', '!', ",", ";", "=", "<" }
@@ -149,11 +140,6 @@ return {
                   end
                end
                enable_autocompl(args.buf, compl_keys, lang)
-
-               -- Autowrite
-               if lang == "typst" then
-                  enable_autowrite(args.buf)
-               end
             end
          })
 

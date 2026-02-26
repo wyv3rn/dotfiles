@@ -24,6 +24,7 @@ vim.api.nvim_create_autocmd("TermClose", {
 })
 
 local quickterm_size = 24
+local exclude_term_patterns = { "typst watch" }
 
 local M = {}
 
@@ -31,9 +32,15 @@ function M.open_quickterm()
    for _, buffer in ipairs(vim.api.nvim_list_bufs()) do
       local buffer_name = vim.api.nvim_buf_get_name(buffer)
       if (string.sub(buffer_name, 1, 7) == "term://") then
+         for _, pattern in pairs(exclude_term_patterns) do
+            if string.find(buffer_name, pattern) ~= nil then
+               goto continue
+            end
+         end
          vim.cmd(quickterm_size .. "split #" .. buffer)
          return
       end
+      ::continue::
    end
    vim.cmd(quickterm_size .. "split | term")
 end
