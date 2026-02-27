@@ -6,17 +6,15 @@ bib_dir="${library}/bib"
 bib_dir_sed_esc=$(echo $bib_dir | sed 's/\//\\\//g')
 pdf_dir="${library}/pdf"
 
-viewer="rlg-sioyek"
 editor="nvim"
-db_schema="${library}/bootstrap.sql"
-db_json="${library}/state.json"
-db="${library}/sioyek.db"
 browser="qutebrowser"
 
 # some OS specific commands
 if [ "$(uname)" == "Darwin" ]; then
+    viewer="sioyek"
     clip="pbcopy"
 else
+    viewer="zathura"
     clip="xclip -selection clipboard"
 fi
 
@@ -30,7 +28,7 @@ function do_open() {
     doi_re="doi ?= ?\{([^}]*)\}"
 
     if [[ -f $pdf && usedoi -ne 1 ]]; then
-        $viewer $pdf $db_schema $db $db_json
+        $viewer $pdf
     elif [[ "$data" =~ $url_re ]]; then
         $browser "${BASH_REMATCH[1]}"
     elif [[ "$data" =~ $doi_re ]]; then
