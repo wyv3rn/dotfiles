@@ -28,6 +28,9 @@ with config.pattern("*.prakinf.tu-ilmenau.de/*") as p:
 # reload config
 config.bind("<Space>x", "config-source")
 
+# make website background white
+config.bind("<Space><Space>", "set colors.webpage.bg white")
+
 # don't close tab by accident
 config.unbind("d")
 

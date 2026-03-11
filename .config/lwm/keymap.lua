@@ -11,7 +11,6 @@ function m.map(lwm)
    if lwm:os() == "linux" then
       pdf_viewer = "Zathura"
       terminal = "wezterm"
-      mail_client = "thunderbird"
       smerge = "Sublime_merge"
    end
 
