@@ -20,6 +20,7 @@ return {
             "tinymist",
             "ts_ls",
             "zls",
+            "gopls",
          }
 
          -- Configure ltex-ls-plus to use ltex_extra
