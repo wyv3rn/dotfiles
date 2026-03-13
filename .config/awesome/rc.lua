@@ -113,10 +113,18 @@ function wm.focus_and_raise_app(app_name)
    local filter = function(c)
       return awful.rules.match(c, { class = app_name })
    end
-   local win = awful.client.iterate(filter)()
+   local iterator = awful.client.iterate(filter)
+   local win = iterator()
    if win == nil then
       wm.spawn(app_name)
    else
+      local current = wm.focused_win()
+      if current ~= nil and wm.window_app_name(current):find(app_name) then
+         win = iterator()
+         if win == nil then
+            return current
+         end
+      end
       wm.focus_and_raise(win)
       return win
    end
