@@ -99,7 +99,7 @@ else
     clip_bak=$(${paste})
     plain=$(gpg -d --no-symkey-cache "${pwdir}/${key}")
     echo -n "$plain" | head -n1
-    echo -n "$plain" | tail -n1 | $clip
+    echo -n "$plain" | tail -n1 | sed 's/ //g' | $clip
     echo "Resetting clipboard in 10 seconds ..."
     sleep 10
     echo -n "$clip_bak" | $clip
