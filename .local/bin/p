@@ -1,9 +1,23 @@
 #!/usr/bin/env bash
 
+function rand() {
+    n=$1
+    fmt=$2
+    od -An -tu4 /dev/random | head -n${n} | awk -F ' ' "{print $fmt}" | bc
+}
+
 function diceware() {
     n=$1
     wordlist=$2
-    od -An -tu4 /dev/random | head -n${n} | awk -F ' ' '{print "(" $1 " % 7776) + 1"}' | bc | xargs -I% sed -n "%p" $wordlist | paste -s -d ' ' -
+    special="!"
+    if [ $(rand 1 '$1 % 2') -eq 1 ]; then
+        special="?"
+    fi
+    digit=$(rand 1 '$1 % 10')
+    words=$(rand $n '$1 % 7776 + 1' | xargs -I% sed -n "%p" $wordlist | paste -s -d ' ' -)
+    first_letter=$(echo $words | cut -c1)
+    first_letter_upper=$(echo $first_letter | tr '[:lower:]' '[:upper:]')
+    echo $words | sed "s/^$first_letter\(.*\)/$digit $first_letter_upper\1$special/"
 }
 
 function force-curses() {
