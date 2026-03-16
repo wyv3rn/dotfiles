@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+function diceware() {
+    n=$1
+    wordlist=$2
+    od -An -tu4 /dev/random | head -n${n} | awk -F ' ' '{print "(" $1 " % 7776) + 1"}' | bc | xargs -I% sed -n "%p" $wordlist | paste -s -d ' ' -
+}
+
 function force-curses() {
     # TODO this is probably not enough on linux
     export GPG_TTY=$(tty)
@@ -83,6 +89,12 @@ elif [ "$1" == "batch" ]; then
         add $key $master
     done
     unset -v master
+elif [ "$1" == "diceware" ]; then
+    if [ "$#" -lt 2 ]; then
+        echo "Usage: p diceware n"
+        exit -1
+    fi
+    diceware $2 ${pwdir}/assets/diceware-german.txt
 elif [ "$1" == "clear" ]; then
     echo -n "Cleared!" | $clip
 else
