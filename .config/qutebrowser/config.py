@@ -11,7 +11,7 @@ c.url.searchengines = {
     "gs": "https://scholar.google.com/scholar?q={}",
     "doi": "https://doi.org/{}",
     "dev": "https://devdocs.io/#q={}",
-    "rs": "https://lib.rs/search?q={}",
+    "rs": "https://docs.rs/releases/search?query={}",
     "tldr": "https://chat.openai.com/?q=Give%20a%20TLDR%20for%20{}",
 }
 c.url.start_pages = ["about:blank"]
