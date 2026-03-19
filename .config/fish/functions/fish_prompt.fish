@@ -64,9 +64,12 @@ function fish_prompt
     set -l normal (set_color normal)
 
     set -l host_prefix ""
-    if test -n "$SSH_CONNECTION"
+    if test -n "$CONTAINER_ID"
+        set host_prefix "$blue$CONTAINER_ID "
+    else if test -n "$SSH_CONNECTION"
         set host_prefix "$red"(cat /etc/hostname)" "
     end
+
 
     set -l arrow_color "$green"
     if test $__last_command_exit_status != 0
