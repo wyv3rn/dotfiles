@@ -68,6 +68,11 @@ local toggle_inlay_hints = function()
    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
 end
 
+local clear = function()
+   vim.cmd.nohlsearch()
+   vim.snippet.stop()
+end
+
 -- Avoid anonymous function boilerplate while mapping complex vim.cmd
 -- And as a bonus: allow chained commands via varargs
 local function vimcmd(...)
@@ -83,7 +88,7 @@ local ldotf = "lazygit --git-dir ~/.dotfiles.git/ --work-tree ~/"
 
 wk.add({
    { "<leader>",         group = "Space mode" },
-   { "<leader><Esc>",    vim.cmd.nohlsearch,                          desc = "Clear everything!" },
+   { "<leader><Esc>",    clear,                                       desc = "Clear everything!" },
    { "<leader>f",        telescope.find_files,                        desc = "Find files" },
    { "<leader>*",        telescope.grep_string,                       desc = "Grep string under cursor" },
    { "<leader>/",        telescope.live_grep,                         desc = "Live grep" },
