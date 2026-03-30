@@ -1,0 +1,22 @@
+(defcfg process-unmapped-keys yes)
+
+(deflocalkeys-macos
+  <    41
+  ^    86
+)
+
+(defalias
+    cs  (tap-hold 0 130 ␣ lctl)
+    a   (tap-hold 0 160 a lalt)
+    e   (tap-hold 0 130 e lsft)
+    n   (tap-hold 0 130 n rsft)
+    r   (tap-hold 0 160 r lalt)
+)
+
+(defsrc
+    ^ < ␣ a e n r
+)
+
+(deflayer fix
+    < ^ @cs @a @e @n @r
+)
