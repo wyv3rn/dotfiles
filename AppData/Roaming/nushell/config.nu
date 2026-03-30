@@ -7,5 +7,6 @@ $env.config = {
 
 alias l = ls
 alias v = nvim
+alias cat = open
 alias dotf = git --git-dir=($env.HOMEPATH)/.dotfiles.git/ --work-tree=($env.HOMEPATH)
 alias sdotf = git --git-dir=($env.HOMEPATH)/.sdotfiles.git/ --work-tree=($env.HOMEPATH)
