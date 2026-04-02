@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+dirs=(
+    bak
+    .bak
+    Documents
+    teaching
+    mail
+    Music
+    Video
+    .ssh
+    .gnupg
+)
+
+date=$(date +%Y-%m-%d)
+
+tar_cmd="tar --ignore-failed-read -cvzf - ${dirs[*]}"
+
+cd $HOME
+
+if [ "$(hostname)" == "alpha" ]; then
+    backup_dir="/srv/storage/backups/dschatz"
+    $tar_cmd | gpg -c --no-symkey-cache | ssh guru@telsv3 "cat > ${backup_dir}/${date}.tar.gz.gpg"
+    backups=$(ssh guru@telsv3 "du -h ${backup_dir}/*")
+fi
+
+echo "Existing backups:"
+for backup in $backups; do
+    echo $backup
+done
+
+cd - >/dev/null 2>&1
