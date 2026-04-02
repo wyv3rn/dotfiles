@@ -24,6 +24,7 @@ function force-curses() {
     # TODO this is probably not enough on linux
     export GPG_TTY=$(tty)
     export PINENTRY_USER_DATA="USE_CURSES=1"
+    export DISPLAY=""
 }
 
 function fullprompt() {
@@ -124,6 +125,9 @@ else
 
     clip_bak=$(${paste})
     plain=$(gpg -d --no-symkey-cache "${pwdir}/${key}")
+    if [ $? -ne 0 ]; then
+        exit -1
+    fi
     echo -n "$plain" | head -n1
     echo -n "$plain" | tail -n1 | sed 's/ //g' | $clip
     echo "Resetting clipboard in 10 seconds ..."
