@@ -20,9 +20,6 @@ return {
          "typescript",
          "nu",
       }
-      if vim.loop.os_uname().sysname ~= "Windows_NT" then
-         table.insert(langs, "latex")
-      end
       treesitter.setup({
          ensure_installed = langs,
          sync_install = false,
