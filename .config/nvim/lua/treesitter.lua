@@ -2,24 +2,18 @@ local treesitter = require("nvim-treesitter")
 local langs = {
    "c",
    "lua",
-   "vim",
-   "vimdoc",
-   "query",
-   "comment",
    "rust",
    "bash",
    "python",
    "javascript",
    "typescript",
-   "nu",
+   "go",
 }
 
-treesitter.setup({
-   ensure_installed = langs,
-   highlight = {
-      enable = true,
-   },
-   indent = {
-      enable = true,
-   },
+treesitter.install(langs)
+
+table.insert(langs, 1, "tex")
+vim.api.nvim_create_autocmd('FileType', {
+   pattern = langs,
+   callback = function() vim.treesitter.start() end
 })

@@ -64,8 +64,7 @@ require('latex-abbrify').setup()
 
 -- plugins with more complex config
 require("lsp")
--- TODO understand and repair treesitter!?
--- require("treesitter")
+require("treesitter")
 
 -- Key mapping
 require("map")
