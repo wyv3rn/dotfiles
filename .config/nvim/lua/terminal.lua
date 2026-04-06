@@ -1,5 +1,5 @@
 -- Maximum scrollback
-vim.opt.scrollback = 100000
+vim.opt.scrollback = 1000000
 
 -- Why would you not want to start in insert mode for terminals?
 vim.api.nvim_create_autocmd({ "TermOpen", "BufEnter" }, {
