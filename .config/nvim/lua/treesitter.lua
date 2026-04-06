@@ -13,7 +13,7 @@ local langs = {
 treesitter.install(langs)
 
 table.insert(langs, 1, "tex")
-vim.api.nvim_create_autocmd('FileType', {
+vim.api.nvim_create_autocmd("FileType", {
    pattern = langs,
    callback = function() vim.treesitter.start() end
 })
