@@ -1,3 +1,6 @@
+-- One to lead them all!
+vim.g.mapleader = " "
+
 -- More leaders! (Note: does not seem to work with vim.keymap.set)
 vim.cmd("nmap <cr> <leader>")
 vim.cmd("vmap <cr> <leader>")
@@ -54,6 +57,13 @@ local oil = require("oil")
 local conform = require("conform")
 local projects = require("projects")
 local terminal = require("terminal")
+local ts_select = require("nvim-treesitter-textobjects.select")
+
+-- treesitter selection
+vim.keymap.set({ "x", "o" }, "af", function() ts_select.select_textobject("@function.outer", "textobjects") end)
+vim.keymap.set({ "x", "o" }, "if", function() ts_select.select_textobject("@function.inner", "textobjects") end)
+vim.keymap.set({ "x", "o" }, "ac", function() ts_select.select_textobject("@class.outer", "textobjects") end)
+vim.keymap.set({ "x", "o" }, "ic", function() ts_select.select_textobject("@class.inner", "textobjects") end)
 
 -- Jumping to diagnostics with [d, ]d is basically default, but w want auto-hover (float = true), too
 local next_diagnostic = function() vim.diagnostic.jump({ count = 1, float = true }) end

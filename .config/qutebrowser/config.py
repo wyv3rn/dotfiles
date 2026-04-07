@@ -16,7 +16,7 @@ c.url.searchengines = {
 }
 c.url.start_pages = ["about:blank"]
 c.colors.webpage.preferred_color_scheme = "dark"
-c.colors.webpage.bg = "#626880"
+c.colors.webpage.bg = "#e5e9f0"
 c.tabs.last_close = "startpage"
 c.spellcheck.languages = ["de-DE", "en-US"]
 c.downloads.position = "bottom"

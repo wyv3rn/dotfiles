@@ -34,3 +34,7 @@ vim.opt.winborder = "rounded"
 
 -- Default to LaTeX flavor
 vim.g.tex_flavor = "latex"
+
+-- Timeout for key chains
+vim.o.timeout = true
+vim.o.timeoutlen = 500
