@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+# original source: https://dpc.pw/posts/bubblewrap-your-dev-env-and-agents/
+
+set -euo pipefail
+
+# Skip re-isolating if already inside an isolated environment
+if [[ -n "${ISOLATE_ENV:-}" ]]; then
+	>&2 echo "warning: already isolated"
+	exec "$@"
+fi
+
+tiocsti_path="/proc/sys/dev/tty/legacy_tiocsti"
+if [ ! -f "$tiocsti_path" ] || [ "$(cat "$tiocsti_path")" != "0" ]; then
+	>&2 echo "warning: TIOCSTI not disabled"
+fi
+
+pwd=$(pwd)
+
+args=()
+
+args+=(
+	--dev /dev \
+	--proc /proc \
+	--tmpfs /tmp \
+	--tmpfs /run \
+)
+
+args+=(
+    --unshare-pid \
+ 	--setenv ISOLATE_ENV ${pwd##*/}
+)
+
+for p in \
+	/bin \
+	/usr/bin \
+	/usr/lib \
+	/lib64 \
+	/etc \
+	"$HOME/.local/bin" \
+	"$HOME/.config" \
+	"$HOME/.gitconfig" \
+	"$HOME/.rustup" \
+	; do
+	args+=(--ro-bind "$p" "$p")
+done
+
+for p in \
+	"$HOME/.cargo" \
+	"$pwd" \
+	; do
+	args+=(--bind "$p" "$p")
+done
+
+exec bwrap \
+	"${args[@]}" \
+	"$@"

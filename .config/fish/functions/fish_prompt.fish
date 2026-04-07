@@ -62,9 +62,12 @@ function fish_prompt
     set -l green (set_color -o green)
     set -l blue (set_color -o blue)
     set -l normal (set_color normal)
+    set -l dev_prefix "[dev]"
 
     set -l host_prefix ""
-    if test -n "$CONTAINER_ID"
+    if test -n "$ISOLATE_ENV"
+        set host_prefix "$green$dev_prefix "
+    else if test -n "$CONTAINER_ID"
         set host_prefix "$blue$CONTAINER_ID "
     else if test -n "$SSH_CONNECTION"
         set host_prefix "$red"(cat /etc/hostname)" "
