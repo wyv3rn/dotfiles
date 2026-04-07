@@ -62,7 +62,7 @@ function fish_prompt
     set -l green (set_color -o green)
     set -l blue (set_color -o blue)
     set -l normal (set_color normal)
-    set -l dev_prefix "[dev]"
+    set -l dev_prefix "dev"
 
     set -l host_prefix ""
     if test -n "$ISOLATE_ENV"

@@ -35,12 +35,15 @@ for p in \
 	/bin \
 	/usr/bin \
 	/usr/lib \
+	/usr/share \
 	/lib64 \
 	/etc \
 	"$HOME/.local/bin" \
+	"$HOME/.local/share" \
 	"$HOME/.config" \
 	"$HOME/.gitconfig" \
 	"$HOME/.rustup" \
+	"$HOME/devops/evalLib" \
 	; do
 	args+=(--ro-bind "$p" "$p")
 done
