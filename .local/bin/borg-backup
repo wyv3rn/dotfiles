@@ -1,7 +1,18 @@
 #!/usr/bin/env bash
 
-if [ "$(hostname)" == "alpha" ]; then
-    repo="guru@telsv3:/srv/storage/backups/dschatz/alpha"
+export BORG_PASSCOMMAND=pass-borg-default
+host=$(hostname)
+
+function cleanup() {
+    if [ "$host" == "alpha" ]; then
+        umount $HOME/mnt
+    fi
+    exit $1
+}
+
+if [ "$host" == "alpha" ]; then
+    sshfs guru@telsv3:/srv/storage/backups/dschatz/borg $HOME/mnt
+    repo=$HOME/mnt/alpha
 else
     echo "Do not know where to backup to for this machine, giving up"
     exit -1
@@ -9,7 +20,7 @@ fi
 
 # some helpers and error handling:
 info() { printf "\n%s %s\n\n" "$( date )" "$*" >&2; }
-trap 'echo $( date ) Backup interrupted >&2; exit 2' INT TERM
+trap 'cleanup 1' INT TERM
 
 args=()
 args+=(
@@ -32,9 +43,13 @@ dirs=(
     .gnupg
 )
 
-for dir in dirs; do
-args+=($HOME/$dir)
+for dir in ${dirs[@]}; do
+    if [ -d $HOME/$dir ]; then
+        args+=($HOME/$dir)
+    fi
 done
+
+echo ${args[@]}
 
 info "Starting backup"
 borg create ${args[@]}
@@ -52,7 +67,8 @@ borg prune                          \
     --keep-daily    7               \
     --keep-weekly   4               \
     --keep-monthly  6               \
-&& borg compact
+    $repo                           \
+&& borg compact $repo
 
 prune_exit=$?
 
@@ -69,4 +85,4 @@ then
     info "Backup and/or Prune finished with an error"
 fi
 
-exit ${global_exit}
+cleanup ${global_exit}

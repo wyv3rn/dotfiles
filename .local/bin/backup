@@ -14,7 +14,7 @@ dirs=(
 
 date=$(date +%Y-%m-%d)
 
-tar_cmd="tar --ignore-failed-read -cvzf - ${dirs[*]}"
+tar_cmd="tar --ignore-failed-read -cvzf - ${dirs[@]}"
 
 cd $HOME
 
