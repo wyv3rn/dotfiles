@@ -1,59 +1,50 @@
 #!/usr/bin/env bash
 
-export BORG_REPO=$1
-
-if [ -z "$SUDO_USER" ]; then
-    export BORG_PASSCOMMAND=pass-borg-default
+if [ "$(hostname)" == "alpha" ]; then
+    repo="guru@telsv3:/srv/storage/backups/dschatz/alpha"
 else
-    export BORG_PASSCOMMAND="sudo su - $SUDO_USER -c pass-borg-default";
+    echo "Do not know where to backup to for this machine, giving up"
+    exit -1
 fi
 
 # some helpers and error handling:
 info() { printf "\n%s %s\n\n" "$( date )" "$*" >&2; }
 trap 'echo $( date ) Backup interrupted >&2; exit 2' INT TERM
 
-info "Starting backup"
-
-if mount | grep -q "on /srv"; then
-    echo "Warning: Skipping /srv/* because it is a mountpoint"
-    EXCLUDE_SRV="--exclude '/srv/*'"
-fi
-
-borg create                    	    \
+args=()
+args+=(
     --list			                \
-    --filter E                      \
+    --filter AME                    \
     --stats                         \
     --show-rc                       \
-    --compression lz4               \
-    --exclude-caches                \
-    $EXCLUDE_SRV                    \
-    --exclude '/home/*.homedir'     \
-    --exclude '/home/*/.cache/*'    \
-    --exclude '/home/*/mnt'         \
-    --exclude '/home/*/nefos'       \
-    --exclude '/home/*/.nefos'      \
-    --exclude '/dev/*'              \
-    --exclude '/proc/*'             \
-    --exclude '/sys/*'              \
-    --exclude '/tmp/*'              \
-    --exclude '/run/*'              \
-    --exclude '/mnt/*'              \
-    --exclude '/efi'                \
-    --exclude '/media/*'            \
-    --exclude '/lost+found'         \
-    --exclude '/home/*/.gvfs'       \
-    $BORG_REPO::'{hostname}-{now}'  \
-    /                               \
+    $repo::'{hostname}-{now}'
+)
 
+dirs=(
+    bak
+    .bak
+    Documents
+    teaching
+    mail
+    Music
+    Video
+    .ssh
+    .gnupg
+)
+
+for dir in dirs; do
+args+=($HOME/$dir)
+done
+
+info "Starting backup"
+borg create ${args[@]}
 backup_exit=$?
 
 info "Pruning repository"
-
 # Use the `prune` subcommand to maintain 7 daily, 4 weekly and 6 monthly
 # archives of THIS machine. The '{hostname}-' prefix is very important to
 # limit prune's operation to this machine's archives and not apply to
 # other machines' archives also:
-
 borg prune                          \
     --list                          \
     --glob-archives '{hostname}-*'  \
