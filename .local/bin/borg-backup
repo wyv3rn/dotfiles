@@ -7,6 +7,7 @@ function cleanup() {
     if [ "$host" == "alpha" ]; then
         umount $HOME/mnt
     fi
+    cd -
     exit $1
 }
 
@@ -43,13 +44,12 @@ dirs=(
     .gnupg
 )
 
+cd $HOME
 for dir in ${dirs[@]}; do
-    if [ -d $HOME/$dir ]; then
-        args+=($HOME/$dir)
+    if [ -d $dir ]; then
+        args+=($dir)
     fi
 done
-
-echo ${args[@]}
 
 info "Starting backup"
 borg create ${args[@]}
