@@ -1,9 +1,9 @@
 (defcfg process-unmapped-keys (all-except lctl ralt))
 
 (defalias
-    cs (tap-hold 0 130 ␣ lctl)
-    e  (tap-hold 0 130 e lsft)
-    n  (tap-hold 0 130 n rsft)
+    cs (tap-hold 0 140 ␣ lctl)
+    e  (tap-hold 0 140 e lsft)
+    n  (tap-hold 0 140 n rsft)
 )
 
 (defsrc
