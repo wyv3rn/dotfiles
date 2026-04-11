@@ -48,7 +48,9 @@ vim.keymap.set("n", "<F11>", function() async_make.make("autobuild --no-tty --mo
 -- Builtin terminal
 vim.keymap.set('t', '<C-g>', '<C-\\><C-n>')
 vim.keymap.set('t', '<C-Tab>', '<C-\\><C-o><C-w><C-w><Esc>')
+vim.keymap.set('t', '<C-y>', '<C-\\><C-o><C-w><C-w><Esc>')
 vim.keymap.set('n', '<C-Tab>', "<Cmd>wincmd w<CR>")
+vim.keymap.set('n', '<C-y>', "<Cmd>wincmd w<CR>")
 
 -- Configure the rest with WhichKey
 local wk = require("which-key")
