@@ -180,6 +180,12 @@ end
 hs.loadSpoon("EmmyLua")
 
 local lwm = require("lwm").new(wm, 0.45)
-require("keymap").map(lwm)
+local pwm = hs.loadSpoon("PaperWM") or {}
+pwm.window_ratios = { 1 / 3, 2 / 3 }
+pwm.default_width = 0.5
+
+require("keymap").map(lwm, pwm)
+
+pwm:start()
 
 lwm:notify("Hammerspoon!")

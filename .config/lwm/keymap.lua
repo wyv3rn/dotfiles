@@ -5,9 +5,8 @@ local pdf_viewer = "sioyek"
 local terminal = "WezTerm"
 local mail_client = "Thunderbird"
 local smerge = "Sublime Merge"
-local emacs = "Emacs"
 
-function m.map(lwm)
+function m.map(lwm, pwm)
    if lwm:os() == "linux" then
       pdf_viewer = "Zathura"
       terminal = "wezterm"
@@ -27,18 +26,8 @@ function m.map(lwm)
       lwm:bind({ "cmd" }, key, function() lwm:switch_to_app(app) end, "Shift")
    end
 
-   lwm:bind({ "cmd" }, "y", function() lwm:fzf_win() end)
-   lwm:bind({ "cmd" }, "q", function() lwm:close_focused() end, "Shift")
-   lwm:bind({ "cmd" }, "m", function() lwm:maximize_focused() end)
-   lwm:bind({ "cmd" }, "f", function() lwm:toggle_fullscreen_focused() end)
-   lwm:bind({ "cmd" }, "s", function() lwm:snap_focused("next") end)
-   lwm:bind({ "cmd" }, "h", function() lwm:shift_snaps(0.05, "left") end)
-   lwm:bind({ "cmd" }, "l", function() lwm:shift_snaps(0.05, "right") end)
-   lwm:bind({ "cmd" }, "a", function() lwm:spawn("rlg open --gui") end)
-   lwm:bind({ "cmd" }, "p", function() lwm:spawn("p --gui") end)
-   lwm:bind({ "cmd", "alt", "ctrl" }, "r", function() lwm:restart() end)
-
-   local except = { terminal, emacs }
+   -- Sane default key bindings for macos
+   local except = { terminal }
    if lwm:os() == "darwin" then
       lwm:rebind_in_apps({ "ctrl" }, "s", { "cmd" }, "s", except)
       lwm:rebind_in_apps({ "ctrl" }, "c", { "cmd" }, "c", except)
@@ -48,6 +37,33 @@ function m.map(lwm)
       lwm:rebind_in_apps({ "ctrl" }, "a", { "cmd" }, "a", except)
       lwm:rebind_in_apps({ "ctrl" }, "f", { "cmd" }, "f", except)
       lwm:rebind_in_apps({ "ctrl" }, "p", { "cmd" }, "p", except)
+   end
+
+   -- Actual window management
+   lwm:bind({ "cmd" }, "y", function() lwm:fzf_win() end)
+   lwm:bind({ "cmd" }, "q", function() lwm:close_focused() end, "Shift")
+   lwm:bind({ "cmd" }, "f", function() lwm:toggle_fullscreen_focused() end)
+   lwm:bind({ "cmd" }, "a", function() lwm:spawn("rlg open --gui") end)
+   lwm:bind({ "cmd" }, "p", function() lwm:spawn("p --gui") end)
+   lwm:bind({ "cmd", "alt", "ctrl" }, "r", function() lwm:restart() end)
+
+   if pwm then
+      pwm:bindHotkeys({
+         focus_left = { { "cmd" }, "i" },
+         focus_right = { { "cmd" }, "e" },
+         swap_left = { { "cmd", "shift" }, "i" },
+         swap_right = { { "cmd", "shift" }, "e" },
+         split_screen = { { "cmd" }, "s" },
+         center_window = { { "cmd", "shift" }, "c" },
+         cycle_width = { { "cmd" }, "o" },
+         toggle_floating = { { "cmd", "shift" }, "f" },
+         full_width = { { "cmd" }, "m" },
+      })
+   else
+      lwm:bind({ "cmd" }, "m", function() lwm:maximize_focused() end)
+      lwm:bind({ "cmd" }, "s", function() lwm:snap_focused("next") end)
+      lwm:bind({ "cmd" }, "h", function() lwm:shift_snaps(0.05, "left") end)
+      lwm:bind({ "cmd" }, "l", function() lwm:shift_snaps(0.05, "right") end)
    end
 end
 
