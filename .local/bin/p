@@ -21,7 +21,6 @@ function diceware() {
 }
 
 function force-curses() {
-    # TODO this is probably not enough on linux
     export GPG_TTY=$(tty)
     export PINENTRY_USER_DATA="USE_CURSES=1"
     export DISPLAY=""
@@ -49,26 +48,6 @@ function pwprompt() {
     echo $pw
 }
 
-function add() {
-    key=$1
-    master=$2
-    filename="${pwdir}/${key}"
-    value=$(fullprompt)
-    if [ $? -ne 0 ]; then
-        exit $?
-    fi
-    xtraflags=""
-
-    if [ ! "$master" == "" ]; then
-        xtraflags="--passphrase ${master} --batch"
-    fi
-
-    force-curses
-    echo -n "$value" | gpg -c --armor --no-symkey-cache $xtraflags > $filename
-
-    unset -v pw
-}
-
 fzfprg="fzf"
 
 if [ "$(uname)" == "Darwin" ]; then
@@ -80,6 +59,8 @@ else
 fi
 
 pwdir="${HOME}/.pstore"
+master_file="${pwdir}/assets/master"
+unlock_file="${pwdir}/assets/unlock"
 if [ ! -d $pwdir ]; then
     mkdir $pwdir
 fi
@@ -89,33 +70,37 @@ if [ "$1" == "add" ]; then
         echo "Usage: p add <key>"
         exit -2
     fi
-    add $2
-elif [ "$1" == "batch" ]; then
-    echo "Master first"
-    master=$(pwprompt)
-    echo ""
-    echo "Entries next, quit with empty key"
-    while true; do
-        echo ""
-        read -p "Key: " key
-        if [ "$key" == "" ]; then
-            break
-        fi
-        add $key $master
-    done
+    key=$2
+    filename="${pwdir}/${key}"
+    value=$(fullprompt)
+    if [ $? -ne 0 ]; then
+        exit $?
+    fi
+
+    force-curses
+    master=$(gpg -d $master_file)
+    unlock=$(gpg -d --no-symkey-cache $unlock_file)
+    echo -n "$value" | gpg -c --armor --no-symkey-cache --passphrase ${master} --batch | gpg -c --armor --no-symkey-cache --passphrase ${unlock} --batch > $filename
     unset -v master
+    unset -v unlock
 elif [ "$1" == "diceware" ]; then
     if [ "$#" -lt 2 ]; then
         echo "Usage: p diceware n"
         exit -1
     fi
     diceware $2 ${pwdir}/assets/diceware-german.txt
+elif [ "$1" == "unlock" ]; then
+    gpg -d $master_file > /dev/null
 elif [ "$1" == "clear" ]; then
     echo -n "Cleared!" | $clip
 else
+    show=0
     if [ "$1" == "--gui" ]; then
         fzfprg="gfzf"
     else
+        if [ "$1" == "--show" ]; then
+            show=1
+        fi
         force-curses
     fi
     key=$(ls $pwdir | $fzfprg)
@@ -124,12 +109,22 @@ else
     fi
 
     clip_bak=$(${paste})
-    plain=$(gpg -d --no-symkey-cache "${pwdir}/${key}")
+    master=$(gpg -d $master_file)
+    unlock=$(gpg -d --no-symkey-cache $unlock_file)
+    plain=$(gpg -d --no-symkey-cache --passphrase ${unlock} --batch ${pwdir}/${key} | gpg -d --no-symkey-cache --passphrase ${master} --batch)
+    unset -v master
+    unset -v unlock
     if [ $? -ne 0 ]; then
         exit -1
     fi
-    echo -n "$plain" | head -n1
+    if [ $show -eq 1 ]; then
+        echo "$plain"
+    else
+        echo -n "$plain" | head -n1
+    fi
+
     echo -n "$plain" | tail -n1 | sed 's/ //g' | $clip
+    unset -v plain
     echo "Resetting clipboard in 10 seconds ..."
     sleep 10
     echo -n "$clip_bak" | $clip
