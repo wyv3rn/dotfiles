@@ -57,6 +57,8 @@ function m.map(lwm, pwm)
          center_window = { { "cmd", "shift" }, "c" },
          toggle_floating = { { "cmd", "shift" }, "f" },
          full_width = { { "cmd" }, "m" },
+         increase_width = { { "cmd" }, "h" },
+         decrease_width = { { "cmd" }, "l" },
       })
    else
       lwm:bind({ "cmd" }, "m", function() lwm:maximize_focused() end)
