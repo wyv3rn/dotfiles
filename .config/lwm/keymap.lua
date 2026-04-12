@@ -55,7 +55,6 @@ function m.map(lwm, pwm)
          swap_right = { { "cmd", "shift" }, "e" },
          split_screen = { { "cmd" }, "s" },
          center_window = { { "cmd", "shift" }, "c" },
-         cycle_width = { { "cmd" }, "o" },
          toggle_floating = { { "cmd", "shift" }, "f" },
          full_width = { { "cmd" }, "m" },
       })
