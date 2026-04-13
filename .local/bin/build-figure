@@ -6,6 +6,4 @@ if [ $# -ne 1 ]; then
 fi
 
 abs_path=`realpath $1`
-cd ~/devops/evalLib
-uv run figure.py $abs_path
-cd -
+uv --directory ~/devops/evalLib run figure.py $abs_path
