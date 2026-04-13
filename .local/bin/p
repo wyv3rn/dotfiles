@@ -90,6 +90,7 @@ elif [ "$1" == "diceware" ]; then
     fi
     diceware $2 ${pwdir}/assets/diceware-german.txt
 elif [ "$1" == "unlock" ]; then
+    force-curses
     gpg -d $master_file > /dev/null
 elif [ "$1" == "clear" ]; then
     echo -n "Cleared!" | $clip
