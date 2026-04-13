@@ -11,10 +11,7 @@ local langs = {
    "bibtex",
 }
 
--- TODO make it work on windows (install C++ toolchain -> cargo install tree-sitter)
-if vim.fn.has("windows") == 0 then
-   treesitter.install(langs)
-end
+treesitter.install(langs)
 
 table.insert(langs, 1, "tex")
 table.insert(langs, 1, "bib")
