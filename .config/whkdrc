@@ -1,0 +1,45 @@
+.shell powershell
+
+# Reload komorebi and whkd configuration
+lwin + shift + alt + r  : komorebic reload-configuration; taskkill /f /im whkd.exe; Start-Process whkd -WindowStyle hidden; komorebic retile
+
+alt + i                 : komorebic toggle-shortcuts
+
+# App shortcuts
+lwin + n                : komorebic eager-focus qutebrowser.exe
+lwin + r                : komorebic eager-focus SumatraPDF.exe
+lwin + t                : komorebic eager-focus wezterm-gui.exe
+lwin + d                : komorebic eager-focus thunderbird.exe
+lwin + b                : komorebic eager-focus brave.exe
+
+lwin + q                : komorebic close
+
+# Focus windows
+lwin + i                : komorebic focus left
+lwin + e                : komorebic focus right
+
+# Move windows
+lwin + shift + i        : komorebic move left
+lwin + shift + e        : komorebic move right
+alt + shift + return    : komorebic promote
+
+# Resize
+lwin + h                : komorebic resize-axis horizontal increase
+lwin + shift + h        : komorebic resize-axis horizontal decrease
+
+# Manipulate windows
+lwin + shift + f        : komorebic toggle-float
+lwin + m                : komorebic toggle-monocle
+
+# Window manager options
+lwin + shift + p        : komorebic toggle-pause
+
+# Workspaces
+lwin + 1                : komorebic focus-workspace 0
+lwin + 2                : komorebic focus-workspace 1
+lwin + 3                : komorebic focus-workspace 2
+
+# Move windows across workspaces
+lwin + shift + 1        : komorebic move-to-workspace 0
+lwin + shift + 2        : komorebic move-to-workspace 1
+lwin + shift + 3        : komorebic move-to-workspace 2
