@@ -8,6 +8,7 @@ local langs = {
    "javascript",
    "typescript",
    "go",
+   "typst",
    "bibtex",
 }
 
