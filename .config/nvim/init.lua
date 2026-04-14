@@ -5,7 +5,6 @@ vim.pack.add({
    "https://github.com/nvim-lua/plenary.nvim", -- required for telescope
    "https://github.com/nvim-telescope/telescope.nvim",
    "https://github.com/folke/which-key.nvim",
-   "https://github.com/echasnovski/mini.icons", -- required for oil
    "https://github.com/stevearc/oil.nvim",
    "https://github.com/barreiroleo/ltex_extra.nvim",
    "https://github.com/neovim/nvim-lspconfig",
