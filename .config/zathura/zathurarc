@@ -1,3 +1,4 @@
+set window-icon /usr/share/icons/hicolor/256x256/apps/org.pwmt.zathura.png
 set selection-clipboard clipboard
 map { scroll half-up
 map } scroll half-down
