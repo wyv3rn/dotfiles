@@ -6,40 +6,33 @@ lwin + shift + alt + r  : komorebic reload-configuration; taskkill /f /im whkd.e
 alt + i                 : komorebic toggle-shortcuts
 
 # App shortcuts
-lwin + n                : komorebic eager-focus qutebrowser.exe
-lwin + r                : komorebic eager-focus SumatraPDF.exe
-lwin + t                : komorebic eager-focus wezterm-gui.exe
-lwin + d                : komorebic eager-focus thunderbird.exe
-lwin + b                : komorebic eager-focus brave.exe
+alt + n                : komorebic eager-focus qutebrowser.exe
+alt + r                : komorebic eager-focus SumatraPDF.exe
+alt + t                : komorebic eager-focus wezterm-gui.exe
+alt + d                : komorebic eager-focus thunderbird.exe
+alt + g                : komorebic eager-focus sublime_merge.exe
+alt + b                : komorebic eager-focus brave.exe
 
-lwin + q                : komorebic close
+alt + q                : komorebic close
 
-# Focus windows
-lwin + i                : komorebic focus left
-lwin + e                : komorebic focus right
-
-# Move windows
-lwin + shift + i        : komorebic move left
-lwin + shift + e        : komorebic move right
-alt + shift + return    : komorebic promote
+# Cycle for focus and move windows
+alt + k                : komorebic cycle-focus next
+alt + shift + k        : komorebic cycle-move next
 
 # Resize
-lwin + h                : komorebic resize-axis horizontal increase
-lwin + shift + h        : komorebic resize-axis horizontal decrease
+alt + h                : komorebic resize-axis horizontal increase
+alt + l               : komorebic resize-axis horizontal decrease
 
 # Manipulate windows
-lwin + shift + f        : komorebic toggle-float
-lwin + m                : komorebic toggle-monocle
-
-# Window manager options
-lwin + shift + p        : komorebic toggle-pause
+alt + shift + f        : komorebic toggle-float
+alt + m                : komorebic toggle-monocle
 
 # Workspaces
-lwin + 1                : komorebic focus-workspace 0
-lwin + 2                : komorebic focus-workspace 1
-lwin + 3                : komorebic focus-workspace 2
+alt + 1                : komorebic focus-workspace 0
+alt + 2                : komorebic focus-workspace 1
+alt + 3                : komorebic focus-workspace 2
 
 # Move windows across workspaces
-lwin + shift + 1        : komorebic move-to-workspace 0
-lwin + shift + 2        : komorebic move-to-workspace 1
-lwin + shift + 3        : komorebic move-to-workspace 2
+alt + shift + 1        : komorebic move-to-workspace 0
+alt + shift + 2        : komorebic move-to-workspace 1
+alt + shift + 3        : komorebic move-to-workspace 2

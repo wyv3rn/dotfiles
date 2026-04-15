@@ -3,8 +3,8 @@
   "app_specific_configuration_path": "$Env:USERPROFILE/applications.json",
   "window_hiding_behaviour": "Cloak",
   "cross_monitor_move_behaviour": "Insert",
-  "default_workspace_padding": 3,
-  "default_container_padding": 3,
+  "default_workspace_padding": 2,
+  "default_container_padding": 2,
   "border": true,
   "border_width": 5,
   "border_offset": -1,
@@ -14,33 +14,25 @@
   },
   "monitors": [
     {
+      "window_based_work_area_offset": {
+        "bottom": 0,
+        "top": 0,
+        "left": 50,
+        "right": 100
+      },
+      "window_based_work_area_offset_limit": 2,
       "workspaces": [
         {
-          "name": "I",
-          "layout": "Scrolling",
-          "layout_options": {
-              "scrolling": {
-                "columns": 2
-              }
-          }
+          "name": "1",
+          "layout": "Columns"
         },
         {
-          "name": "II",
-          "layout": "Scrolling",
-          "layout_options": {
-              "scrolling": {
-                "columns": 2
-              }
-          }
+          "name": "2",
+          "layout": "Columns"
         },
         {
-          "name": "III",
-          "layout": "Scrolling",
-          "layout_options": {
-              "scrolling": {
-                "columns": 2
-              }
-          }
+          "name": "3",
+          "layout": "Columns"
         }
       ]
     }
