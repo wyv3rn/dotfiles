@@ -176,6 +176,20 @@ if window_mt ~= nil then
 end
 -- end of hotfixing
 
+-- Rewire media keys to mpc
+local mpc_commands = { PLAY = "toggle", NEXT = "next", PREVIOUS = "prev" }
+-- Note: global variable to avoid garbage collection
+Mpc_tap = hs.eventtap.new({ hs.eventtap.event.types.systemDefined }, function(event)
+   local sys_key_event = event:systemKey()
+   if not sys_key_event or not sys_key_event.down then
+      return false
+   elseif mpc_commands[sys_key_event.key] and not sys_key_event['repeat'] then
+      hs.execute("mpc " .. mpc_commands[sys_key_event.key], true)
+   end
+   return false -- propagate to other apps, too
+end)
+Mpc_tap:start()
+
 -- Spoon for LSP support
 hs.loadSpoon("EmmyLua")
 
@@ -183,8 +197,8 @@ local lwm = require("lwm").new(wm, 0.45)
 local pwm = hs.loadSpoon("PaperWM") or {}
 pwm.default_width = 0.5
 
-require("keymap").map(lwm, pwm)
+require("keymap").map(lwm, nil)
 
-pwm:start()
+-- pwm:start()
 
 lwm:notify("Hammerspoon!")
