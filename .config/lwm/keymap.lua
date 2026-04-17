@@ -70,7 +70,7 @@ function m.map(lwm, komorebi)
    else
       lwm:bind({ "cmd" }, "m", function() lwm:maximize_focused() end)
       lwm:bind({ "cmd" }, "s", function() lwm:snap_focused("next") end)
-      lwm:bind({ "cmd" }, "h", function() lwm:shift_snaps(0.05, "left") end)
+      lwm:bind({ "cmd" }, "h", function() lwm:shift_snaps(0.05, "left") end, "shift")
       lwm:bind({ "cmd" }, "l", function() lwm:shift_snaps(0.05, "right") end)
    end
 end

@@ -52,6 +52,10 @@ function wm.spawn(cmd, with_user_env)
    return hs.execute(cmd, with_user_env)
 end
 
+function wm.callback_on_create(fun)
+   hs.window.filter.defaultCurrentSpace:subscribe(hs.window.filter.windowInCurrentSpace, fun)
+end
+
 function wm.window_id(win)
    return win:id()
 end
@@ -102,20 +106,19 @@ function wm.focused_win()
 end
 
 function wm.windows_at_focused()
-   local windows = {}
    local focused_screen_id = hs.window.focusedWindow():screen():id()
-   local space_filter = hs.window.filter.defaultCurrentSpace
-   for _, win in ipairs(space_filter:getWindows()) do
-      if win:screen():id() == focused_screen_id then
-         table.insert(windows, win)
-      end
-   end
-   return windows
+   local filter = hs.window.filter.new()
+   filter:setOverrideFilter({ currentSpace = true, allowScreens = focused_screen_id, visible = true })
+
+   return filter:getWindows()
 end
 
 function wm.callback_on_focus(fun)
-   local space_filter = hs.window.filter.defaultCurrentSpace
-   space_filter:subscribe(hs.window.filter.windowFocused, fun)
+   hs.window.filter.defaultCurrentSpace:subscribe(hs.window.filter.windowFocused, fun)
+end
+
+function wm.hide(win)
+   win:application():hide()
 end
 
 function wm.close(win)
@@ -205,7 +208,7 @@ Mpc_tap:start()
 -- Spoon for LSP support
 hs.loadSpoon("EmmyLua")
 
-local lwm = require("lwm").new(wm, 0.45)
+local lwm = require("lwm").new(wm, 0.45, 0)
 
 require("keymap").map(lwm, use_komorebi)
 

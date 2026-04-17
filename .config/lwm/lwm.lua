@@ -8,9 +8,11 @@ local api_funs = {
    "keystroke_to_app",
    "position",
    "work_area",
+   "callback_on_create",
    "move_win",
    "focused_win",
    "windows_at_focused",
+   "hide",
    "close",
    "maximize",
    "toggle_fullscreen",
@@ -41,6 +43,22 @@ function Lwm.new(wm, left_split, win_border)
    end
    self.left_split = left_split or 0.5
    self.win_border = win_border or 0
+
+   if self.callback_on_create then
+      self:callback_on_create(function()
+         -- TODO
+         local new = self:focused_win()
+         print("Hello, new one!")
+         local wins = self:windows_at_focused()
+         print("You are not alone, there are " .. #wins - 1 .. " others")
+         for _, win in ipairs(wins) do
+            if self:window_id(new) ~= self:window_id(win) then
+               print(".." .. self:window_app_name(win))
+            end
+         end
+      end)
+   end
+
    if self.callback_on_focus then
       self:callback_on_focus(function()
          local win = self:focused_win()
@@ -65,6 +83,12 @@ end
 
 function Lwm:maximize_focused()
    self:maximize(self:focused_win())
+end
+
+function Lwm:is_maximized(win)
+   local pos = self:position(win)
+   local work_area = self:work_area(win)
+   return pos.width >= 0.95 * work_area.width - 2 * self.win_border and pos.height >= 0.95 * work_area.height
 end
 
 function Lwm:toggle_fullscreen_focused()
@@ -146,10 +170,16 @@ function Lwm:fill_if_required(other_win)
 end
 
 function Lwm:try_fill(direction)
+   local filled = false
    for _, win in ipairs(self:windows_at_focused()) do
       if self:is_snapped(win, direction) then
-         self:raise(win)
-         return
+         if not filled then
+            self:raise(win)
+            filled = true
+         end
+      end
+      if self:is_maximized(win) then
+         self:hide(win)
       end
    end
 end
