@@ -113,6 +113,11 @@ function wm.windows_at_focused()
    return windows
 end
 
+function wm.callback_on_focus(fun)
+   local space_filter = hs.window.filter.defaultCurrentSpace
+   space_filter:subscribe(hs.window.filter.windowFocused, fun)
+end
+
 function wm.close(win)
    win:close()
 end

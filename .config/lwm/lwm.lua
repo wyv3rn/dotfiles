@@ -22,6 +22,7 @@ local api_funs = {
    "window_app_name",
    "fzf_win",
    "spawn",
+   "callback_on_focus",
    "restart",
 }
 
@@ -40,6 +41,12 @@ function Lwm.new(wm, left_split, win_border)
    end
    self.left_split = left_split or 0.5
    self.win_border = win_border or 0
+   if self.callback_on_focus then
+      self:callback_on_focus(function()
+         local win = self:focused_win()
+         self:fill_if_required(win)
+      end)
+   end
    return self
 end
 
