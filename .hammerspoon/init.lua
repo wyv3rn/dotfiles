@@ -1,5 +1,7 @@
 package.path = package.path .. ";../.config/lwm/?.lua"
 
+local use_komorebi = false
+
 -- implement LWM API
 local wm = {}
 
@@ -44,9 +46,10 @@ function wm.keystroke_to_app(mods, key, except, alt_mods, alt_key)
    hs.eventtap.keyStroke(mods, key, 0, app)
 end
 
-function wm.spawn(cmd)
+function wm.spawn(cmd, with_user_env)
+   with_user_env = with_user_env or true
    -- TODO not ideal, because this actually blocks
-   return hs.execute(cmd, true)
+   return hs.execute(cmd, with_user_env)
 end
 
 function wm.window_id(win)
@@ -136,6 +139,10 @@ end
 
 function wm.restart()
    hs.reload()
+   if use_komorebi then
+      hs.execute("komorebic stop", true)
+      hs.execute("komorebic start", true)
+   end
 end
 
 -- Disable animations
@@ -194,11 +201,7 @@ Mpc_tap:start()
 hs.loadSpoon("EmmyLua")
 
 local lwm = require("lwm").new(wm, 0.45)
-local pwm = hs.loadSpoon("PaperWM") or {}
-pwm.default_width = 0.5
 
-require("keymap").map(lwm, nil)
-
--- pwm:start()
+require("keymap").map(lwm, use_komorebi)
 
 lwm:notify("Hammerspoon!")

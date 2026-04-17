@@ -1,9 +1,9 @@
 .shell powershell
 
 # Reload komorebi and whkd configuration
-lwin + shift + alt + r  : komorebic reload-configuration; taskkill /f /im whkd.exe; Start-Process whkd -WindowStyle hidden; komorebic retile
+lwin + shift + alt + r : komorebic reload-configuration; taskkill /f /im whkd.exe; Start-Process whkd -WindowStyle hidden; komorebic retile
 
-alt + i                 : komorebic toggle-shortcuts
+alt + i                : komorebic toggle-shortcuts
 
 # App shortcuts
 alt + n                : komorebic eager-focus qutebrowser.exe
@@ -21,7 +21,7 @@ alt + shift + k        : komorebic cycle-move next
 
 # Resize
 alt + h                : komorebic resize-axis horizontal increase
-alt + l               : komorebic resize-axis horizontal decrease
+alt + l                : komorebic resize-axis horizontal decrease
 
 # Manipulate windows
 alt + shift + f        : komorebic toggle-float
