@@ -56,6 +56,14 @@ function wm.callback_on_create(fun)
    hs.window.filter.defaultCurrentSpace:subscribe(hs.window.filter.windowInCurrentSpace, fun)
 end
 
+function wm.screen_id(screen)
+   if not screen then
+      return nil
+   else
+      return screen:id()
+   end
+end
+
 function wm.window_id(win)
    return win:id()
 end
@@ -95,6 +103,10 @@ end
 
 function wm.toggle_fullscreen(win)
    win:toggleFullScreen()
+end
+
+function wm.focused_screen()
+   return hs.screen.mainScreen()
 end
 
 function wm.focused_win()

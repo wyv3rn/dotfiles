@@ -18,6 +18,8 @@ local api_funs = {
    "raise",
    "focus_and_raise",
    "focus_and_raise_app",
+   "focused_screen",
+   "screen_id",
    "window_id",
    "window_title",
    "window_app_name",
@@ -40,12 +42,13 @@ function Lwm.new(wm, left_split, win_border)
          self:notify("Oh no, your wm does not implement " .. fun_name)
       end
    end
-   self.left_split = left_split or 0.5
+   self.default_left_split = left_split or 0.5
+   self.left_splits = {} -- map screens to split
    self.win_border = win_border or 0
 
    if self.callback_on_create then
       self:callback_on_create(function()
-         -- TODO
+         -- TODO; probably use this for "window rules"
          local new = self:focused_win()
          print("Hello, new one!")
          local wins = self:windows_at_focused()
@@ -107,16 +110,22 @@ function Lwm:toggle_fullscreen_focused()
 end
 
 function Lwm:snap(win, direction)
+   local screen_id = self:screen_id(self:focused_screen())
+   if not screen_id then
+      return
+   end
    local work_area = self:work_area(win)
    local y = work_area.y + self.win_border
    local h = work_area.height - 2 * self.win_border
 
+   local left_split = self.left_splits[screen_id] or self.default_left_split
+
    local w, x
    if direction == "left" then
-      w = math.floor(work_area.width * self.left_split) - 2 * self.win_border + 1
+      w = math.floor(work_area.width * left_split) - 2 * self.win_border + 1
       x = work_area.x + self.win_border
    else
-      w = math.ceil(work_area.width * (1.0 - self.left_split)) - 2 * self.win_border
+      w = math.ceil(work_area.width * (1.0 - left_split)) - 2 * self.win_border
       x = work_area.x + work_area.width - w - self.win_border
    end
 
@@ -157,11 +166,15 @@ function Lwm:is_snapped(win, direction)
 end
 
 function Lwm:shift_snaps(fraction_step, direction)
-   if direction == "left" then
-      self.left_split = self.left_split - fraction_step
-   else
-      self.left_split = self.left_split + fraction_step
+   local screen_id = self:screen_id(self:focused_screen())
+   if not screen_id then
+      return
    end
+   if not self.left_splits[screen_id] then
+      self.left_splits[screen_id] = self.default_left_split
+   end
+   local increment = direction == "left" and -fraction_step or fraction_step
+   self.left_splits[screen_id] = self.left_splits[screen_id] + increment
    for _, win in ipairs(self:windows_at_focused()) do
       if self:is_snapped(win, "left") then
          self:snap(win, "left")
@@ -196,6 +209,7 @@ function Lwm:try_fill(direction)
 end
 
 function Lwm:switch_to_app(app_name)
+   -- TODO implement this in lwm itself
    local win = self:focus_and_raise_app(app_name)
    if win == nil then
       return
