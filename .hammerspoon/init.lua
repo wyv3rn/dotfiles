@@ -93,10 +93,6 @@ function wm.move_win(win, pos)
    win:setFrame(frame)
 end
 
-function wm.maximize(win)
-   win:maximize()
-end
-
 function wm.toggle_fullscreen(win)
    win:toggleFullScreen()
 end
@@ -109,7 +105,6 @@ function wm.windows_at_focused()
    local focused_screen_id = hs.window.focusedWindow():screen():id()
    local filter = hs.window.filter.new()
    filter:setOverrideFilter({ currentSpace = true, allowScreens = focused_screen_id, visible = true })
-
    return filter:getWindows()
 end
 
@@ -208,7 +203,7 @@ Mpc_tap:start()
 -- Spoon for LSP support
 hs.loadSpoon("EmmyLua")
 
-local lwm = require("lwm").new(wm, 0.45, 0)
+local lwm = require("lwm").new(wm, 0.45, 9)
 
 require("keymap").map(lwm, use_komorebi)
 

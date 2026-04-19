@@ -14,7 +14,6 @@ local api_funs = {
    "windows_at_focused",
    "hide",
    "close",
-   "maximize",
    "toggle_fullscreen",
    "raise",
    "focus_and_raise",
@@ -82,7 +81,19 @@ function Lwm:close_focused()
 end
 
 function Lwm:maximize_focused()
-   self:maximize(self:focused_win())
+   local win = self:focused_win()
+   if not win then
+      return
+   end
+
+   local work_area = self:work_area(win)
+   local pos = {
+      x = work_area.x + self.win_border,
+      y = work_area.y + self.win_border,
+      width = work_area.width - 2 * self.win_border,
+      height = work_area.height - 2 * self.win_border,
+   }
+   self:move_win(win, pos)
 end
 
 function Lwm:is_maximized(win)
@@ -97,16 +108,16 @@ end
 
 function Lwm:snap(win, direction)
    local work_area = self:work_area(win)
-   local y = work_area.y
+   local y = work_area.y + self.win_border
    local h = work_area.height - 2 * self.win_border
 
    local w, x
    if direction == "left" then
       w = math.floor(work_area.width * self.left_split) - 2 * self.win_border + 1
-      x = work_area.x
+      x = work_area.x + self.win_border
    else
       w = math.ceil(work_area.width * (1.0 - self.left_split)) - 2 * self.win_border
-      x = work_area.x + work_area.width - w - 2 * self.win_border
+      x = work_area.x + work_area.width - w - self.win_border
    end
 
    local pos = { x = x, y = y, width = w, height = h }
@@ -134,12 +145,12 @@ function Lwm:is_snapped(win, direction)
    local pos = self:position(win)
    local work_area = self:work_area(win)
 
-   if pos.y ~= work_area.y or pos.height + 2 * self.win_border < 0.95 * work_area.height or pos.width == work_area.width - 2 * self.win_border then
+   if pos.y ~= work_area.y + self.win_border or pos.height + 2 * self.win_border < 0.95 * work_area.height or pos.width == work_area.width - 2 * self.win_border then
       return false
    end
 
    if direction == "left" then
-      return pos.x == work_area.x
+      return pos.x == work_area.x + self.win_border
    else
       return pos.x >= 0.95 * (work_area.x + work_area.width - pos.width - 2 * self.win_border)
    end
