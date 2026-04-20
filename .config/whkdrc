@@ -19,6 +19,10 @@ f13 + q                : komorebic close
 f13 + k                : komorebic cycle-focus previous
 f13 + shift + k        : komorebic cycle-move previous
 
+# (Unstack) windows
+f13 + s                : komorebic stack left
+f13 + o                : komorebic unstack
+
 # Resize
 f13 + h                : komorebic resize-axis horizontal increase
 f13 + l                : komorebic resize-axis horizontal decrease
