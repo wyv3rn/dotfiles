@@ -28,6 +28,9 @@ function wm.os()
 end
 
 local bindings = {}
+local create_callbacks = {}
+local focus_callbacks = {}
+
 function wm.bind(mods, key, fun, _)
    local translate = {
       cmd = "Mod4",
@@ -42,12 +45,28 @@ function wm.bind(mods, key, fun, _)
    bindings = awful.util.table.join(bindings, awful.key(tmods, key, fun))
 end
 
+function wm.callback_on_create(fun)
+   table.insert(create_callbacks, fun)
+end
+
+function wm.callback_on_focus(fun)
+   table.insert(focus_callbacks, fun)
+end
+
 function wm.spawn(cmd)
    awful.spawn.with_shell(cmd)
 end
 
+function wm.focused_screen()
+   return awful.screen.focused({ client = true })
+end
+
+function wm.screen_id(screen)
+   return screen.index
+end
+
 function wm.focused_win()
-   if client["focus"] then
+   if client.focus then
       return client.focus
    else
       return nil
@@ -74,13 +93,21 @@ function wm.work_area(win)
    return win.screen.workarea
 end
 
+-- note: awesome x/y positions include the border,
+-- but lwm expects the actual window having the position
+-- (but interestingly, width/height seem to be without ...)
 function wm.position(win)
-   return { x = win.x, y = win.y, width = win.width, height = win.height }
+   return {
+      x = win.x + beautiful.border_width,
+      y = win.y + beautiful.border_width,
+      width = win.width,
+      height = win.height,
+   }
 end
 
 function wm.move_win(win, pos)
-   win.x = pos.x
-   win.y = pos.y
+   win.x = pos.x - beautiful.border_width
+   win.y = pos.y - beautiful.border_width
    win.width = pos.width
    win.height = pos.height
 end
@@ -95,14 +122,13 @@ function wm.focus_and_raise(win)
    client.focus = win
 end
 
-function wm.maximize(win)
-   awful.placement.maximize(win, { honor_workarea = true })
-   win:raise()
-end
-
 function wm.toggle_fullscreen(win)
    win.fullscreen = not win.fullscreen
    win:raise()
+end
+
+function wm.hide(win)
+   win.minimized = true
 end
 
 function wm.close(win)
@@ -143,7 +169,7 @@ function wm.restart()
 end
 
 -- start lwm
-local lwm = require("lwm").new(wm, 0.5, beautiful.border_width)
+local lwm = require("lwm").new(wm, 0.45, beautiful.border_width)
 require("keymap").map(lwm)
 
 -- Widget and layout library
@@ -378,7 +404,8 @@ awful.rules.rules = {
 
 -- {{{ Signals
 -- Signal function to execute when a new client appears.
-client.connect_signal("manage", function(c)
+
+table.insert(create_callbacks, function(c)
    c.maximized = false
    if awesome.startup and
        not c.size_hints.user_position
@@ -387,8 +414,18 @@ client.connect_signal("manage", function(c)
       awful.placement.no_offscreen(c)
    end
 end)
+client.connect_signal("manage", function(c)
+   for _, fun in ipairs(create_callbacks) do
+      fun(c)
+   end
+end)
 
-client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
+table.insert(focus_callbacks, function(c) c.border_color = beautiful.border_focus end)
+client.connect_signal("focus", function(c)
+   for _, fun in ipairs(focus_callbacks) do
+      fun(c)
+   end
+end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
 

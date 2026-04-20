@@ -35,11 +35,18 @@ setmetatable(Lwm, {
 
 function Lwm.new(wm, left_split, win_border)
    local self = setmetatable({}, Lwm)
+   local api_as_set = {}
    for _, fun_name in ipairs(api_funs) do
+      api_as_set[fun_name] = true
       if wm[fun_name] ~= nil then
          self[fun_name] = function(_, ...) return wm[fun_name](...) end
       else
          self:notify("Oh no, your wm does not implement " .. fun_name)
+      end
+   end
+   for fun_name, _ in pairs(wm) do
+      if not api_as_set[fun_name] then
+         self:notify("Warning: Your wm does not need to implement " .. fun_name)
       end
    end
    self.default_left_split = left_split or 0.5
@@ -47,9 +54,8 @@ function Lwm.new(wm, left_split, win_border)
    self.win_border = win_border or 0
 
    if self.callback_on_create then
-      self:callback_on_create(function()
+      self:callback_on_create(function(new)
          -- TODO; probably use this for "window rules"
-         local new = self:focused_win()
          print("Hello, new one!")
          local wins = self:windows_at_focused()
          print("You are not alone, there are " .. #wins - 1 .. " others")
@@ -62,8 +68,7 @@ function Lwm.new(wm, left_split, win_border)
    end
 
    if self.callback_on_focus then
-      self:callback_on_focus(function()
-         local win = self:focused_win()
+      self:callback_on_focus(function(win)
          self:fill_if_required(win)
       end)
    end
@@ -97,6 +102,7 @@ function Lwm:maximize_focused()
       height = work_area.height - 2 * self.win_border,
    }
    self:move_win(win, pos)
+   self:raise(win)
 end
 
 function Lwm:is_maximized(win)
@@ -121,12 +127,13 @@ function Lwm:snap(win, direction)
    local left_split = self.left_splits[screen_id] or self.default_left_split
 
    local w, x
+   local mid = math.floor(work_area.width * left_split)
    if direction == "left" then
-      w = math.floor(work_area.width * left_split) - 2 * self.win_border + 1
+      w = mid - 2 * self.win_border
       x = work_area.x + self.win_border
    else
-      w = math.ceil(work_area.width * (1.0 - left_split)) - 2 * self.win_border
-      x = work_area.x + work_area.width - w - self.win_border
+      w = (work_area.width - mid) - 2 * self.win_border
+      x = work_area.x + mid + self.win_border
    end
 
    local pos = { x = x, y = y, width = w, height = h }
