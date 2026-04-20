@@ -61,7 +61,8 @@ function Lwm.new(wm, left_split, win_border)
          print("You are not alone, there are " .. #wins - 1 .. " others")
          for _, win in ipairs(wins) do
             if self:window_id(new) ~= self:window_id(win) then
-               print(".." .. self:window_app_name(win))
+               local app_name = self:window_app_name(win) or "N/A"
+               print(".." .. app_name)
             end
          end
       end)
