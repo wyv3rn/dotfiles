@@ -1,38 +1,38 @@
 .shell powershell
 
 # Reload komorebi and whkd configuration
-lwin + shift + alt + r : komorebic reload-configuration; taskkill /f /im whkd.exe; Start-Process whkd -WindowStyle hidden; komorebic retile
+lwin + shift + f13 + r : komorebic reload-configuration; taskkill /f /im whkd.exe; Start-Process whkd -WindowStyle hidden; komorebic retile
 
-alt + i                : komorebic toggle-shortcuts
+f13 + i                : komorebic toggle-shortcuts
 
 # App shortcuts
-alt + n                : komorebic eager-focus qutebrowser.exe
-alt + r                : komorebic eager-focus SumatraPDF.exe
-alt + t                : komorebic eager-focus wezterm-gui.exe
-alt + d                : komorebic eager-focus thunderbird.exe
-alt + g                : komorebic eager-focus sublime_merge.exe
-alt + b                : komorebic eager-focus brave.exe
+f13 + n                : komorebic eager-focus qutebrowser.exe
+f13 + r                : komorebic eager-focus SumatraPDF.exe
+f13 + t                : komorebic eager-focus wezterm-gui.exe
+f13 + d                : komorebic eager-focus thunderbird.exe
+f13 + g                : komorebic eager-focus sublime_merge.exe
+f13 + b                : komorebic eager-focus brave.exe
 
-alt + q                : komorebic close
+f13 + q                : komorebic close
 
 # Cycle for focus and move windows
-alt + k                : komorebic cycle-focus next
-alt + shift + k        : komorebic cycle-move next
+f13 + k                : komorebic cycle-focus previous
+f13 + shift + k        : komorebic cycle-move previous
 
 # Resize
-alt + h                : komorebic resize-axis horizontal increase
-alt + l                : komorebic resize-axis horizontal decrease
+f13 + h                : komorebic resize-axis horizontal increase
+f13 + l                : komorebic resize-axis horizontal decrease
 
 # Manipulate windows
-alt + shift + f        : komorebic toggle-float
-alt + m                : komorebic toggle-monocle
+f13 + shift + f        : komorebic toggle-float
+f13 + m                : komorebic toggle-monocle
 
 # Workspaces
-alt + 1                : komorebic focus-workspace 0
-alt + 2                : komorebic focus-workspace 1
-alt + 3                : komorebic focus-workspace 2
+f13 + 1                : komorebic focus-workspace 0
+f13 + 2                : komorebic focus-workspace 1
+f13 + 3                : komorebic focus-workspace 2
 
 # Move windows across workspaces
-alt + shift + 1        : komorebic move-to-workspace 0
-alt + shift + 2        : komorebic move-to-workspace 1
-alt + shift + 3        : komorebic move-to-workspace 2
+f13 + shift + 1        : komorebic move-to-workspace 0
+f13 + shift + 2        : komorebic move-to-workspace 1
+f13 + shift + 3        : komorebic move-to-workspace 2

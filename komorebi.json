@@ -8,6 +8,7 @@
   "border": true,
   "border_width": 5,
   "border_offset": -1,
+  "resize_delta": 300,
   "theme": {
     "palette": "Catppuccin",
     "name": "Frappe"
@@ -20,7 +21,7 @@
         "left": 50,
         "right": 100
       },
-      "window_based_work_area_offset_limit": 2,
+      "window_based_work_area_offset_limit": 1,
       "workspaces": [
         {
           "name": "1",
