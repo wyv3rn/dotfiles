@@ -33,6 +33,7 @@ config.bind("<Space><Space>", "set colors.webpage.bg white")
 
 # don't close tab by accident
 config.unbind("d")
+config.unbind("D")
 
 # macros are not so useful in a browser, and I hit q by accident too often
 config.unbind("q")
