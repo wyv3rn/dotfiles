@@ -23,7 +23,6 @@ local api_funs = {
    "window_id",
    "window_title",
    "window_app_name",
-   "fzf_win",
    "spawn",
    "callback_on_focus",
    "restart",

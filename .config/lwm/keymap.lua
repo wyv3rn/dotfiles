@@ -44,7 +44,6 @@ function m.map(lwm, komorebi)
    end
 
    -- Actual window management
-   lwm:bind({ "cmd" }, "y", function() lwm:fzf_win() end)
    lwm:bind({ "cmd" }, "q", function() lwm:close_focused() end, "Shift")
    lwm:bind({ "cmd" }, "f", function() lwm:toggle_fullscreen_focused() end)
    lwm:bind({ "cmd" }, "a", function() lwm:spawn("rlg open --gui") end)

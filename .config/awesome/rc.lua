@@ -53,8 +53,13 @@ function wm.callback_on_focus(fun)
    table.insert(focus_callbacks, fun)
 end
 
-function wm.spawn(cmd)
-   awful.spawn.with_shell(cmd)
+function wm.spawn(cmd, with_user_env)
+   with_user_env = with_user_env or true
+   if with_user_env then
+      awful.spawn.with_shell(cmd)
+   else
+      awful.spawn(cmd)
+   end
 end
 
 function wm.focused_screen()
@@ -156,10 +161,6 @@ function wm.focus_and_raise_app(app_name)
    end
 end
 
-function wm.fzf_win()
-   wm.spawn("rofi -show window -matching fuzzy")
-end
-
 function wm.keystroke_to_app(_, _, _, _, _)
    wm.notify("Why would you need keystroke_to_app on linux?")
 end
@@ -174,12 +175,13 @@ require("keymap").map(lwm)
 
 -- Widget and layout library
 local wibox = require("wibox")
-
-local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
 
 -- our helpers
 local cmd_to_txt = require("widgets/cmd-to-txt")
+local my_launcher = function()
+   awful.spawn("rofi -show combi -modes combi -combi-modes \"window,drun\" -matching fuzzy -show-icons")
+end
 
 -- 3rd party imports
 local volume_ctrl = require("widgets/volume-control")
@@ -239,13 +241,8 @@ local mymenu = awful.widget.launcher({
    menu = mymainmenu
 })
 
--- Menubar configuration
-menubar.utils.terminal = terminal -- Set the terminal for applications that require it
--- }}}
-
 -- {{{ Wibar
 -- Create a wibox for each screen and add it
-
 awful.screen.connect_for_each_screen(function(s)
    -- Each screen has its own tag table.
    awful.tag({ "a", "w", "e", "s", "o", "m", "e" }, s, awful.layout.layouts[1])
@@ -288,14 +285,13 @@ end)
 
 -- {{{ Key bindings
 local globalkeys = awful.util.table.join(
-   awful.key({ modkey, }, "w", function() mymainmenu:show() end,
-      { description = "show main menu", group = "awesome" }),
+   awful.key({ modkey, }, "w", function() mymainmenu:show() end, { description = "show main menu", group = "awesome" }),
 
    -- Screen navigation
    awful.key({ modkey, }, "o", function() awful.screen.focus_relative(1) end,
-      { description = "focus the next screen", group = "screen" }),
+      { description = "focus next screen", group = "screen" }),
    awful.key({ modkey, }, "i", function() awful.screen.focus_relative(-1) end,
-      { description = "focus the previous screen", group = "screen" }),
+      { description = "focus previous screen", group = "screen" }),
    awful.key({ modkey, }, "u", awful.client.urgent.jumpto,
       { description = "jump to urgent client", group = "client" }),
    awful.key({ modkey }, "Tab", function() switcher.switch(1, "Super_L", "Tab", "ISO_Left_Tab") end),
@@ -309,10 +305,8 @@ local globalkeys = awful.util.table.join(
       { description = "run prompt", group = "launcher" }),
 
    -- Launcher
-   awful.key({ modkey }, "space", function() menubar.show() end,
-      { description = "show the menubar", group = "launcher" }),
-   awful.key({ modkey }, "e", function() menubar.show() end,
-      { description = "show the menubar", group = "launcher" }),
+   awful.key({ modkey }, "space", my_launcher, { description = "Launcher", group = "launcher" }),
+   awful.key({ modkey }, "e", my_launcher, { description = "Launcher", group = "launcher" }),
 
    -- lock screen
    awful.key({ modkey, "Control" }, ".", function() awful.spawn("xscreensaver-command -lock") end),

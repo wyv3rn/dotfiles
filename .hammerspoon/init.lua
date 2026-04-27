@@ -148,10 +148,6 @@ function wm.focus_and_raise_app(app_name)
    return app:focusedWindow()
 end
 
-function wm.fzf_win()
-   hs.hints.windowHints()
-end
-
 function wm.restart()
    hs.reload()
    if use_komorebi then
@@ -162,9 +158,6 @@ end
 
 -- Disable animations
 hs.window.animationDuration = 0
-
--- Configure window switcher
-hs.hints.style = "vimperator"
 
 -- hotfixing hs.window:setFrame, see https://github.com/Hammerspoon/hammerspoon/issues/3224
 local function axHotfix(win)
