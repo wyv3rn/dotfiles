@@ -1,6 +1,7 @@
 -- Plugins
 vim.pack.add({
    "https://github.com/catppuccin/nvim",
+   "https://github.com/shaunsingh/nord.nvim.git",
    "https://github.com/nvim-lualine/lualine.nvim",
    "https://github.com/nvim-lua/plenary.nvim", -- required for telescope
    "https://github.com/nvim-telescope/telescope.nvim",
