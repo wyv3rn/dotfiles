@@ -152,6 +152,7 @@ function Lwm:snap_focused(direction)
       end
       self:snap(win, direction)
       self:focus_and_raise(win)
+      self:fill_if_required(win)
    else
       self:notify("Did not find a focused window!")
    end
