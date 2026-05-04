@@ -1,7 +1,7 @@
 local m = {}
 
 local browser = "qutebrowser"
-local pdf_viewer = "sioyek"
+local pdf_viewer = "Skim"
 local terminal = "Ghostty"
 local mail_client = "Thunderbird"
 local smerge = "Sublime Merge"
