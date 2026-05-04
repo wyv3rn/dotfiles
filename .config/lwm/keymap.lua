@@ -2,7 +2,7 @@ local m = {}
 
 local browser = "qutebrowser"
 local pdf_viewer = "Skim"
-local terminal = "Ghostty"
+local terminal = "WezTerm"
 local mail_client = "Thunderbird"
 local smerge = "Sublime Merge"
 
@@ -13,7 +13,7 @@ function m.map(lwm, komorebi)
 
    if lwm:os() == "linux" then
       pdf_viewer = "Zathura"
-      terminal = "ghostty"
+      terminal = "wezterm"
       smerge = "Sublime_merge"
    end
 
