@@ -2,7 +2,7 @@ local m = {}
 
 local browser = "qutebrowser"
 local pdf_viewer = "sioyek"
-local terminal = "WezTerm"
+local terminal = "Ghostty"
 local mail_client = "Thunderbird"
 local smerge = "Sublime Merge"
 
@@ -13,7 +13,7 @@ function m.map(lwm, komorebi)
 
    if lwm:os() == "linux" then
       pdf_viewer = "Zathura"
-      terminal = "wezterm"
+      terminal = "ghostty"
       smerge = "Sublime_merge"
    end
 
@@ -45,7 +45,7 @@ function m.map(lwm, komorebi)
 
    -- Actual window management
    lwm:bind({ "cmd" }, "q", function() lwm:close_focused() end, "Shift")
-   lwm:bind({ "cmd" }, "f", function() lwm:toggle_fullscreen_focused() end)
+   lwm:bind({ "cmd" }, "f", function() lwm:toggle_fullscreen_focused() end, "Shift")
    lwm:bind({ "cmd" }, "a", function() lwm:spawn("rlg open --gui") end)
    lwm:bind({ "cmd" }, "p", function() lwm:spawn("p --gui") end)
    lwm:bind({ "cmd", "alt", "ctrl" }, "r", function() lwm:restart() end)
