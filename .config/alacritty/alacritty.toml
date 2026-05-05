@@ -1,14 +1,36 @@
 [colors.cursor]
-cursor = "#ffffff"
+cursor = "#8caaee"
 
 [cursor.style]
-blinking = "Never"
+blinking = "Always"
 
 [env]
 TERM = "xterm-256color"
 
+[window.padding]
+x = 8
+
 [font]
-size = 12
+size = 14
+
+[font.offset]
+x = 1
+
+[font.normal]
+family = "JetBrainsMono Nerd Font"
+style = "ExtraLight"
+
+[font.bold]
+family = "JetBrainsMono Nerd Font"
+style = "Regular"
+
+[font.italic]
+family = "JetBrainsMono Nerd Font"
+style = "ExtraLight Italic"
+
+[font.bold_italic]
+family = "JetBrainsMono Nerd Font"
+style = "Regular Italic"
 
 [[keyboard.bindings]]
 chars = "\u001B[27;5;9~"
