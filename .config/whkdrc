@@ -1,7 +1,7 @@
 .shell powershell
 
 # Reload komorebi and whkd configuration
-lwin + shift + f13 + r : komorebic reload-configuration; taskkill /f /im whkd.exe; Start-Process whkd -WindowStyle hidden; komorebic retile
+lwin + ctrl + f13 + r : komorebic reload-configuration; taskkill /f /im whkd.exe; Start-Process whkd -WindowStyle hidden; komorebic retile
 
 f13 + i                : komorebic toggle-shortcuts
 

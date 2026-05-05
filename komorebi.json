@@ -18,22 +18,20 @@
       "window_based_work_area_offset": {
         "bottom": 0,
         "top": 0,
-        "left": 50,
-        "right": 100
+        "left": 0,
+        "right": 0
       },
       "window_based_work_area_offset_limit": 1,
       "workspaces": [
         {
           "name": "1",
-          "layout": "Columns"
+          "layout": "Columns",
+          "window_container_behaviour": "Append"
         },
         {
           "name": "2",
-          "layout": "Columns"
-        },
-        {
-          "name": "3",
-          "layout": "Columns"
+          "layout": "Columns",
+          "window_container_behaviour": "Append"
         }
       ]
     }
