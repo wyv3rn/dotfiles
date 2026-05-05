@@ -5,6 +5,7 @@ local pdf_viewer = "Skim"
 local terminal = "Alacritty"
 local mail_client = "Thunderbird"
 local smerge = "Sublime Merge"
+local all_terminals = { "Alacritty", "WezTerm", "Ghostty" }
 
 function m.map(lwm, komorebi)
    local function bind_komorebi(mods, key, cmd, fallback)
@@ -31,7 +32,7 @@ function m.map(lwm, komorebi)
    end
 
    -- Sane default key bindings for macos
-   local except = { terminal }
+   local except = all_terminals
    if lwm:os() == "darwin" then
       lwm:rebind_in_apps({ "ctrl" }, "s", { "cmd" }, "s", except)
       lwm:rebind_in_apps({ "ctrl" }, "c", { "cmd" }, "c", except)
