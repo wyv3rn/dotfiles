@@ -1,0 +1,22 @@
+[font]
+size = 14
+
+[font.offset]
+x = 1
+
+[font.normal]
+family = "JetBrainsMono Nerd Font"
+style = "ExtraLight"
+
+[font.bold]
+family = "JetBrainsMono Nerd Font"
+style = "Regular"
+
+[font.italic]
+family = "JetBrainsMono Nerd Font"
+style = "ExtraLight Italic"
+
+[font.bold_italic]
+family = "JetBrainsMono Nerd Font"
+style = "Regular Italic"
+

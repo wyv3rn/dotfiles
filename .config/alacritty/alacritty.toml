@@ -14,32 +14,10 @@ decorations = "Buttonless"
 x = 9
 y = 6
 
-[font]
-size = 14
-
-[font.offset]
-x = 1
-
-[font.normal]
-family = "JetBrainsMono Nerd Font"
-style = "ExtraLight"
-
-[font.bold]
-family = "JetBrainsMono Nerd Font"
-style = "Regular"
-
-[font.italic]
-family = "JetBrainsMono Nerd Font"
-style = "ExtraLight Italic"
-
-[font.bold_italic]
-family = "JetBrainsMono Nerd Font"
-style = "Regular Italic"
-
 [[keyboard.bindings]]
 chars = "\u001B[27;5;9~"
 key = "Tab"
 mods = "Control"
 
 [general]
-import = ["~/.config/alacritty/catppuccin/catppuccin-frappe.toml"]
+import = ["~/.config/alacritty/catppuccin/catppuccin-frappe.toml", "~/.config/alacritty/font.toml", "~/.config/alacritty/local.toml"]
