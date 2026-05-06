@@ -5,17 +5,17 @@ size = 14
 x = 1
 
 [font.normal]
-family = "JetBrainsMono"
+family = "JetBrainsMono Nerd Font"
 style = "ExtraLight"
 
 [font.bold]
-family = "JetBrainsMono"
+family = "JetBrainsMono Nerd Font"
 style = "Regular"
 
 [font.italic]
-family = "JetBrainsMono"
+family = "JetBrainsMono Nerd Font"
 style = "ExtraLight Italic"
 
 [font.bold_italic]
-family = "JetBrainsMono"
+family = "JetBrainsMono Nerd Font"
 style = "Regular Italic"

@@ -14,10 +14,19 @@ decorations = "Buttonless"
 x = 9
 y = 6
 
-[[keyboard.bindings]]
-chars = "\u001B[27;5;9~"
-key = "Tab"
-mods = "Control"
+[keyboard]
+bindings = [
+    { mods = "Control", key = "Tab", chars = "\u001B[27;5;9~" },
+    { mods = "Control", key = "1", chars = "\x1b1" },
+    { mods = "Control", key = "2", chars = "\x1b2" },
+    { mods = "Control", key = "3", chars = "\x1b3" },
+    { mods = "Control", key = "4", chars = "\x1b4" },
+    { mods = "Control", key = "5", chars = "\x1b5" },
+]
 
 [general]
-import = ["~/.config/alacritty/catppuccin/catppuccin-frappe.toml", "~/.config/alacritty/font.toml", "~/.config/alacritty/local.toml"]
+import = [
+    "~/.config/alacritty/catppuccin/catppuccin-frappe.toml",
+    "~/.config/alacritty/font.toml",
+    "~/.config/alacritty/local.toml"
+]
