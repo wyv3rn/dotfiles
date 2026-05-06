@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+perf record --call-graph fp "$@"
+perf script | stackcollapse-perf.pl | flamegraph.pl > flame.svg
