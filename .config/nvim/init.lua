@@ -14,7 +14,6 @@ vim.pack.add({
    "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
    "https://github.com/ntpeters/vim-better-whitespace",
    "https://github.com/farmergreg/vim-lastplace",
-   "https://github.com/miversen33/sunglasses.nvim",
    "https://github.com/wyv3rn/latex-abbrify.nvim",
    { src = "https://github.com/wyv3rn/blame.nvim", version = "fix-cwd" }
 })
@@ -29,14 +28,6 @@ require("autocmd")
 vim.opt.termguicolors = true
 vim.cmd.colorscheme("catppuccin-frappe")
 require("lualine").setup()
-require("sunglasses").setup({
-   filter_type = "SHADE",
-   filter_percent = 0.07,
-   excluded_filetypes = {},
-   excluded_highlights = {
-      { "lualine_.*", glob = true },
-   }
-})
 
 require("telescope").setup({
    defaults = {
