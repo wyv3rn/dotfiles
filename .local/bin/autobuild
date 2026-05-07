@@ -191,7 +191,7 @@ elif [ -f build.py ]; then
     elif [ "$mode" == "runsim" ]; then
         ini="${cwd}/sim/config.ini"
         ini_count=`find . -name "config.ini" | wc -l`
-        if [ "ini_count" == "1" ]; then
+        if [ "$ini_count" == "1" ]; then
             ini=`find . -name "config.ini"`
         fi
         run-sim-remote --cwd "autobuild/${cwd}" -b "binaries/bin/${cwd}" -f $ini -c $sim_config -R $sim_R --scale-J $sim_scale_J $dryrun
