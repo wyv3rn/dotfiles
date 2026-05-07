@@ -14,7 +14,6 @@ function m.map(lwm, komorebi)
 
    if lwm:os() == "linux" then
       pdf_viewer = "Zathura"
-      terminal = "wezterm"
       smerge = "Sublime_merge"
    end
 
