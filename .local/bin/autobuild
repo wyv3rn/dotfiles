@@ -200,7 +200,7 @@ elif [ -f build.py ]; then
             echo "No host specified for fetching results"
             exit -1
         fi
-        ssh $host "cd autobuild/${cwd}; binaries/bin/opp_scavetool export -o results/${sim_config}/results.json results/${sim_config}/*.vec results/${sim_config}/*.sca"
+        ssh $host "cd autobuild/${cwd}; find results/${sim_config}/ -name '*.sca' -or -name '*.vec' | xargs binaries/bin/opp_scavetool export -o results/${sim_config}/results.json"
         mkdir -p results/${sim_config}
         scp ${host}:autobuild/${cwd}/results/${sim_config}/results.json results/${sim_config}/results.json
     elif [ "$mode" == "open" ]; then
