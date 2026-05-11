@@ -180,7 +180,7 @@ elif [ -f build.py ]; then
             echo "No host specified for deploying"
             exit -1
         fi
-        rsync="rsync --mkpath -aHAX --delete"
+        rsync="rsync --mkpath -aHA --delete"
         dst="${host}:autobuild/${cwd}/"
         for entry in `ls | grep -vE "bootstrap|binaries|cross|compile_commands.json|results"`; do
             echo "Syncing ${entry}"
