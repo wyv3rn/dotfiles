@@ -4,7 +4,7 @@ function o --wraps=open --description 'alias o open'
     switch (uname)
     case Darwin
         set BIN open
-        set PDFV /Applications/Skim.app/Contents/MacOS/Skim
+        set PDFV open
     case "*"
         set BIN xdg-open
     end

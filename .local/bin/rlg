@@ -11,7 +11,7 @@ browser="qutebrowser"
 
 # some OS specific commands
 if [ "$(uname)" == "Darwin" ]; then
-    viewer="sioyek"
+    viewer="open"
     clip="pbcopy"
 else
     viewer="zathura"
