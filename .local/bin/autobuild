@@ -9,7 +9,7 @@ cppcompiler="clang"
 dryrun=""
 
 # deploy and result params
-host=""
+host=autobuild-host
 
 # runsim params
 sim_config="General"
