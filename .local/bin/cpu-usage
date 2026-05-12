@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-top -b -n1 | grep -v "top\$" | tail -n +8 | awk '{print $9}' | paste -s -d'+' | bc
+top -b -n1 | grep -v "top\$" | tail -n +8 | awk '{print $9}' | paste -s -d'+' | sed 's/\+$//' | bc
