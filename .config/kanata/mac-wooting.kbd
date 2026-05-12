@@ -7,16 +7,14 @@
 
 (defalias
     cs  (tap-hold 0 130 ␣ lctl)
-    a   (tap-hold 0 160 a lalt)
     e   (tap-hold 0 130 e lsft)
     n   (tap-hold 0 130 n rsft)
-    r   (tap-hold 0 160 r lalt)
 )
 
 (defsrc
-    ^ < ␣ a e n r
+    ^ < ␣ e n F13 lmet
 )
 
 (deflayer fix
-    < ^ @cs @a @e @n @r
+    < ^ @cs @e @n lmet lalt
 )

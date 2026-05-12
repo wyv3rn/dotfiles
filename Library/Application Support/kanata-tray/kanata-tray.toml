@@ -14,3 +14,7 @@ autorun = true
 [presets.'voyager']
 kanata_config = '~/.config/kanata/mac-voyager.kbd'
 autorun = false
+
+[presets.'wooting']
+kanata_config = '~/.config/kanata/mac-wooting.kbd'
+autorun = false
