@@ -7,11 +7,7 @@ local mail_client = "Thunderbird"
 local smerge = "Sublime Merge"
 local all_terminals = { "Alacritty", "WezTerm", "Ghostty" }
 
-function m.map(lwm, komorebi)
-   local function bind_komorebi(mods, key, cmd, fallback)
-      lwm:bind(mods, key, function() lwm:spawn("/opt/homebrew/bin/komorebic " .. cmd, false) end, fallback)
-   end
-
+function m.map(lwm)
    if lwm:os() == "linux" then
       pdf_viewer = "Zathura"
       smerge = "Sublime_merge"
@@ -50,28 +46,10 @@ function m.map(lwm, komorebi)
    lwm:bind({ "cmd" }, "p", function() lwm:spawn("p --gui") end)
    lwm:bind({ "cmd", "alt", "ctrl" }, "r", function() lwm:restart() end)
 
-   if komorebi then
-      bind_komorebi({ "cmd" }, "k", "cycle-focus previous")
-      bind_komorebi({ "cmd", "shift" }, "k", "cycle-move previous")
-      bind_komorebi({ "cmd" }, "h", "resize-axis horizontal increase")
-      bind_komorebi({ "cmd" }, "l", "resize-axis horizontal decrease")
-      bind_komorebi({ "cmd", "shift" }, "f", "toggle-float")
-      bind_komorebi({ "cmd", }, "m", "toggle-monocle")
-      bind_komorebi({ "cmd", }, "s", "stack left")
-      bind_komorebi({ "cmd", }, "o", "unstack")
-      bind_komorebi({ "cmd", }, "i", "cycle-monitor next")
-      bind_komorebi({ "cmd", "shift" }, "i", "cycle-move-to-monitor next")
-
-      for i = 1, 9 do
-         bind_komorebi({ "cmd" }, tostring(i), "focus-workspace " .. (i - 1))
-         bind_komorebi({ "cmd", "shift" }, tostring(i), "move-to-workspace " .. (i - 1))
-      end
-   else
-      lwm:bind({ "cmd" }, "m", function() lwm:maximize_focused() end)
-      lwm:bind({ "cmd" }, "s", function() lwm:snap_focused("next") end)
-      lwm:bind({ "cmd" }, "h", function() lwm:shift_snaps(0.05, "left") end, "shift")
-      lwm:bind({ "cmd" }, "l", function() lwm:shift_snaps(0.05, "right") end)
-   end
+   lwm:bind({ "cmd" }, "m", function() lwm:maximize_focused() end)
+   lwm:bind({ "cmd" }, "s", function() lwm:snap_focused("next") end)
+   lwm:bind({ "cmd" }, "h", function() lwm:shift_snaps(0.05, "left") end, "shift")
+   lwm:bind({ "cmd" }, "l", function() lwm:shift_snaps(0.05, "right") end)
 end
 
 return m

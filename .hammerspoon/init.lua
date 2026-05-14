@@ -1,19 +1,17 @@
 package.path = package.path .. ";../.config/lwm/?.lua"
 
-local use_komorebi = false
-
 -- implement LWM API
-local wm = {}
+Wm = {}
 
-function wm.notify(msg)
+function Wm.notify(msg)
    hs.alert(msg)
 end
 
-function wm.os()
+function Wm.os()
    return "darwin"
 end
 
-function wm.bind(mods, key, fun, fallback_mod)
+function Wm.bind(mods, key, fun, fallback_mod)
    hs.hotkey.bind(mods, key, fun)
 
    if fallback_mod then
@@ -31,7 +29,7 @@ function wm.bind(mods, key, fun, fallback_mod)
    end
 end
 
-function wm.keystroke_to_app(mods, key, except, alt_mods, alt_key)
+function Wm.keystroke_to_app(mods, key, except, alt_mods, alt_key)
    except = except or {}
    local app = hs.application.frontmostApplication()
    if app == nil then
@@ -46,17 +44,17 @@ function wm.keystroke_to_app(mods, key, except, alt_mods, alt_key)
    hs.eventtap.keyStroke(mods, key, 0, app)
 end
 
-function wm.spawn(cmd, with_user_env)
+function Wm.spawn(cmd, with_user_env)
    with_user_env = with_user_env or true
    -- TODO not ideal, because this actually blocks
    return hs.execute(cmd, with_user_env)
 end
 
-function wm.callback_on_create(fun)
+function Wm.callback_on_create(fun)
    hs.window.filter.defaultCurrentSpace:subscribe(hs.window.filter.windowInCurrentSpace, fun)
 end
 
-function wm.screen_id(screen)
+function Wm.screen_id(screen)
    if not screen then
       return nil
    else
@@ -64,15 +62,15 @@ function wm.screen_id(screen)
    end
 end
 
-function wm.window_id(win)
+function Wm.window_id(win)
    return win:id()
 end
 
-function wm.window_title(win)
+function Wm.window_title(win)
    return win:title()
 end
 
-function wm.window_app_name(win)
+function Wm.window_app_name(win)
    local app = win:application()
    if app == nil then
       return "unknown"
@@ -81,12 +79,12 @@ function wm.window_app_name(win)
    end
 end
 
-function wm.position(win)
+function Wm.position(win)
    local frame = win:frame()
    return { x = frame.x, y = frame.y, width = frame.w, height = frame.h }
 end
 
-function wm.work_area(win)
+function Wm.work_area(win)
    local sframe = win:screen():frame()
    return {
       x = sframe.x,
@@ -96,64 +94,60 @@ function wm.work_area(win)
    }
 end
 
-function wm.move_win(win, pos)
+function Wm.move_win(win, pos)
    local frame = hs.geometry({ x = pos.x, y = pos.y, w = pos.width, h = pos.height })
    win:setFrame(frame)
 end
 
-function wm.toggle_fullscreen(win)
+function Wm.toggle_fullscreen(win)
    win:toggleFullScreen()
 end
 
-function wm.focused_screen()
+function Wm.focused_screen()
    return hs.screen.mainScreen()
 end
 
-function wm.focused_win()
+function Wm.focused_win()
    return hs.window.focusedWindow()
 end
 
-function wm.windows_at_focused()
+function Wm.windows_at_focused()
    local focused_screen_id = hs.window.focusedWindow():screen():id()
    local filter = hs.window.filter.new()
    filter:setOverrideFilter({ currentSpace = true, allowScreens = focused_screen_id, visible = true })
    return filter:getWindows()
 end
 
-function wm.callback_on_focus(fun)
+function Wm.callback_on_focus(fun)
    hs.window.filter.defaultCurrentSpace:subscribe(hs.window.filter.windowFocused, fun)
 end
 
-function wm.hide(win)
+function Wm.hide(win)
    win:application():hide()
 end
 
-function wm.close(win)
+function Wm.close(win)
    win:close()
 end
 
-function wm.raise(win)
+function Wm.raise(win)
    win:raise()
 end
 
-function wm.focus_and_raise(win)
+function Wm.focus_and_raise(win)
    win:raise()
    win:focus()
 end
 
-function wm.focus_and_raise_app(app_name)
+function Wm.focus_and_raise_app(app_name)
    local app = hs.application.open(app_name)
    if app == nil then return end
    app:activate()
    return app:focusedWindow()
 end
 
-function wm.restart()
+function Wm.restart()
    hs.reload()
-   if use_komorebi then
-      hs.execute("komorebic stop", true)
-      hs.execute("komorebic start", true)
-   end
 end
 
 -- Disable animations
@@ -208,8 +202,8 @@ Mpc_tap:start()
 -- Spoon for LSP support
 hs.loadSpoon("EmmyLua")
 
-local lwm = require("lwm").new(wm, 0.45, 9)
+Lwm = require("lwm").new(Wm, 0.45, 9)
 
-require("keymap").map(lwm, use_komorebi)
+require("keymap").map(Lwm)
 
-lwm:notify("Hammerspoon!")
+Lwm:notify("Hammerspoon!")
