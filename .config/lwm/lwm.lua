@@ -20,6 +20,7 @@ local api_funs = {
    "focus_and_raise_app",
    "focused_screen",
    "screen_id",
+   "get_window",
    "window_id",
    "window_title",
    "window_app_name",
@@ -50,6 +51,7 @@ function Lwm.new(wm, master_split, win_border)
    end
    self.default_master_split = master_split or 0.5
    self.master_splits = {} -- map screens to split
+   self.pre_zen = nil
    self.win_border = win_border or 0
 
    if self.callback_on_create then
@@ -88,8 +90,7 @@ function Lwm:close_focused()
    self:close(win)
 end
 
-function Lwm:maximize_focused()
-   local win = self:focused_win()
+function Lwm:maximize(win)
    if not win then
       return
    end
@@ -101,8 +102,12 @@ function Lwm:maximize_focused()
       width = work_area.width - 2 * self.win_border,
       height = work_area.height - 2 * self.win_border,
    }
-   self:move_win(win, pos)
    self:raise(win)
+   self:move_win(win, pos)
+end
+
+function Lwm:maximize_focused()
+   self:maximize(self:focused_win())
 end
 
 function Lwm:is_maximized(win)
@@ -124,16 +129,20 @@ function Lwm:snap(win, direction)
    local y = work_area.y + self.win_border
    local h = work_area.height - 2 * self.win_border
 
-   local left_split = 1.0 - (self.master_splits[screen_id] or self.default_master_split)
+   local master_split = (self.master_splits[screen_id] or self.default_master_split)
+   local left_split = 1.0 - master_split
 
    local w, x
    local mid = math.floor(work_area.width * left_split)
    if direction == "left" then
       w = mid - 2 * self.win_border
       x = work_area.x + self.win_border
-   else
+   elseif direction == "right" then
       w = (work_area.width - mid) - 2 * self.win_border
       x = work_area.x + mid + self.win_border
+   elseif direction == "middle" then
+      w = math.ceil(work_area.width * master_split) - 2 * self.win_border
+      x = math.floor(0.5 * work_area.width - 0.5 * w)
    end
 
    local pos = { x = x, y = y, width = w, height = h }
@@ -142,19 +151,69 @@ end
 
 function Lwm:snap_focused(direction)
    local win = self:focused_win()
-   if win ~= nil then
-      if direction == "next" then
-         if self:is_snapped(win, "left") then
-            direction = "right"
-         else
-            direction = "left"
+   if not win then
+      return
+   end
+   local win_id = self:window_id(win)
+
+   if self.pre_zen then
+      local was_snapped = self.pre_zen[win_id] ~= nil
+      self:toggle_zen()
+      if was_snapped then
+         return
+      end
+   end
+
+   if direction == "next" then
+      if self:is_snapped(win, "left") then
+         direction = "right"
+      else
+         direction = "left"
+      end
+   end
+   self:snap(win, direction)
+   self:focus_and_raise(win)
+   self:fill_if_required(win)
+end
+
+function Lwm:toggle_zen()
+   -- WIP
+   local win = self:focused_win()
+   if not win then
+      return
+   end
+
+   if not self.pre_zen then
+      self:raise(win) -- make sure to raise first to avoid border glitches
+      self.pre_zen = {}
+      for _, other in ipairs(self:windows_at_focused()) do
+         local other_id = self:window_id(other)
+         if self:is_snapped(other, "left") then
+            self.pre_zen[other_id] = "left"
+         elseif self:is_snapped(other, "right") then
+            self.pre_zen[other_id] = "right"
+         elseif self:is_maximized(other) then
+            self.pre_zen[other_id] = "max"
+         elseif other ~= win then
+            self:hide(win)
+         end
+         if self.pre_zen[other_id] then
+            self:snap(other, "middle")
          end
       end
-      self:snap(win, direction)
-      self:focus_and_raise(win)
-      self:fill_if_required(win)
+      self:snap(win, "middle")
    else
-      self:notify("Did not find a focused window!")
+      for win_id, direction in pairs(self.pre_zen) do
+         local other = self:get_window(win_id)
+         if other then
+            if direction == "max" then
+               self:maximize(other)
+            else
+               self:snap(other, direction)
+            end
+         end
+      end
+      self.pre_zen = nil
    end
 end
 

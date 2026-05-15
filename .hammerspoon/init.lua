@@ -107,6 +107,10 @@ function Wm.focused_screen()
    return hs.screen.mainScreen()
 end
 
+function Wm.get_window(win_id)
+   return hs.window.find(win_id)
+end
+
 function Wm.focused_win()
    return hs.window.focusedWindow()
 end
