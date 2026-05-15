@@ -170,7 +170,7 @@ function wm.restart()
 end
 
 -- start lwm
-local lwm = require("lwm").new(wm, 0.45, beautiful.border_width)
+local lwm = require("lwm").new(wm, 0.55, beautiful.border_width)
 require("keymap").map(lwm)
 
 -- Widget and layout library

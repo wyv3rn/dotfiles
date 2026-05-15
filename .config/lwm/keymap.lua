@@ -48,8 +48,8 @@ function m.map(lwm)
 
    lwm:bind({ "cmd" }, "m", function() lwm:maximize_focused() end)
    lwm:bind({ "cmd" }, "s", function() lwm:snap_focused("next") end)
-   lwm:bind({ "cmd" }, "h", function() lwm:shift_snaps(0.05, "left") end, "shift")
-   lwm:bind({ "cmd" }, "l", function() lwm:shift_snaps(0.05, "right") end)
+   lwm:bind({ "cmd" }, "h", function() lwm:increase_master_split(0.05) end, "shift")
+   lwm:bind({ "cmd" }, "l", function() lwm:decrease_master_split(0.05) end)
 end
 
 return m

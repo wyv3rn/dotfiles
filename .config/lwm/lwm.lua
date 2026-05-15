@@ -32,7 +32,7 @@ setmetatable(Lwm, {
    __call = function(cls, ...) return cls.new(...) end
 })
 
-function Lwm.new(wm, left_split, win_border)
+function Lwm.new(wm, master_split, win_border)
    local self = setmetatable({}, Lwm)
    local api_as_set = {}
    for _, fun_name in ipairs(api_funs) do
@@ -48,8 +48,8 @@ function Lwm.new(wm, left_split, win_border)
          self:notify("Warning: Your wm does not need to implement " .. fun_name)
       end
    end
-   self.default_left_split = left_split or 0.5
-   self.left_splits = {} -- map screens to split
+   self.default_master_split = master_split or 0.5
+   self.master_splits = {} -- map screens to split
    self.win_border = win_border or 0
 
    if self.callback_on_create then
@@ -124,7 +124,7 @@ function Lwm:snap(win, direction)
    local y = work_area.y + self.win_border
    local h = work_area.height - 2 * self.win_border
 
-   local left_split = self.left_splits[screen_id] or self.default_left_split
+   local left_split = 1.0 - (self.master_splits[screen_id] or self.default_master_split)
 
    local w, x
    local mid = math.floor(work_area.width * left_split)
@@ -173,16 +173,15 @@ function Lwm:is_snapped(win, direction)
    end
 end
 
-function Lwm:shift_snaps(fraction_step, direction)
+function Lwm:increase_master_split(increment)
    local screen_id = self:screen_id(self:focused_screen())
    if not screen_id then
       return
    end
-   if not self.left_splits[screen_id] then
-      self.left_splits[screen_id] = self.default_left_split
+   if not self.master_splits[screen_id] then
+      self.master_splits[screen_id] = self.default_master_split
    end
-   local increment = direction == "left" and -fraction_step or fraction_step
-   self.left_splits[screen_id] = self.left_splits[screen_id] + increment
+   self.master_splits[screen_id] = self.master_splits[screen_id] + increment
    for _, win in ipairs(self:windows_at_focused()) do
       if self:is_snapped(win, "left") then
          self:snap(win, "left")
@@ -190,6 +189,10 @@ function Lwm:shift_snaps(fraction_step, direction)
          self:snap(win, "right")
       end
    end
+end
+
+function Lwm:decrease_master_split(increment)
+   self:increase_master_split(-increment)
 end
 
 function Lwm:fill_if_required(other_win)
