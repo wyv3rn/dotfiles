@@ -159,6 +159,9 @@ function Lwm:snap_focused(direction)
 end
 
 function Lwm:is_snapped(win, direction)
+   if direction == "either" then
+      return self:is_snapped(win, "left") or self:is_snapped(win, "right")
+   end
    local pos = self:position(win)
    local work_area = self:work_area(win)
 
@@ -213,7 +216,7 @@ function Lwm:try_fill(direction)
             filled = true
          end
       end
-      if self:is_maximized(win) then
+      if not self:is_snapped(win, "either") or self:is_maximized(win) then
          self:hide(win)
       end
    end
