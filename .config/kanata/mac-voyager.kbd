@@ -8,5 +8,5 @@
 )
 
 (deflayer fix
-    < ^
+    ^ <
 )
