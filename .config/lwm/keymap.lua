@@ -50,6 +50,9 @@ function m.map(lwm)
    lwm:bind({ "cmd" }, "s", function() lwm:snap_focused("next") end)
    lwm:bind({ "cmd" }, "h", function() lwm:shift_snaps(0.05, "left") end, "shift")
    lwm:bind({ "cmd" }, "l", function() lwm:shift_snaps(0.05, "right") end)
+
+   -- lwm-tree WIP
+   lwm:bind({ "cmd" }, "x", function() lwm:tile_focused_screen() end)
 end
 
 return m

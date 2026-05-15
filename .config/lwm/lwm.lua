@@ -1,55 +1,8 @@
 -- TODO for awesome
 -- - implement get_window (by id)
-
-local History = {}
-History.__index = History
-
-function History.new()
-   local self = setmetatable({}, History)
-   self.windows = {}
-end
-
-function History:update(win_id)
-   self:remove(win_id)
-   table.insert(self.windows, win_id)
-end
-
-function History:remove(win_id)
-   for i = 1, #self.windows do
-      if self.windows[i] == win_id then
-         table.remove(self.windows, i)
-         break
-      end
-   end
-end
-
-local Node = {}
-Node.__index = Node
-
-function Node.new(parent)
-   local self = setmetatable({}, Node)
-   self.parent = parent
-   self.windows = History.new()
-
-   self.childs = {}
-   self.child_master_weight = 1.0
-end
-
-function Node:is_root()
-   return self.parent == nil
-end
-
-function Node:add_window(win_id)
-   self.windows:update(win_id)
-end
-
-local Screen = {}
-Screen.__index = Screen
-
-function Screen.new(screen_id)
-   local self = setmetatable({}, Node)
-   self.screen_id = screen_id
-end
+-- - implement get_screen (by id)
+-- - work_area now takes a screen or screen_id
+-- - move_win now should also move by win_id
 
 local api_funs = {
    "notify",
@@ -58,6 +11,7 @@ local api_funs = {
    "keystroke_to_app",
    "position",
    "work_area",
+   "work_area_for_win", -- TODO should be obsolete with lwm-tree
    "callback_on_create",
    "move_win",
    "focused_win",
@@ -79,6 +33,119 @@ local api_funs = {
    "restart",
 }
 
+local History = {}
+History.__index = History
+
+function History.new()
+   local self = setmetatable({}, History)
+   self.windows = {}
+   return self
+end
+
+function History:update(win_id)
+   self:remove(win_id)
+   table.insert(self.windows, win_id)
+end
+
+function History:remove(win_id)
+   for i = 1, #self.windows do
+      if self.windows[i] == win_id then
+         table.remove(self.windows, i)
+         break
+      end
+   end
+end
+
+local Node = {}
+Node.__index = Node
+
+function Node.new(lwm, screen_id, parent, index)
+   local self = setmetatable({}, Node)
+   self.lwm = lwm
+   self.screen_id = screen_id
+   self.parent = parent
+   self.index = index
+
+   self.windows = History.new()
+   self.childs = {}
+   self.child_master_weight = 1.0
+   return self
+end
+
+function Node:level()
+   if self.parent == nil then
+      return 0
+   end
+   return self.parent:level() + 1
+end
+
+function Node:is_root()
+   return self.parent == nil
+end
+
+function Node:add_window(win_id)
+   self.windows:update(win_id)
+   self.lwm:move(win_id, self:area())
+end
+
+function Node:remove_window(win_id)
+   self.windows:remove(win_id)
+end
+
+function Node:area()
+   if self:is_root() then
+      local work_area = self.lwm:work_area(self.screen_id)
+      local area = {
+         x = work_area.x + self.lwm.win_border,
+         y = work_area.y + self.lwm.win_border,
+         width = work_area.width - 2 * self.lwm.win_border,
+         height = work_area.height - 2 * self.lwm.win_border,
+      }
+      return area
+   end
+
+   local parent_area = self.parent:area()
+   -- TODO master is bigger
+   -- TODO implement level 2
+   local num_siblings = self:num_siblings()
+   local usable_width = parent_area.width - 2 * (num_siblings - 1) * self.lwm.win_border
+
+   local width = math.floor(usable_width / self:num_siblings())
+   if self.index == 2 then
+      width = usable_width - (num_siblings - 1) * width
+   end
+
+   return {
+      x = parent_area.x + (self.index - 1) * (width + 2 * self.lwm.win_border),
+      y = parent_area.y,
+      width = width,
+      height = parent_area.height
+   }
+end
+
+function Node:num_siblings()
+   if self:is_root() then
+      return 1
+   end
+   return #self.parent.childs
+end
+
+local Screen = {}
+Screen.__index = Screen
+
+function Screen.new(lwm, screen_id)
+   local self = setmetatable({}, Screen)
+   self.lwm = lwm
+   self.screen_id = screen_id
+   self.root = Node.new(lwm, screen_id, nil, 1)
+   self.window_to_node = {}
+   return self
+end
+
+function Screen:is_managed(win_id)
+   return self.window_to_node[win_id] ~= nil
+end
+
 local Lwm = {}
 Lwm.__index = Lwm
 
@@ -99,8 +166,7 @@ function Lwm.new(wm, left_split, win_border)
       end
    end
 
-   self.trees = {}
-   self.window_to_node = {}
+   self.screens = {}
 
    self.default_left_split = left_split or 0.5
    self.left_splits = {} -- map screens to split
@@ -129,8 +195,31 @@ function Lwm.new(wm, left_split, win_border)
    return self
 end
 
-function Lwm:render_focused_screen()
+function Lwm:tile_focused_screen()
    local screen = self:focused_screen()
+   if not screen then
+      return
+   end
+   local screen_id = self:screen_id(screen)
+
+   if not self.screens[screen_id] then
+      self.screens[screen_id] = Screen.new(self, screen_id)
+   end
+
+   local focused_win = self:focused_win()
+   local focused_win_id = focused_win and self:window_id(focused_win) or -1
+   if not self.screens[screen_id]:is_managed(focused_win_id) then
+      return
+   end
+
+   for _, win in ipairs(self:windows_at_focused()) do
+      local win_id = self:window_id(win)
+      if win_id ~= focused_win_id and not self.screens[screen_id]:is_managed(win_id) then
+         self:hide(win)
+      end
+   end
+
+   -- WIP
 end
 
 function Lwm:rebind_in_apps(from_mods, from_key, to_mods, to_key, except)
@@ -152,7 +241,7 @@ function Lwm:maximize_focused()
       return
    end
 
-   local work_area = self:work_area(win)
+   local work_area = self:work_area_for_win(win)
    local pos = {
       x = work_area.x + self.win_border,
       y = work_area.y + self.win_border,
@@ -165,7 +254,7 @@ end
 
 function Lwm:is_maximized(win)
    local pos = self:position(win)
-   local work_area = self:work_area(win)
+   local work_area = self:work_area_for_win(win)
    return pos.width >= 0.95 * work_area.width - 2 * self.win_border and pos.height >= 0.95 * work_area.height
 end
 
@@ -178,7 +267,7 @@ function Lwm:snap(win, direction)
    if not screen_id then
       return
    end
-   local work_area = self:work_area(win)
+   local work_area = self:work_area_for_win(win)
    local y = work_area.y + self.win_border
    local h = work_area.height - 2 * self.win_border
 
@@ -218,7 +307,7 @@ end
 
 function Lwm:is_snapped(win, direction)
    local pos = self:position(win)
-   local work_area = self:work_area(win)
+   local work_area = self:work_area_for_win(win)
 
    if pos.y ~= work_area.y + self.win_border or pos.height + 2 * self.win_border < 0.95 * work_area.height or pos.width == work_area.width - 2 * self.win_border then
       return false

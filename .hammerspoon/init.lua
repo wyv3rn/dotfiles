@@ -88,17 +88,33 @@ function Wm.position(win)
    return { x = frame.x, y = frame.y, width = frame.w, height = frame.h }
 end
 
-function Wm.work_area(win)
-   local sframe = win:screen():frame()
+function Wm.work_area(screen)
+   if type(screen) == "number" then
+      screen = hs.screen.find(screen)
+   end
+   if screen == nil then
+      return nil
+   end
+   local frame = screen:frame()
    return {
-      x = sframe.x,
-      y = sframe.y,
-      width = sframe.w,
-      height = sframe.h
+      x = frame.x,
+      y = frame.y,
+      width = frame.w,
+      height = frame.h
    }
 end
 
+function Wm.work_area_for_win(win)
+   return Wm.work_area(win:screen())
+end
+
 function Wm.move_win(win, pos)
+   if type(win) == "number" then
+      win = hs.window.find(win)
+   end
+   if win == nil then
+      return
+   end
    local frame = hs.geometry({ x = pos.x, y = pos.y, w = pos.width, h = pos.height })
    win:setFrame(frame)
 end
