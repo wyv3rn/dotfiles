@@ -62,6 +62,10 @@ function Wm.screen_id(screen)
    end
 end
 
+function Wm.get_window(id)
+   return hs.window.find(id)
+end
+
 function Wm.window_id(win)
    return win:id()
 end

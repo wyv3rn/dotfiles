@@ -1,5 +1,55 @@
-local Lwm = {}
-Lwm.__index = Lwm
+-- TODO for awesome
+-- - implement get_window (by id)
+
+local History = {}
+History.__index = History
+
+function History.new()
+   local self = setmetatable({}, History)
+   self.windows = {}
+end
+
+function History:update(win_id)
+   self:remove(win_id)
+   table.insert(self.windows, win_id)
+end
+
+function History:remove(win_id)
+   for i = 1, #self.windows do
+      if self.windows[i] == win_id then
+         table.remove(self.windows, i)
+         break
+      end
+   end
+end
+
+local Node = {}
+Node.__index = Node
+
+function Node.new(parent)
+   local self = setmetatable({}, Node)
+   self.parent = parent
+   self.windows = History.new()
+
+   self.childs = {}
+   self.child_master_weight = 1.0
+end
+
+function Node:is_root()
+   return self.parent == nil
+end
+
+function Node:add_window(win_id)
+   self.windows:update(win_id)
+end
+
+local Screen = {}
+Screen.__index = Screen
+
+function Screen.new(screen_id)
+   local self = setmetatable({}, Node)
+   self.screen_id = screen_id
+end
 
 local api_funs = {
    "notify",
@@ -20,6 +70,7 @@ local api_funs = {
    "focus_and_raise_app",
    "focused_screen",
    "screen_id",
+   "get_window",
    "window_id",
    "window_title",
    "window_app_name",
@@ -28,9 +79,8 @@ local api_funs = {
    "restart",
 }
 
-setmetatable(Lwm, {
-   __call = function(cls, ...) return cls.new(...) end
-})
+local Lwm = {}
+Lwm.__index = Lwm
 
 function Lwm.new(wm, left_split, win_border)
    local self = setmetatable({}, Lwm)
@@ -48,6 +98,10 @@ function Lwm.new(wm, left_split, win_border)
          self:notify("Warning: Your wm does not need to implement " .. fun_name)
       end
    end
+
+   self.trees = {}
+   self.window_to_node = {}
+
    self.default_left_split = left_split or 0.5
    self.left_splits = {} -- map screens to split
    self.win_border = win_border or 0
@@ -73,6 +127,10 @@ function Lwm.new(wm, left_split, win_border)
       end)
    end
    return self
+end
+
+function Lwm:render_focused_screen()
+   local screen = self:focused_screen()
 end
 
 function Lwm:rebind_in_apps(from_mods, from_key, to_mods, to_key, except)
