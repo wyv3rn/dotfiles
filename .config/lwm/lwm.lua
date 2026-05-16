@@ -134,7 +134,7 @@ function Lwm:snap(win, direction)
       x = work_area.x + mid + self.win_border
    elseif direction == "middle" then
       w = math.ceil(work_area.width * master_split) - 2 * self.win_border
-      x = math.floor(0.5 * work_area.width - 0.5 * w)
+      x = math.ceil(0.5 * work_area.width - 0.5 * w)
    elseif direction == "max" then
       x = work_area.x + self.win_border
       w = work_area.width - 2 * self.win_border
@@ -160,7 +160,7 @@ function Lwm:snap_focused(direction)
    end
 
    if direction == "next" then
-      if self:is_snapped(win, "left") then
+      if self:snapped_direction(win) == "left" then
          direction = "right"
       else
          direction = "left"
@@ -185,17 +185,12 @@ function Lwm:toggle_zen()
 
       for _, other in ipairs(self:windows_at_focused()) do
          local other_id = self:window_id(other)
-         if self:is_snapped(other, "left") then
-            self.pre_zen_positions[other_id] = "left"
-         elseif self:is_snapped(other, "right") then
-            self.pre_zen_positions[other_id] = "right"
-         elseif self:is_snapped(other, "max") then
-            self.pre_zen_positions[other_id] = "max"
+         local d = self:snapped_direction(other)
+         if d then
+            self.pre_zen_positions[other_id] = d
+            self:snap(other, "middle")
          elseif other ~= win then
             self:hide(win)
-         end
-         if self.pre_zen_positions[other_id] then
-            self:snap(other, "middle")
          end
       end
       self:snap(win, "middle")
@@ -204,44 +199,28 @@ function Lwm:toggle_zen()
       for win_id, direction in pairs(self.pre_zen_positions) do
          local other = self:get_window(win_id)
          if other then
-            if direction == "max" then
-               self:maximize(other)
-            else
-               self:snap(other, direction)
-            end
+            self:snap(other, direction)
          end
       end
       self.pre_zen_positions = nil
    end
 end
 
-function Lwm:is_snapped(win, direction)
-   if type(direction) == "table" then
-      for _, d in ipairs(direction) do
-         if self:is_snapped(win, d) then
-            return true
-         end
-      end
-      return false
-   end
-
+function Lwm:snapped_direction(win)
    local pos = self:position(win)
    local work_area = self:work_area(win)
-
    if pos.y ~= work_area.y + self.win_border or pos.height + 2 * self.win_border < 0.95 * work_area.height then
-      return false
+      return nil
    end
 
-   if direction == "max" then
-      return pos.width >= 0.95 * work_area.width - 2 * self.win_border
-   elseif direction == "left" then
-      return pos.x == work_area.x + self.win_border and pos.width < 0.95 * work_area.width - 2 * self.win_border
-   elseif direction == "right" then
-      return pos.x >= 0.95 * (work_area.x + work_area.width - pos.width - 2 * self.win_border)
-   elseif direction == "middle" then
-      return true
+   if pos.width >= 0.95 * work_area.width - 2 * self.win_border then
+      return "max"
+   elseif pos.x == work_area.x + self.win_border and pos.width < 0.95 * work_area.width - 2 * self.win_border then
+      return "left"
+   elseif pos.x >= 0.95 * (work_area.x + work_area.width - pos.width - 2 * self.win_border) then
+      return "right"
    else
-      return false
+      return "middle"
    end
 end
 
@@ -255,12 +234,9 @@ function Lwm:increase_master_split(increment)
    end
    self.master_splits[screen_id] = self.master_splits[screen_id] + increment
    for _, win in ipairs(self:windows_at_focused()) do
-      if self:is_snapped(win, "left") then
-         self:snap(win, "left")
-      elseif self:is_snapped(win, "right") then
-         self:snap(win, "right")
-      elseif self:is_snapped(win, "middle") then
-         self:snap(win, "middle")
+      local d = self:snapped_direction(win)
+      if d and d ~= "max" then
+         self:snap(win, d)
       end
    end
 end
@@ -271,9 +247,10 @@ end
 
 function Lwm:fill_if_required(other_win)
    if other_win == nil then return end
-   if self:is_snapped(other_win, "left") then
+   local d = self:snapped_direction(other_win)
+   if d == "left" then
       self:try_fill("right")
-   elseif self:is_snapped(other_win, "right") then
+   elseif d == "right" then
       self:try_fill("left")
    end
 end
@@ -281,13 +258,14 @@ end
 function Lwm:try_fill(direction)
    local filled = false
    for _, win in ipairs(self:windows_at_focused()) do
-      if self:is_snapped(win, direction) then
+      local d = self:snapped_direction(win)
+      if d == direction then
          if not filled then
             self:raise(win)
             filled = true
          end
       end
-      if not self:is_snapped(win, { "left", "right" }) or self:is_snapped(win, "max") then
+      if (not d == "left" and not d == "right") or d == "max" then
          self:hide(win)
       end
    end
