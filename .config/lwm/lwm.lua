@@ -95,26 +95,12 @@ function Lwm:maximize(win)
    if not win then
       return
    end
-
-   local work_area = self:work_area(win)
-   local pos = {
-      x = work_area.x + self.win_border,
-      y = work_area.y + self.win_border,
-      width = work_area.width - 2 * self.win_border,
-      height = work_area.height - 2 * self.win_border,
-   }
    self:raise(win)
-   self:move_win(win, pos)
+   self:snap(win, "max")
 end
 
 function Lwm:maximize_focused()
    self:maximize(self:focused_win())
-end
-
-function Lwm:is_maximized(win)
-   local pos = self:position(win)
-   local work_area = self:work_area(win)
-   return pos.width >= 0.95 * work_area.width - 2 * self.win_border and pos.height >= 0.95 * work_area.height
 end
 
 function Lwm:toggle_fullscreen_focused()
@@ -122,6 +108,11 @@ function Lwm:toggle_fullscreen_focused()
 end
 
 function Lwm:snap(win, direction)
+   if not win then
+      return
+   end
+
+   -- TODO this should actually be the screen of the win; but does not matter for now
    local screen_id = self:screen_id(self:focused_screen())
    if not screen_id then
       return
@@ -144,6 +135,9 @@ function Lwm:snap(win, direction)
    elseif direction == "middle" then
       w = math.ceil(work_area.width * master_split) - 2 * self.win_border
       x = math.floor(0.5 * work_area.width - 0.5 * w)
+   elseif direction == "max" then
+      x = work_area.x + self.win_border
+      w = work_area.width - 2 * self.win_border
    end
 
    local pos = { x = x, y = y, width = w, height = h }
@@ -195,7 +189,7 @@ function Lwm:toggle_zen()
             self.pre_zen_positions[other_id] = "left"
          elseif self:is_snapped(other, "right") then
             self.pre_zen_positions[other_id] = "right"
-         elseif self:is_maximized(other) then
+         elseif self:is_snapped(other, "max") then
             self.pre_zen_positions[other_id] = "max"
          elseif other ~= win then
             self:hide(win)
@@ -234,12 +228,14 @@ function Lwm:is_snapped(win, direction)
    local pos = self:position(win)
    local work_area = self:work_area(win)
 
-   if pos.y ~= work_area.y + self.win_border or pos.height + 2 * self.win_border < 0.95 * work_area.height or pos.width == work_area.width - 2 * self.win_border then
+   if pos.y ~= work_area.y + self.win_border or pos.height + 2 * self.win_border < 0.95 * work_area.height then
       return false
    end
 
-   if direction == "left" then
-      return pos.x == work_area.x + self.win_border
+   if direction == "max" then
+      return pos.width >= 0.95 * work_area.width - 2 * self.win_border
+   elseif direction == "left" then
+      return pos.x == work_area.x + self.win_border and pos.width < 0.95 * work_area.width - 2 * self.win_border
    elseif direction == "right" then
       return pos.x >= 0.95 * (work_area.x + work_area.width - pos.width - 2 * self.win_border)
    elseif direction == "middle" then
@@ -291,7 +287,7 @@ function Lwm:try_fill(direction)
             filled = true
          end
       end
-      if not self:is_snapped(win, { "left", "right" }) or self:is_maximized(win) then
+      if not self:is_snapped(win, { "left", "right" }) or self:is_snapped(win, "max") then
          self:hide(win)
       end
    end
