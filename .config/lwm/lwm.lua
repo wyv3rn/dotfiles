@@ -51,7 +51,8 @@ function Lwm.new(wm, master_split, win_border)
    end
    self.default_master_split = master_split or 0.5
    self.master_splits = {} -- map screens to split
-   self.pre_zen = nil
+   self.pre_zen_positions = nil
+   self.pre_zen_master_split = self.default_master_split
    self.win_border = win_border or 0
 
    if self.callback_on_create then
@@ -156,8 +157,8 @@ function Lwm:snap_focused(direction)
    end
    local win_id = self:window_id(win)
 
-   if self.pre_zen then
-      local was_snapped = self.pre_zen[win_id] ~= nil
+   if self.pre_zen_positions then
+      local was_snapped = self.pre_zen_positions[win_id] ~= nil
       self:toggle_zen()
       if was_snapped then
          return
@@ -177,33 +178,36 @@ function Lwm:snap_focused(direction)
 end
 
 function Lwm:toggle_zen()
-   -- WIP
    local win = self:focused_win()
    if not win then
       return
    end
+   local screen_id = self:screen_id(self:focused_screen())
 
-   if not self.pre_zen then
-      self:raise(win) -- make sure to raise first to avoid border glitches
-      self.pre_zen = {}
+   if not self.pre_zen_positions then
+      self:raise(win) -- make sure to raise before moving to avoid border glitches
+      self.pre_zen_positions = {}
+      self.pre_zen_master_split = self.master_splits[screen_id]
+
       for _, other in ipairs(self:windows_at_focused()) do
          local other_id = self:window_id(other)
          if self:is_snapped(other, "left") then
-            self.pre_zen[other_id] = "left"
+            self.pre_zen_positions[other_id] = "left"
          elseif self:is_snapped(other, "right") then
-            self.pre_zen[other_id] = "right"
+            self.pre_zen_positions[other_id] = "right"
          elseif self:is_maximized(other) then
-            self.pre_zen[other_id] = "max"
+            self.pre_zen_positions[other_id] = "max"
          elseif other ~= win then
             self:hide(win)
          end
-         if self.pre_zen[other_id] then
+         if self.pre_zen_positions[other_id] then
             self:snap(other, "middle")
          end
       end
       self:snap(win, "middle")
    else
-      for win_id, direction in pairs(self.pre_zen) do
+      self.master_splits[screen_id] = self.pre_zen_master_split
+      for win_id, direction in pairs(self.pre_zen_positions) do
          local other = self:get_window(win_id)
          if other then
             if direction == "max" then
@@ -213,14 +217,20 @@ function Lwm:toggle_zen()
             end
          end
       end
-      self.pre_zen = nil
+      self.pre_zen_positions = nil
    end
 end
 
 function Lwm:is_snapped(win, direction)
-   if direction == "either" then
-      return self:is_snapped(win, "left") or self:is_snapped(win, "right")
+   if type(direction) == "table" then
+      for _, d in ipairs(direction) do
+         if self:is_snapped(win, d) then
+            return true
+         end
+      end
+      return false
    end
+
    local pos = self:position(win)
    local work_area = self:work_area(win)
 
@@ -230,8 +240,12 @@ function Lwm:is_snapped(win, direction)
 
    if direction == "left" then
       return pos.x == work_area.x + self.win_border
-   else
+   elseif direction == "right" then
       return pos.x >= 0.95 * (work_area.x + work_area.width - pos.width - 2 * self.win_border)
+   elseif direction == "middle" then
+      return true
+   else
+      return false
    end
 end
 
@@ -249,6 +263,8 @@ function Lwm:increase_master_split(increment)
          self:snap(win, "left")
       elseif self:is_snapped(win, "right") then
          self:snap(win, "right")
+      elseif self:is_snapped(win, "middle") then
+         self:snap(win, "middle")
       end
    end
 end
@@ -275,7 +291,7 @@ function Lwm:try_fill(direction)
             filled = true
          end
       end
-      if not self:is_snapped(win, "either") or self:is_maximized(win) then
+      if not self:is_snapped(win, { "left", "right" }) or self:is_maximized(win) then
          self:hide(win)
       end
    end
