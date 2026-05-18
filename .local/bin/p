@@ -23,7 +23,14 @@ function diceware() {
 function force-curses() {
     export GPG_TTY=$(tty)
     export PINENTRY_USER_DATA="USE_CURSES=1"
+    DISPLAY_BAK=$DISPLAY
     export DISPLAY=""
+}
+
+function unforce-curses() {
+    if [ "${DISPLAY_BAK}" != "" ]; then
+        export DISPLAY=$DISPLAY_BAK
+    fi
 }
 
 function fullprompt() {
@@ -109,7 +116,6 @@ else
         exit 0
     fi
 
-    clip_bak=$(${paste})
     master=$(gpg -d $master_file)
     unlock=$(gpg -d --no-symkey-cache $unlock_file)
     plain=$(gpg -d --no-symkey-cache --passphrase ${unlock} --batch ${pwdir}/${key} | gpg -d --no-symkey-cache --passphrase ${master} --batch)
@@ -124,6 +130,8 @@ else
         echo -n "$plain" | head -n1
     fi
 
+    unforce-curses
+    clip_bak=$(${paste})
     echo -n "$plain" | tail -n1 | sed 's/ //g' | $clip
     unset -v plain
     echo "Resetting clipboard in 10 seconds ..."
