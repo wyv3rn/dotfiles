@@ -5,6 +5,7 @@ local awesome = awesome
 local client = client
 local root = root
 local mouse = mouse
+local screen_api = screen
 
 -- Standard awesome library
 local awful = require("awful")
@@ -82,6 +83,17 @@ function wm.windows_at_focused()
    return client.focus.screen.clients
 end
 
+function wm.get_window(win_id)
+   for s in screen_api do
+      for _, c in ipairs(s.all_clients) do
+         if c.window == win_id then
+            return c
+         end
+      end
+   end
+   return nil
+end
+
 function wm.window_id(win)
    return win.window
 end
@@ -92,6 +104,10 @@ end
 
 function wm.window_app_name(win)
    return win.class
+end
+
+function wm.window_screen(win)
+   return win.screen
 end
 
 function wm.work_area(win)
@@ -208,7 +224,7 @@ local vert_sep = wibox.widget {
 }
 
 -- This is used later as the default terminal and editor to run.
-local terminal = "wezterm"
+local terminal = "alacritty"
 
 -- Default modkey. For reference: Mod4 = OS key, Mod1 = Alt
 local modkey = "Mod4"

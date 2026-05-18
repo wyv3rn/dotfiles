@@ -24,6 +24,7 @@ local api_funs = {
    "window_id",
    "window_title",
    "window_app_name",
+   "window_screen",
    "spawn",
    "callback_on_focus",
    "restart",
@@ -112,8 +113,7 @@ function Lwm:snap(win, direction)
       return
    end
 
-   -- TODO this should actually be the screen of the win; but does not matter for now
-   local screen_id = self:screen_id(self:focused_screen())
+   local screen_id = self:screen_id(self:window_screen(win))
    if not screen_id then
       return
    end
@@ -134,10 +134,10 @@ function Lwm:snap(win, direction)
       x = work_area.x + mid + self.win_border
    elseif direction == "middle" then
       w = math.ceil(work_area.width * master_split) - 2 * self.win_border
-      x = math.ceil(0.5 * work_area.width - 0.5 * w)
+      x = work_area.x + math.ceil(0.5 * work_area.width - 0.5 * w)
    elseif direction == "max" then
-      x = work_area.x + self.win_border
       w = work_area.width - 2 * self.win_border
+      x = work_area.x + self.win_border
    end
 
    local pos = { x = x, y = y, width = w, height = h }
