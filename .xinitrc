@@ -40,8 +40,7 @@ xset s off -dpms
 command -v xscreensaver && xscreensaver -nosplash &
 command -v nm-applet && nm-applet &
 command -v udiskie && udiskie &
-command -v keepassxc && keepassxc &
-command -v nitrogen && nitrogen --restore &
+command -v feh && [ -f ~/.fehbg ] && ~/.fehbg
 
 # source local config
 [ -f ~/.xprofile ] && . ~/.xprofile

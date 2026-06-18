@@ -5,6 +5,8 @@ local pdf_viewer = "Preview"
 local terminal = "Alacritty"
 local mail_client = "Thunderbird"
 local smerge = "Sublime Merge"
+local signal = "signal"
+local drawio = "draw-io"
 local all_terminals = { "Alacritty", "WezTerm", "Ghostty" }
 
 function m.map(lwm)
@@ -20,6 +22,8 @@ function m.map(lwm)
       [terminal] = "t",
       [mail_client] = "d",
       [smerge] = "g",
+      [signal] = "c",
+      [drawio] = "v",
    }
 
    for app, key in pairs(apps) do

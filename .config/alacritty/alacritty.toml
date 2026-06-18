@@ -20,8 +20,6 @@ y = 6
 
 [keyboard]
 bindings = [
-    { mods = "Super", key = "c", action = "Copy" },
-    { mods = "Super", key = "v", action = "Paste" },
     { mods = "Control", key = "Tab", chars = "\u001B[27;5;9~" },
     { mods = "Control", key = "1", chars = "\x1b1" },
     { mods = "Control", key = "2", chars = "\x1b2" },
