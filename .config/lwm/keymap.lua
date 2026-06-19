@@ -6,13 +6,14 @@ local terminal = "Alacritty"
 local mail_client = "Thunderbird"
 local smerge = "Sublime Merge"
 local signal = "signal"
-local drawio = "draw-io"
+local drawio = "draw.io"
 local all_terminals = { "Alacritty", "WezTerm", "Ghostty" }
 
 function m.map(lwm)
    if lwm:os() == "linux" then
       pdf_viewer = "Zathura"
       smerge = "Sublime_merge"
+      drawio = "draw-io"
    end
 
    -- Activate specific applications by key combination
