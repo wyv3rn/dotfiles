@@ -3,6 +3,7 @@
 dirs=(
     bak
     .bak
+    Scratch
     Documents
     teaching
     mail
