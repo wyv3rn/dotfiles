@@ -224,6 +224,8 @@ elif [ -f build.py ]; then
         scp ${host}:autobuild/${cwd}/${subdir}/results/${sim_config}/results.json results/${sim_config}/results.json
     elif [ "$mode" == "run-n-scave" ]; then
         ini=$(find_ini $subdir)
+        echo "Deleting old results first"
+        find ./${subdir}/results/${sim_config}/ \( -name '*.sca' -or -name '*.vec' -or -name '*.json' \) -delete
         cross/native-release-${cppcompiler}/binaries/bin/${binary} -f $ini -c $sim_config &&
         find ./${subdir}/results/${sim_config}/ -name '*.sca' -or -name '*.vec' | xargs cross/native-release-${cppcompiler}/binaries/bin/opp_scavetool export -o ./${subdir}/results/${sim_config}/results.json
     elif [ "$mode" == "open" ]; then
