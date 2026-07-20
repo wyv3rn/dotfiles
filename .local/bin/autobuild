@@ -37,7 +37,7 @@ move_msg_files () {
 
 find_ini () {
     subdir=$1
-    ini_count=`find ./${subdir} -name "config.ini" | wc -l`
+    ini_count=`find ./${subdir} -name "config.ini" | wc -l | grep -o '\d\+'`
     if [ "$ini_count" == "1" ]; then
         find ./${subdir} -name "config.ini"
     else
