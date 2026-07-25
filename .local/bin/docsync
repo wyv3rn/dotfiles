@@ -32,11 +32,11 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
-flags="-aHAXi --no-xattrs --delete"
+flags="-aHAXi --no-xattrs --delete --exclude .DS_Store --exclude mpd-playlists"
 
 case $direction in
     push)
-        cmd="rsync ${flags} --exclude .DS_Store ${HOME}/${directory} ${remote}:"
+        cmd="rsync ${flags} ${HOME}/${directory} ${remote}:"
         ;;
     pull)
         cmd="rsync ${flags} ${remote}:${directory} ${HOME}"
