@@ -10,6 +10,7 @@ local langs = {
    "go",
    "typst",
    "bibtex",
+   "haskell",
 }
 
 treesitter.install(langs)

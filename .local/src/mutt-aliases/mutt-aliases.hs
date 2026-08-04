@@ -28,10 +28,8 @@ aliasFromTokens (keyword : tokens) =
           name = unwords . init $ nameAndMail
           mail = last nameAndMail
        in if isPrefixOf "<" mail && isSuffixOf ">" mail
-            then
-              Just (Alias alias name mail)
-            else
-              Nothing
+            then Just (Alias alias name mail)
+            else Nothing
 
 aliasToMuttStr :: Alias -> String
 aliasToMuttStr (Alias a f m) = "alias " ++ a ++ " " ++ f ++ " " ++ m
@@ -115,11 +113,7 @@ main = do
   let l = length combinedList
       l' = length aliases
   when (l' < l) $ do
-    putStrLn $
-      "[WARN] Deleting "
-        ++ show (l - l')
-        ++ " lines"
-        ++ " that did not contain valid aliases"
+    putStrLn $ "[WARN] Deleting " ++ show (l - l') ++ " lines" ++ " that did not contain valid aliases"
 
   mergedLines <- map aliasToMuttStr <$> resolveConflicts aliases
   mapM_ putStrLn mergedLines
@@ -128,8 +122,7 @@ main = do
     copyFile localPath localBackupPath
   writeFile localPath $ unlines mergedLines
 
-  callCommand $
-    "ssh " ++ host ++ " cp " ++ remotePath ++ " " ++ remoteBackupPath
+  callCommand $ "ssh " ++ host ++ " cp " ++ remotePath ++ " " ++ remoteBackupPath
   callCommand $ "scp " ++ localPath ++ " " ++ host ++ ":" ++ remotePath
 
   hClose hout
