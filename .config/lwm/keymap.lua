@@ -7,6 +7,7 @@ local mail_client = "Thunderbird"
 local smerge = "Sublime Merge"
 local signal = "signal"
 local drawio = "draw.io"
+local xournalpp = "xournalpp"
 local all_terminals = { "Alacritty", "WezTerm", "Ghostty" }
 
 function m.map(lwm)
@@ -25,6 +26,7 @@ function m.map(lwm)
       [smerge] = "g",
       [signal] = "c",
       [drawio] = "v",
+      [xournalpp] = "x",
    }
 
    for app, key in pairs(apps) do
