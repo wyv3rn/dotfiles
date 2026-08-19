@@ -5,6 +5,10 @@
       "src": "https://github.com/wyv3rn/blame.nvim",
       "version": "'fix-cwd'"
     },
+    "codecompanion.nvim": {
+      "rev": "6fb43a1754956198f94df141de5e185a12a52c4d",
+      "src": "https://github.com/olimorris/codecompanion.nvim"
+    },
     "conform.nvim": {
       "rev": "086a40dc7ed8242c03be9f47fbcee68699cc2395",
       "src": "https://github.com/stevearc/conform.nvim"
