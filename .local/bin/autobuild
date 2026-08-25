@@ -212,7 +212,7 @@ elif [ -f build.py ]; then
         echo "Starting build on ${host}"
         ssh $host "cd autobuild/${cwd}; autobuild --mode release --compiler ${cppcompiler} --no-clear"
     elif [ "$mode" == "runsim" ]; then
-        $ini=$(find_ini $subdir)
+        ini=$(find_ini $subdir)
         run-sim-remote --cwd "autobuild/${cwd}" -b "binaries/bin/${binary}" -f $ini -c $sim_config -R $sim_R --scale-J $sim_scale_J $dryrun
     elif [ "$mode" == "results" ]; then
         if [ "$host" == "" ]; then
@@ -220,8 +220,8 @@ elif [ -f build.py ]; then
             exit -1
         fi
         ssh $host "cd autobuild/${cwd}; find ./${subdir}/results/${sim_config}/ -name '*.sca' -or -name '*.vec' | xargs binaries/bin/opp_scavetool export -o ./${subdir}/results/${sim_config}/results.json"
-        mkdir -p results/${sim_config}
-        scp ${host}:autobuild/${cwd}/${subdir}/results/${sim_config}/results.json results/${sim_config}/results.json
+        mkdir -p ${subdir}/results/${sim_config}
+        scp ${host}:autobuild/${cwd}/${subdir}/results/${sim_config}/results.json ${subdir}/results/${sim_config}/results.json
     elif [ "$mode" == "run-n-scave" ]; then
         ini=$(find_ini $subdir)
         echo "Deleting old results first"
