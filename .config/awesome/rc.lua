@@ -163,7 +163,7 @@ function wm.focus_and_raise_app(app_name)
    local iterator = awful.client.iterate(filter)
    local win = iterator()
    if win == nil then
-      wm.spawn(app_name)
+      return nil
    else
       local current = wm.focused_win()
       if current ~= nil and wm.window_app_name(current):find(app_name) then
