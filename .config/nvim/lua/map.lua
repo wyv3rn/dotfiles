@@ -96,6 +96,11 @@ local function vimcmd(...)
    end
 end
 
+-- CodeCompanion
+vim.keymap.set({ "n", "v" }, "<leader>ai", "<cmd>CodeCompanion<cr>", { noremap = true, silent = true })
+vim.keymap.set({ "n", "v" }, "<leader>aa", "<cmd>CodeCompanionChat Toggle<cr>", { noremap = true, silent = true })
+vim.keymap.set("v", "<leader>ae", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true })
+
 local ldotf = "lazygit --git-dir ~/.dotfiles.git/ --work-tree ~/"
 
 wk.add({
