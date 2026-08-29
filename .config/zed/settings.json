@@ -1,4 +1,12 @@
 {
+  "agent": {
+    "dock": "right",
+    "favorite_models": [],
+    "model_parameters": []
+  },
+  "git_panel": {
+    "dock": "left"
+  },
   "telemetry": {
     "diagnostics": false,
     "metrics": false
