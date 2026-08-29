@@ -1,6 +1,7 @@
 local m = {}
 
 local browser = "qutebrowser"
+local alt_browser = "Brave"
 local pdf_viewer = "Preview"
 local terminal = "Alacritty"
 local mail_client = "Thunderbird"
@@ -12,6 +13,7 @@ local all_terminals = { "Alacritty", "WezTerm", "Ghostty" }
 
 function m.map(lwm)
    if lwm:os() == "linux" then
+      alt_browser = "chromium"
       pdf_viewer = "zathura"
       smerge = "Sublime_merge"
       drawio = "draw-io"
@@ -20,6 +22,7 @@ function m.map(lwm)
    -- Activate specific applications by key combination
    local apps = {
       [browser] = "n",
+      [alt_browser] = "b",
       [pdf_viewer] = "r",
       [terminal] = "t",
       [mail_client] = "d",

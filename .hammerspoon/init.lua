@@ -154,7 +154,7 @@ function Wm.focus_and_raise_app(app_name)
    app:activate()
    if app:focusedWindow() == prev then
       -- macos native switch to next window of same app
-      hs.eventtap.keyStroke({ "cmd" }, "y", 0)
+      hs.eventtap.keyStroke({ "cmd", "shift" }, "y", 0)
    end
    return app:focusedWindow()
 end
