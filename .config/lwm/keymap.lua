@@ -13,7 +13,7 @@ local all_terminals = { "Alacritty", "WezTerm", "Ghostty" }
 
 function m.map(lwm)
    if lwm:os() == "linux" then
-      alt_browser = "chromium"
+      alt_browser = "Chromium"
       pdf_viewer = "zathura"
       smerge = "Sublime_merge"
       drawio = "draw-io"
