@@ -219,7 +219,7 @@ elif [ -f build.py ]; then
             echo "No host specified for fetching results"
             exit -1
         fi
-        ssh $host "cd autobuild/${cwd}; find ./${subdir}/results/${sim_config}/ -name '*.sca' -or -name '*.vec' | xargs binaries/bin/opp_scavetool export -o ./${subdir}/results/${sim_config}/results.json"
+        ssh $host "cd autobuild/${cwd}; find ./${subdir}/results/${sim_config}/ -name '*.sca' -or -name '*.vec' | xargs -s 2000000 binaries/bin/opp_scavetool export -o ./${subdir}/results/${sim_config}/results.json"
         mkdir -p ${subdir}/results/${sim_config}
         scp ${host}:autobuild/${cwd}/${subdir}/results/${sim_config}/results.json ${subdir}/results/${sim_config}/results.json
     elif [ "$mode" == "run-n-scave" ]; then
@@ -227,7 +227,7 @@ elif [ -f build.py ]; then
         echo "Deleting old results first"
         find ./${subdir}/results/${sim_config}/ \( -name '*.sca' -or -name '*.vec' -or -name '*.json' \) -delete || true
         cross/native-release-${cppcompiler}/binaries/bin/${binary} -f $ini -c $sim_config &&
-        find ./${subdir}/results/${sim_config}/ -name '*.sca' -or -name '*.vec' | xargs cross/native-release-${cppcompiler}/binaries/bin/opp_scavetool export -o ./${subdir}/results/${sim_config}/results.json
+        find ./${subdir}/results/${sim_config}/ -name '*.sca' -or -name '*.vec' | xargs -s 2000000 cross/native-release-${cppcompiler}/binaries/bin/opp_scavetool export -o ./${subdir}/results/${sim_config}/results.json
     elif [ "$mode" == "open" ]; then
         echo "Unsupported mode ${mode} for build.py projects"
         exit -1
