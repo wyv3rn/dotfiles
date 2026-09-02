@@ -8,6 +8,7 @@ mode="release"
 cppcompiler="clang"
 dryrun=""
 subdir=""
+sync_only=0
 
 # deploy and result params
 host=autobuild-host
@@ -88,6 +89,9 @@ while [[ $# -gt 0 ]]; do
         --no-tty)
             do_clear=0
             color=0
+            ;;
+        --sync-only)
+            sync_only=1
             ;;
         -*|--*)
             echo "Unknown option $1"
@@ -209,8 +213,13 @@ elif [ -f build.py ]; then
         if [ -f .autobuild.json ]; then
             $rsync .autobuild.json $dst
         fi
-        echo "Starting build on ${host}"
-        ssh $host "cd autobuild/${cwd}; autobuild --mode release --compiler ${cppcompiler} --no-clear"
+        if [ $sync_only -eq 0 ]; then
+            echo "Starting build on ${host}"
+            ssh $host "cd autobuild/${cwd}; autobuild --mode release --compiler ${cppcompiler} --no-clear"
+        else
+            echo "Done syncing, skipping build"
+        fi
+
     elif [ "$mode" == "runsim" ]; then
         ini=$(find_ini $subdir)
         run-sim-remote --cwd "autobuild/${cwd}" -b "binaries/bin/${binary}" -f $ini -c $sim_config -R $sim_R --scale-J $sim_scale_J $dryrun
