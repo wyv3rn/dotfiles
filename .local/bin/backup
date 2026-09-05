@@ -1,33 +1,38 @@
 #!/usr/bin/env bash
 
-dirs=(
-    bak
-    .bak
-    Scratch
-    Documents
-    teaching
-    mail
-    Music
-    Video
-    .ssh
-    .gnupg
-)
+function filter() {
+    if [ -d $1 ]; then
+        echo $1
+    fi
+}
 
 date=$(date +%Y-%m-%d)
 
-tar_cmd="tar --ignore-failed-read -cvzf - ${dirs[@]}"
-
-cd $HOME
-
-if [ "$(hostname)" == "alpha" ]; then
-    backup_dir="/srv/storage/backups/dschatz"
-    $tar_cmd | gpg -c --no-symkey-cache | ssh guru@telsv3 "cat > ${backup_dir}/${date}.tar.gz.gpg"
-    backups=$(ssh guru@telsv3 "du -h ${backup_dir}/*")
+config=~/.config/backup/dirs
+if [ ! -f $config ]; then
+    echo "Backup config not found"
+    exit -1
 fi
 
-echo "Existing backups:"
-for backup in $backups; do
-    echo $backup
+mapfile -t all_dirs < $config
+
+cd $HOME
+dirs=""
+for d in ${all_dirs[@]}; do
+    dirs+=$(filter $d)
+    dirs+=" "
 done
+
+hostname=$(hostname)
+remote="tau-at-home"
+tar_cmd="tar -cvzf - $dirs"
+backup_dir="/srv/bak/"
+backup_name="${hostname}-${date}.tar.gz"
+
+if [ "${hostname}" == "tau" ]; then
+    $tar_cmd | cat > ${backup_dir}/${backup_name}
+else
+    $tar_cmd | ssh $remote "cat > ${backup_dir}/${backup_name}"
+fi
 
 cd - >/dev/null 2>&1
