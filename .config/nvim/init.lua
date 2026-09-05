@@ -14,7 +14,6 @@ vim.pack.add({
    "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
    "https://github.com/ntpeters/vim-better-whitespace",
    "https://github.com/farmergreg/vim-lastplace",
-   "https://github.com/olimorris/codecompanion.nvim",
    "https://github.com/wyv3rn/latex-abbrify.nvim",
    { src = "https://github.com/wyv3rn/blame.nvim", version = "fix-cwd" }
 })
@@ -35,20 +34,6 @@ require("telescope").setup({
       layout_config = {
          horizontal = { width = 9001, height = 9001 }
       }
-   }
-})
-
-require("codecompanion").setup({
-   interactions = {
-      chat = {
-         adapter = "ollama",
-      },
-      inline = {
-         adapter = "ollama",
-      },
-      cmd = {
-         adapter = "ollama",
-      },
    }
 })
 
