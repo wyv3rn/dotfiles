@@ -11,12 +11,18 @@ local drawio = "draw.io"
 local xournalpp = "xournalpp"
 local all_terminals = { "Alacritty", "WezTerm", "Ghostty" }
 
+local cmd = "cmd"
+
 function m.map(lwm)
    if lwm:os() == "linux" then
       alt_browser = "Chromium"
       pdf_viewer = "zathura"
       smerge = "Sublime_merge"
       drawio = "draw-io"
+   end
+
+   if lwm:os() == "windows" then
+      cmd = "f13"
    end
 
    -- Activate specific applications by key combination
@@ -33,34 +39,34 @@ function m.map(lwm)
    }
 
    for app, key in pairs(apps) do
-      lwm:bind({ "cmd" }, key, function() lwm:switch_to_app(app) end, "Shift")
+      lwm:bind({ cmd }, key, function() lwm:switch_to_app(app) end, "Shift")
    end
 
    -- Sane default key bindings for macos
    local except = all_terminals
    if lwm:os() == "darwin" then
-      lwm:rebind_in_apps({ "ctrl" }, "s", { "cmd" }, "s", except)
-      lwm:rebind_in_apps({ "ctrl" }, "c", { "cmd" }, "c", except)
-      lwm:rebind_in_apps({ "ctrl" }, "v", { "cmd" }, "v", except)
-      lwm:rebind_in_apps({ "ctrl" }, "x", { "cmd" }, "x", except)
-      lwm:rebind_in_apps({ "ctrl" }, "z", { "cmd" }, "z", except)
-      lwm:rebind_in_apps({ "ctrl" }, "a", { "cmd" }, "a", except)
-      lwm:rebind_in_apps({ "ctrl" }, "f", { "cmd" }, "f", except)
-      lwm:rebind_in_apps({ "ctrl" }, "p", { "cmd" }, "p", except)
+      lwm:rebind_in_apps({ "ctrl" }, "s", { cmd }, "s", except)
+      lwm:rebind_in_apps({ "ctrl" }, "c", { cmd }, "c", except)
+      lwm:rebind_in_apps({ "ctrl" }, "v", { cmd }, "v", except)
+      lwm:rebind_in_apps({ "ctrl" }, "x", { cmd }, "x", except)
+      lwm:rebind_in_apps({ "ctrl" }, "z", { cmd }, "z", except)
+      lwm:rebind_in_apps({ "ctrl" }, "a", { cmd }, "a", except)
+      lwm:rebind_in_apps({ "ctrl" }, "f", { cmd }, "f", except)
+      lwm:rebind_in_apps({ "ctrl" }, "p", { cmd }, "p", except)
    end
 
    -- Actual window management
-   lwm:bind({ "cmd" }, "q", function() lwm:close_focused() end, "Shift")
-   lwm:bind({ "cmd" }, "f", function() lwm:toggle_fullscreen_focused() end, "Shift")
-   lwm:bind({ "cmd" }, "a", function() lwm:spawn("rlg open --gui") end)
-   lwm:bind({ "cmd" }, "p", function() lwm:spawn("p --gui") end)
-   lwm:bind({ "cmd", "alt", "ctrl" }, "r", function() lwm:restart() end)
+   lwm:bind({ cmd }, "q", function() lwm:close_focused() end, "Shift")
+   lwm:bind({ cmd }, "f", function() lwm:toggle_fullscreen_focused() end, "Shift")
+   lwm:bind({ cmd }, "a", function() lwm:spawn("rlg open --gui") end)
+   lwm:bind({ cmd }, "p", function() lwm:spawn("p --gui") end)
+   lwm:bind({ cmd, "alt", "ctrl" }, "r", function() lwm:restart() end)
 
-   lwm:bind({ "cmd" }, "m", function() lwm:maximize_focused() end)
-   lwm:bind({ "cmd" }, "s", function() lwm:snap_focused("next") end)
-   lwm:bind({ "cmd" }, "z", function() lwm:toggle_zen() end)
-   lwm:bind({ "cmd" }, "h", function() lwm:increase_master_split(0.05) end, "shift")
-   lwm:bind({ "cmd" }, "l", function() lwm:decrease_master_split(0.05) end)
+   lwm:bind({ cmd }, "m", function() lwm:maximize_focused() end)
+   lwm:bind({ cmd }, "s", function() lwm:snap_focused("next") end)
+   lwm:bind({ cmd }, "z", function() lwm:toggle_zen() end)
+   lwm:bind({ cmd }, "h", function() lwm:increase_master_split(0.05) end, "shift")
+   lwm:bind({ cmd }, "l", function() lwm:decrease_master_split(0.05) end)
 end
 
 return m
