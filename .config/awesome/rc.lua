@@ -63,10 +63,6 @@ function wm.spawn(cmd, with_user_env)
    end
 end
 
-function wm.focused_screen()
-   return awful.screen.focused({ client = true })
-end
-
 function wm.screen_id(screen)
    return screen.index
 end

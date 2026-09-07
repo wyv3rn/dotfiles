@@ -18,7 +18,6 @@ local api_funs = {
    "raise",
    "focus_and_raise",
    "focus_and_raise_app",
-   "focused_screen",
    "screen_id",
    "get_window",
    "window_id",
@@ -81,6 +80,14 @@ end
 
 function Lwm:rebind_in_apps(from_mods, from_key, to_mods, to_key, except)
    self:bind(from_mods, from_key, function() self:keystroke_to_app(to_mods, to_key, except, from_mods, from_key) end)
+end
+
+function Lwm:focused_screen()
+   local win = self:focused_win()
+   if not win then
+      return nil
+   end
+   return self:window_screen(win)
 end
 
 function Lwm:close_focused()
