@@ -6,4 +6,4 @@ SETUVAR --export SUDO_EDITOR:/usr/bin/vim
 SETUVAR --export TEXMFHOME:/home/dschatz/\x2etexmf
 SETUVAR __fish_initialized:4300
 SETUVAR fish_greeting:\x1d
-SETUVAR fish_user_paths:/Users/dschatz/\x2eghcup/bin\x1e/Users/dschatz/\x2elocal/bin\x1e/home/dschatz/nvim\x2dlinux64/bin\x1e/opt/homebrew/opt/m4/bin\x1e/opt/homebrew/opt/make/libexec/gnubin\x1e/opt/homebrew/opt/qt\x405/bin\x1e/opt/homebrew/opt/flex/bin\x1e/opt/homebrew/opt/bison/bin\x1e/opt/homebrew/bin\x1e/home/dschatz/\x2elocal/bin
+SETUVAR fish_user_paths:/home/dschatz/\x2eghcup/bin\x1e/Users/dschatz/\x2eghcup/bin\x1e/Users/dschatz/\x2elocal/bin\x1e/home/dschatz/nvim\x2dlinux64/bin\x1e/opt/homebrew/opt/m4/bin\x1e/opt/homebrew/opt/make/libexec/gnubin\x1e/opt/homebrew/opt/qt\x405/bin\x1e/opt/homebrew/opt/flex/bin\x1e/opt/homebrew/opt/bison/bin\x1e/opt/homebrew/bin\x1e/home/dschatz/\x2elocal/bin
