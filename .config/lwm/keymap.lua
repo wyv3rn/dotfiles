@@ -23,6 +23,8 @@ function m.map(lwm)
 
    if lwm:os() == "windows" then
       cmd = "f13"
+      smerge = "sublime_merge"
+      terminal = "wezterm"
    end
 
    -- Activate specific applications by key combination
