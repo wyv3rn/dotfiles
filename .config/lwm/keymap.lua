@@ -1,44 +1,25 @@
 local m = {}
 
-local browser = "qutebrowser"
-local alt_browser = "Brave"
-local pdf_viewer = "Preview"
-local terminal = "Alacritty"
-local mail_client = "Thunderbird"
-local smerge = "Sublime Merge"
-local signal = "signal"
-local drawio = "draw.io"
-local xournalpp = "xournal++"
-local all_terminals = { "Alacritty", "WezTerm", "Ghostty" }
-
 local cmd = "cmd"
 
 function m.map(lwm)
-   if lwm:os() == "linux" then
-      alt_browser = "Chromium"
-      pdf_viewer = "zathura"
-      smerge = "Sublime_merge"
-      drawio = "draw-io"
-      xournalpp = "xournalpp"
-   end
-
    if lwm:os() == "windows" then
       cmd = "f13"
-      smerge = "sublime_merge"
-      terminal = "wezterm"
    end
+
+   local app_names = require("apps").init(lwm)
 
    -- Activate specific applications by key combination
    local apps = {
-      [browser] = "n",
-      [alt_browser] = "b",
-      [pdf_viewer] = "r",
-      [terminal] = "t",
-      [mail_client] = "d",
-      [smerge] = "g",
-      [signal] = "c",
-      [drawio] = "v",
-      [xournalpp] = "x",
+      [app_names.browser] = "n",
+      [app_names.alt_browser] = "b",
+      [app_names.pdf_viewer] = "r",
+      [app_names.terminal] = "t",
+      [app_names.mail_client] = "d",
+      [app_names.smerge] = "g",
+      [app_names.signal] = "c",
+      [app_names.drawio] = "v",
+      [app_names.xournalpp] = "x",
    }
 
    for app, key in pairs(apps) do
@@ -46,7 +27,7 @@ function m.map(lwm)
    end
 
    -- Sane default key bindings for macos
-   local except = all_terminals
+   local except = app_names.all_terminals
    if lwm:os() == "darwin" then
       lwm:rebind_in_apps({ "ctrl" }, "s", { cmd }, "s", except)
       lwm:rebind_in_apps({ "ctrl" }, "c", { cmd }, "c", except)
