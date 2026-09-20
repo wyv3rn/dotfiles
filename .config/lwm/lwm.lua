@@ -81,6 +81,11 @@ function Lwm:set_on_create(app_name, fun)
 end
 
 function Lwm:do_on_create(win)
+   local title = self:window_title(win) or "N/A"
+   -- TODO quick hack for qutebrowser generating new windows for hover hints?
+   if title == "" then
+      return
+   end
    local app_name = self:window_app_name(win) or "N/A"
    local on_create = self.on_create_map[app_name] or self.default_on_create
    on_create(win)
