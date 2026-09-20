@@ -214,5 +214,6 @@ hs.loadSpoon("EmmyLua")
 Lwm = require("lwm").new(Wm, 0.55, 9)
 
 require("keymap").map(Lwm)
+require("rules").init(Lwm)
 
 Lwm:notify("Hammerspoon!")

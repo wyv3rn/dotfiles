@@ -55,18 +55,14 @@ function Lwm.new(wm, master_split, win_border)
    self.pre_zen_master_split = self.default_master_split
    self.win_border = win_border or 0
 
+   self.default_on_create = function(_) end
+   self.on_create_map = {}
+
    if self.callback_on_create then
-      self:callback_on_create(function(new)
-         -- TODO; probably use this for "window rules"
-         print("Hello, new one!")
-         local wins = self:windows_at_focused()
-         print("You are not alone, there are " .. #wins - 1 .. " others")
-         for _, win in ipairs(wins) do
-            if self:window_id(new) ~= self:window_id(win) then
-               local app_name = self:window_app_name(win) or "N/A"
-               print(".." .. app_name)
-            end
-         end
+      self:callback_on_create(function(new_win)
+         local app_name = self:window_app_name(new_win) or "N/A"
+         local on_create = self.on_create_map[app_name] or self.default_on_create
+         on_create(new_win)
       end)
    end
 
@@ -76,6 +72,14 @@ function Lwm.new(wm, master_split, win_border)
       end)
    end
    return self
+end
+
+function Lwm:set_default_on_create(fun)
+   self.default_on_create = fun
+end
+
+function Lwm:set_on_create(app_name, fun)
+   self.on_create_map[app_name] = fun
 end
 
 function Lwm:rebind_in_apps(from_mods, from_key, to_mods, to_key, except)
