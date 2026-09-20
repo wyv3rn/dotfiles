@@ -8,7 +8,7 @@ local mail_client = "Thunderbird"
 local smerge = "Sublime Merge"
 local signal = "signal"
 local drawio = "draw.io"
-local xournalpp = "xournalpp"
+local xournalpp = "xournal++"
 local all_terminals = { "Alacritty", "WezTerm", "Ghostty" }
 
 local cmd = "cmd"
@@ -19,6 +19,7 @@ function m.map(lwm)
       pdf_viewer = "zathura"
       smerge = "Sublime_merge"
       drawio = "draw-io"
+      xournalpp = "xournalpp"
    end
 
    if lwm:os() == "windows" then
