@@ -44,6 +44,7 @@ function m.map(lwm)
    lwm:bind({ cmd }, "f", function() lwm:toggle_fullscreen_focused() end, "Shift")
    lwm:bind({ cmd }, "a", function() lwm:spawn("rlg open --gui") end)
    lwm:bind({ cmd }, "p", function() lwm:spawn("p --gui") end)
+   lwm:bind({ cmd, "alt", "ctrl" }, "s", function() lwm:do_on_create_all() end)
    lwm:bind({ cmd, "alt", "ctrl" }, "r", function() lwm:restart() end)
 
    lwm:bind({ cmd }, "m", function() lwm:maximize_focused() end)

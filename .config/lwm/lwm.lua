@@ -60,9 +60,7 @@ function Lwm.new(wm, master_split, win_border)
 
    if self.callback_on_create then
       self:callback_on_create(function(new_win)
-         local app_name = self:window_app_name(new_win) or "N/A"
-         local on_create = self.on_create_map[app_name] or self.default_on_create
-         on_create(new_win)
+         self:do_on_create(new_win)
       end)
    end
 
@@ -80,6 +78,19 @@ end
 
 function Lwm:set_on_create(app_name, fun)
    self.on_create_map[app_name] = fun
+end
+
+function Lwm:do_on_create(win)
+   local app_name = self:window_app_name(win) or "N/A"
+   local on_create = self.on_create_map[app_name] or self.default_on_create
+   on_create(win)
+end
+
+function Lwm:do_on_create_all()
+   -- TODO should be for all
+   for _, win in ipairs(self:windows_at_focused()) do
+      self:do_on_create(win)
+   end
 end
 
 function Lwm:rebind_in_apps(from_mods, from_key, to_mods, to_key, except)
