@@ -69,6 +69,8 @@ function Lwm.new(wm, master_split, win_border)
          self:fill_if_required(win)
       end)
    end
+   require("keymap").map(self)
+   require("rules").init(self)
    return self
 end
 

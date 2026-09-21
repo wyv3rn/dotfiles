@@ -183,7 +183,6 @@ end
 
 -- start lwm
 local lwm = require("lwm").new(wm, 0.55, beautiful.border_width)
-require("keymap").map(lwm)
 
 -- Widget and layout library
 local wibox = require("wibox")
@@ -464,4 +463,4 @@ do
 end
 -- }}}
 
-wm.notify("Awesome!")
+lwm:notify("Awesome!")
