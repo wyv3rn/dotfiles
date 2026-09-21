@@ -1,10 +1,12 @@
 local m = {}
 
 local cmd = "cmd"
+local hyper = { cmd, "alt", "ctrl" }
 
 function m.map(lwm)
    if lwm:os() == "windows" then
       cmd = "f13"
+      hyper = { cmd, "ctrl" }
    end
 
    local app_names = require("apps").init(lwm)
@@ -44,14 +46,16 @@ function m.map(lwm)
    lwm:bind({ cmd }, "f", function() lwm:toggle_fullscreen_focused() end, "Shift")
    lwm:bind({ cmd }, "a", function() lwm:spawn("rlg open --gui") end)
    lwm:bind({ cmd }, "p", function() lwm:spawn("p --gui") end)
-   lwm:bind({ cmd, "alt", "ctrl" }, "s", function() lwm:do_on_create_all() end)
-   lwm:bind({ cmd, "alt", "ctrl" }, "r", function() lwm:restart() end)
 
    lwm:bind({ cmd }, "m", function() lwm:maximize_focused() end)
    lwm:bind({ cmd }, "s", function() lwm:snap_focused("next") end)
    lwm:bind({ cmd }, "z", function() lwm:toggle_zen() end)
    lwm:bind({ cmd }, "h", function() lwm:increase_master_split(0.05) end, "shift")
    lwm:bind({ cmd }, "l", function() lwm:decrease_master_split(0.05) end)
+
+   lwm:bind(hyper, "s", function() lwm:do_on_create_all() end)
+   lwm:bind(hyper, "r", function() lwm:restart() end)
+   lwm:bind(hyper, "q", function() lwm:kill() end)
 end
 
 return m

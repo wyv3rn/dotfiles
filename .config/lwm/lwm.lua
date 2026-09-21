@@ -27,6 +27,7 @@ local api_funs = {
    "spawn",
    "callback_on_focus",
    "restart",
+   "kill",
 }
 
 setmetatable(Lwm, {
