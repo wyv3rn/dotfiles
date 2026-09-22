@@ -181,6 +181,10 @@ function wm.restart()
    awesome.restart()
 end
 
+function wm.kill()
+   awesome.quit()
+end
+
 -- start lwm
 local lwm = require("lwm").new(wm, 0.55, beautiful.border_width)
 
@@ -338,11 +342,7 @@ local globalkeys = awful.util.table.join(
    awful.key({}, "XF86AudioPlay", function() awful.spawn("playerctl play-pause") end),
 
    -- toggle wibox
-   awful.key({ modkey }, "F11", function() mouse.screen.mywibox.visible = not mouse.screen.mywibox.visible end),
-
-   -- Quit awesome
-   awful.key({ modkey, "Control", "Mod1" }, "q", awesome.quit,
-      { description = "quit awesome", group = "awesome" })
+   awful.key({ modkey }, "F11", function() mouse.screen.mywibox.visible = not mouse.screen.mywibox.visible end)
 )
 
 -- Bind all key numbers to tags.
