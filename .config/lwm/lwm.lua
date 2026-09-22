@@ -56,8 +56,7 @@ function Lwm.new(wm, master_split, win_border)
    self.pre_zen_master_split = self.default_master_split
    self.win_border = win_border or 0
 
-   self.default_on_create = function(_) end
-   self.on_create_map = {}
+   self.on_create_fun = function(_) end
 
    if self.callback_on_create then
       self:callback_on_create(function(new_win)
@@ -75,23 +74,12 @@ function Lwm.new(wm, master_split, win_border)
    return self
 end
 
-function Lwm:set_default_on_create(fun)
-   self.default_on_create = fun
-end
-
-function Lwm:set_on_create(app_name, fun)
-   self.on_create_map[app_name] = fun
+function Lwm:set_on_create(fun)
+   self.on_create_fun = fun
 end
 
 function Lwm:do_on_create(win)
-   local title = self:window_title(win) or "N/A"
-   -- TODO quick hack for qutebrowser generating new windows for hover hints?
-   if title == "" then
-      return
-   end
-   local app_name = self:window_app_name(win) or "N/A"
-   local on_create = self.on_create_map[app_name] or self.default_on_create
-   on_create(win)
+   self.on_create_fun(win)
 end
 
 function Lwm:do_on_create_all()

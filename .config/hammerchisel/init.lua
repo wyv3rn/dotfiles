@@ -160,9 +160,10 @@ function Wm.focus_and_raise_app(app_name)
       Wm.notify("Failed to get all windows: " .. err)
       return
    end
+   Wm.notify("Application name candidates:")
    for _, win in ipairs(all) do
       local canditate = hc.getApplicationName(win)
-      print(canditate)
+      print("  " .. canditate)
       -- TODO handle multiple windows of same app
       if canditate == app_name then
          Wm.notify("Trying to focus and raise " .. canditate)
