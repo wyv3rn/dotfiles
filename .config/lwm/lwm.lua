@@ -66,6 +66,9 @@ function Lwm.new(wm, master_split, win_border)
 
    if self.callback_on_focus then
       self:callback_on_focus(function(win)
+         if self.pre_zen_positions and self:snapped_direction(win) ~= "middle" then
+            self:toggle_zen()
+         end
          self:fill_if_required(win)
       end)
    end
