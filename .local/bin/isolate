@@ -35,21 +35,19 @@ for p in \
 	/bin \
 	/usr/bin \
 	/usr/lib \
+	/usr/include \
 	/usr/share \
 	/lib64 \
 	/etc \
-	"$HOME/.local/bin" \
-	"$HOME/.local/share" \
-	"$HOME/.config" \
-	"$HOME/.gitconfig" \
 	"$HOME/.rustup" \
-	"$HOME/devops/evalLib" \
+	"$HOME/.ghcup" \
 	; do
 	args+=(--ro-bind "$p" "$p")
 done
 
 for p in \
-	"$HOME/.cargo" \
+	"$HOME/.config/opencode" \
+	"$HOME/.local/share/opencode" \
 	"$pwd" \
 	; do
 	args+=(--bind "$p" "$p")
