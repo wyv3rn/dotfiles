@@ -2,6 +2,17 @@ import platform
 import os
 from os.path import expanduser
 
+
+# helpers
+def bind_in_modes(keys, action, modes):
+    for mode in modes:
+        config.bind(keys, action, mode=mode)
+
+
+def bind_in_all_modes(keys, action):
+    bind_in_modes(keys, action, ("normal", "insert", "passthrough"))
+
+
 config.load_autoconfig(False)
 
 # general settings
@@ -38,9 +49,14 @@ config.unbind("D")
 # macros are not so useful in a browser, and I hit q by accident too often
 config.unbind("q")
 
-# passthrough
+# better passthrough and insert mode handling
 config.unbind("<Ctrl-v>")
 config.bind("I", "mode-enter passthrough")
+bind_in_all_modes("<Ctrl-e>", "cmd-set-text -s :open")
+bind_in_all_modes("<Ctrl-o>", "cmd-set-text -s :open -t")
+bind_in_all_modes("<Ctrl-w>", "tab-close")
+config.set("input.mode_override", "passthrough", "*/nextcloud/*")
+config.set("input.mode_override", "passthrough", "*.bund.de/*")
 
 # make some custom keybinds work for neo2 with Karabiner
 config.bind("<Alt-d>", "cmd-set-text :")
@@ -52,14 +68,12 @@ config.bind("<Alt-c><Alt-c>", "navigate next")
 config.bind("<Alt-l><Alt-l>", "navigate prev")
 
 # history
-config.bind("<Ctrl-t>", "back")
-config.bind("<Ctrl-i>", "forward")
+bind_in_all_modes("<Ctrl-t>", "back")
+bind_in_all_modes("<Ctrl-i>", "forward")
 
-# scrolling
-config.bind("{", "scroll-page 0 -0.5")
-config.bind("}", "scroll-page 0 0.5")
-config.bind("<Alt-a>", "scroll-page 0 -0.5")
-config.bind("<Alt-e>", "scroll-page 0 0.5")
+# better scrolling in all modes
+bind_in_all_modes("<Ctrl-u>", "scroll-page 0 -0.5")
+bind_in_all_modes("<Ctrl-d>", "scroll-page 0 0.5")
 
 # tabs
 config.bind("gl", "tab-focus last")
@@ -69,7 +83,7 @@ config.bind("gt", "tab-next")
 config.bind("gT", "tab-prev")
 for i in range(1, 10):
     config.bind(f"g{i}", f"tab-focus {i}")
-    config.bind(f"<Ctrl-{i}>", f"tab-focus {i}")
+    bind_in_all_modes(f"<Ctrl-{i}>", f"tab-focus {i}")
 
 # search primary selected text
 config.bind("sd", "open -t di {primary}")
