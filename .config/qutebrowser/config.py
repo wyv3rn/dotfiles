@@ -39,6 +39,7 @@ config.unbind("D")
 config.unbind("q")
 
 # passthrough
+config.unbind("<Ctrl-v>")
 config.bind("I", "mode-enter passthrough")
 
 # make some custom keybinds work for neo2 with Karabiner
