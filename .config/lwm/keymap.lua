@@ -3,7 +3,8 @@ local m = {}
 local cmd = "cmd"
 local hyper = { cmd, "alt", "ctrl" }
 
-function m.map(lwm)
+function m.map(lwm, apps_only)
+   apps_only = apps_only or false
    if lwm:os() == "windows" then
       cmd = "f13"
       hyper = { cmd, "ctrl" }
@@ -41,8 +42,15 @@ function m.map(lwm)
       lwm:rebind_in_apps({ "ctrl" }, "p", { cmd }, "p", except)
    end
 
-   -- Actual window management
    lwm:bind({ cmd }, "q", function() lwm:close_focused() end, "Shift")
+   lwm:bind(hyper, "r", function() lwm:restart() end)
+   lwm:bind(hyper, "q", function() lwm:kill() end)
+
+   if apps_only then
+      return
+   end
+
+   -- Actual window management
    lwm:bind({ cmd }, "f", function() lwm:toggle_fullscreen_focused() end, "Shift")
    lwm:bind({ cmd }, "a", function() lwm:spawn("rlg open --gui") end)
    lwm:bind({ cmd }, "p", function() lwm:spawn("p --gui") end)
@@ -54,8 +62,6 @@ function m.map(lwm)
    lwm:bind({ cmd }, "l", function() lwm:decrease_master_split(0.05) end)
 
    lwm:bind(hyper, "s", function() lwm:do_on_create_all() end)
-   lwm:bind(hyper, "r", function() lwm:restart() end)
-   lwm:bind(hyper, "q", function() lwm:kill() end)
 end
 
 return m

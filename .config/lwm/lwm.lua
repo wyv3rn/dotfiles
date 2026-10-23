@@ -34,8 +34,9 @@ setmetatable(Lwm, {
    __call = function(cls, ...) return cls.new(...) end
 })
 
-function Lwm.new(wm, master_split, win_border)
+function Lwm.new(wm, master_split, win_border, app_keymaps_only)
    local self = setmetatable({}, Lwm)
+   local app_keymaps_only = app_keymaps_only or false
    local api_as_set = {}
    for _, fun_name in ipairs(api_funs) do
       api_as_set[fun_name] = true
@@ -72,7 +73,7 @@ function Lwm.new(wm, master_split, win_border)
          self:fill_if_required(win)
       end)
    end
-   require("keymap").map(self)
+   require("keymap").map(self, app_keymaps_only)
    require("rules").init(self)
    return self
 end

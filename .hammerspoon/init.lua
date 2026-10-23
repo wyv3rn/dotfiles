@@ -211,5 +211,5 @@ Mpc_tap:start()
 -- Spoon for LSP support
 hs.loadSpoon("EmmyLua")
 
-Lwm = require("lwm").new(Wm, 0.55, 9)
+Lwm = require("lwm").new(Wm, 0.55, 9, true)
 Lwm:notify("Hammerspoon!")
