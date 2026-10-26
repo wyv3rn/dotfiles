@@ -345,7 +345,7 @@ local globalkeys = awful.util.table.join(
    awful.key({ modkey }, "F11", function() mouse.screen.mywibox.visible = not mouse.screen.mywibox.visible end),
 
    -- force toggle float
-   awful.key({ modkey, "Ctrl", "Alt" }, "f", awful.client.floating.toggle)
+   awful.key({ modkey, "Control", "Mod1" }, "f", awful.client.floating.toggle)
 )
 
 -- Bind all key numbers to tags.
